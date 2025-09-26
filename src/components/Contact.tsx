@@ -41,20 +41,20 @@ const Contact = () => {
                     <h2 className="text-4xl font-bold text-brand-purple font-playfair">Fale Conosco</h2>
                     <p className="text-brand-dark mt-2">Adoraríamos ouvir você. Envie-nos uma mensagem!</p>
                 </div>
-                <div className="max-w-3xl mx-auto">
+                <div className="max-w-3xl mx-auto rounded-2xl border border-brand-purple/20 bg-white/90 backdrop-blur-sm shadow-xl p-6 md:p-8">
                     {/* Form */}
                     <form className="w-full" onSubmit={handleSubmit}>
                         <div className="mb-4">
                             <Label htmlFor="name" className="text-brand-dark">Nome</Label>
-                            <Input id="name" value={name} onChange={(e) => setName(e.target.value)} className="mt-2" required />
+                            <Input id="name" value={name} onChange={(e) => setName(e.target.value)} className="mt-2 bg-white/95 text-brand-dark placeholder:text-brand-dark/60 border-brand-purple/30 focus-visible:ring-brand-purple" required />
                         </div>
                         <div className="mb-4">
                             <Label htmlFor="email" className="text-brand-dark">E-mail</Label>
-                            <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="mt-2" required />
+                            <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="mt-2 bg-white/95 text-brand-dark placeholder:text-brand-dark/60 border-brand-purple/30 focus-visible:ring-brand-purple" required />
                         </div>
                         <div className="mb-4">
                             <Label htmlFor="whats" className="text-brand-dark">WhatsApp</Label>
-                            <Input id="whats" type="tel" value={whats} onChange={(e) => setWhats(e.target.value)} className="mt-2" required />
+                            <Input id="whats" type="tel" value={whats} onChange={(e) => setWhats(e.target.value)} className="mt-2 bg-white/95 text-brand-dark placeholder:text-brand-dark/60 border-brand-purple/30 focus-visible:ring-brand-purple" required />
                         </div>
                         <div className="mb-4">
                             <Label className="text-brand-dark mb-2">Assunto</Label>
@@ -72,7 +72,7 @@ const Contact = () => {
                         <div className="mb-4">
                             <Label htmlFor="negocio" className="text-brand-dark">Tipo de Negócio</Label>
                             <Select value={negocio} onValueChange={setNegocio}>
-                                <SelectTrigger id="negocio" className="mt-2 w-full">
+                                <SelectTrigger id="negocio" className="mt-2 w-full bg-white/95 text-brand-dark border-brand-purple/30 focus-visible:ring-brand-purple">
                                     <SelectValue placeholder="Selecione" />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -88,7 +88,7 @@ const Contact = () => {
                         </div>
                         <div className="mb-6">
                             <Label htmlFor="message" className="text-brand-dark">Mensagem</Label>
-                            <Textarea id="message" rows={5} value={message} onChange={(e) => setMessage(e.target.value)} className="mt-2" />
+                            <Textarea id="message" rows={5} value={message} onChange={(e) => setMessage(e.target.value)} className="mt-2 bg-white/95 text-brand-dark placeholder:text-brand-dark/60 border-brand-purple/30 focus-visible:ring-brand-purple" />
                         </div>
                         <Button type="submit" className="w-full bg-brand-purple text-white hover:bg-brand-purple/90">Enviar pelo WhatsApp</Button>
                     </form>
