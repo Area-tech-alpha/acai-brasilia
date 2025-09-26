@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect, useCallback } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import Image from 'next/image';
 
@@ -8,6 +8,7 @@ type Product = {
     name: string;
     description: string;
     carouselImages: string[];
+    carouselCaptions?: string[];
 };
 
 interface ProductModalProps {
@@ -46,13 +47,18 @@ const ProductModal = ({ product, onClose }: ProductModalProps) => {
 
     return (
         <Dialog open onOpenChange={(open) => { if (!open) onClose(); }}>
-            <DialogContent className="max-w-4xl p-0">
-                <DialogHeader className="px-8 pt-6">
-                    <DialogTitle className="text-brand-purple font-playfair">{product.name}</DialogTitle>
+            <DialogContent className="max-w-7xl w-[min(98vw,1400px)] max-h-[calc(100vh-2rem)] overflow-hidden p-0 bg-brand-yellow texture-dots-light text-brand-dark border-4 border-brand-purple rounded-lg backdrop-blur-none">
+                <DialogHeader className="px-8 pt-6 pb-4 relative z-30 bg-brand-yellow texture-dots-light">
+                    <DialogTitle className="text-brand-purple font-playfair text-3xl md:text-4xl tracking-tight border-b-4 border-brand-purple w-fit pb-1">
+                        {product.name}
+                    </DialogTitle>
+                    <DialogDescription className="text-brand-dark/80 text-base md:text-lg mt-2">
+                        {product.description}
+                    </DialogDescription>
                 </DialogHeader>
-                <div className="grid md:grid-cols-2">
+                <div className="grid md:grid-cols-2 bg-brand-yellow texture-dots-light items-stretch relative z-20">
                     {/* Carousel */}
-                    <div className="relative w-full h-80 md:h-full group">
+                    <div className="relative w-full h-[360px] md:h-[60vh] lg:h-[65vh] group">
                         <div className="relative w-full h-full">
                             <Image
                                 src={product.carouselImages[currentIndex]}
@@ -62,17 +68,22 @@ const ProductModal = ({ product, onClose }: ProductModalProps) => {
                                 className="object-cover"
                                 priority
                             />
+                            {product.carouselCaptions && product.carouselCaptions[currentIndex] && (
+                                <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-sm md:text-base px-4 py-2 z-20">
+                                    {product.carouselCaptions[currentIndex]}
+                                </div>
+                            )}
                         </div>
                         {/* Left Arrow */}
-                        <Button variant="secondary" className="hidden group-hover:flex absolute top-1/2 -translate-y-1/2 left-3 text-2xl rounded-full p-2 bg-black/40 text-white" onClick={prevSlide}>
+                        <Button variant="secondary" className="hidden group-hover:flex absolute top-1/2 -translate-y-1/2 left-3 text-2xl rounded-full p-2 bg-black/60 text-white" onClick={prevSlide}>
                             &#10094;
                         </Button>
                         {/* Right Arrow */}
-                        <Button variant="secondary" className="hidden group-hover:flex absolute top-1/2 -translate-y-1/2 right-3 text-2xl rounded-full p-2 bg-black/40 text-white" onClick={nextSlide}>
+                        <Button variant="secondary" className="hidden group-hover:flex absolute top-1/2 -translate-y-1/2 right-3 text-2xl rounded-full p-2 bg-black/60 text-white" onClick={nextSlide}>
                             &#10095;
                         </Button>
                         {/* Dots */}
-                        <div className="absolute bottom-3 left-0 right-0 flex items-center justify-center gap-2">
+                        <div className="absolute top-3 right-3 flex items-center justify-end gap-2 z-10">
                             {product.carouselImages.map((_, idx) => (
                                 <button
                                     key={idx}
@@ -85,19 +96,19 @@ const ProductModal = ({ product, onClose }: ProductModalProps) => {
                     </div>
 
                     {/* Content */}
-                    <div className="p-8 flex flex-col justify-center">
-                        <p className="text-brand-dark text-base">{product.description}</p>
+                    <div className="p-8 md:p-10 flex flex-col justify-between bg-brand-yellow texture-dots-light overflow-auto relative z-20">
+                        <p className="text-brand-dark text-base md:text-lg leading-relaxed">{product.description}</p>
                         {/* Thumbnails */}
-                        <div className="mt-6 grid grid-cols-5 gap-2">
+                        <div className="mt-6 grid grid-cols-5 gap-3">
                             {product.carouselImages.map((src: string, idx: number) => (
-                                <button key={idx} onClick={() => setCurrentIndex(idx)} className={`relative aspect-square rounded overflow-hidden ring-2 ${idx === currentIndex ? 'ring-brand-yellow' : 'ring-transparent'}`}>
+                                <button key={idx} onClick={() => setCurrentIndex(idx)} className={`relative aspect-square rounded overflow-hidden ring-2 ${idx === currentIndex ? 'ring-brand-purple' : 'ring-transparent'}`}>
                                     <div className="relative w-full h-full">
                                         <Image src={src} alt={`Thumb ${idx + 1}`} fill sizes="100px" className="object-cover" />
                                     </div>
                                 </button>
                             ))}
                         </div>
-                        <Button onClick={onClose} className="mt-6 self-start bg-brand-yellow text-brand-dark hover:bg-brand-yellow/90">Fechar</Button>
+                        <Button onClick={onClose} className="mt-6 self-start bg-brand-purple text-white hover:bg-brand-purple/90">Fechar</Button>
                     </div>
                 </div>
             </DialogContent>

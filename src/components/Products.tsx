@@ -2,6 +2,14 @@
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import ProductModal from './ProductModal';
+import {
+    Carousel,
+    CarouselContent,
+    CarouselItem,
+    CarouselNext,
+    CarouselPrevious,
+    type CarouselApi,
+} from "@/components/ui/carousel";
 
 type Product = {
     id: string;
@@ -9,48 +17,80 @@ type Product = {
     description: string;
     mainImage: string;
     carouselImages: string[];
+    carouselCaptions?: string[];
 };
 
 const productsData: Product[] = [
     {
         id: 'acai',
         name: 'Açaí',
-        description: 'Açaí autêntico do Pará, cremoso e energético. Ideal puro ou com acompanhamentos.',
-        mainImage: 'https://images.unsplash.com/photo-1594149929915-1c37fce4bb7b?q=80&w=1974&auto=format&fit=crop',
+        description: 'Linha completa de açaís: do tradicional ao premium, com e sem açúcar, tamanhos variados. Escolha o seu preferido.',
+        mainImage: 'https://4qozbotg9nhsxukb.public.blob.vercel-storage.com/produtos/acais/IMG-20240909-WA0063.jpg',
         carouselImages: [
-            'https://images.unsplash.com/photo-1594149929915-1c37fce4bb7b?q=80&w=1974&auto=format&fit=crop',
-            'https://images.unsplash.com/photo-1617137968427-85924c800a6d?q=80&w=1974&auto=format&fit=crop',
-            'https://images.unsplash.com/photo-1580910051074-3eb694886505?q=80&w=1974&auto=format&fit=crop'
+            'https://4qozbotg9nhsxukb.public.blob.vercel-storage.com/produtos/acais/IMG-20240909-WA0063.jpg',
+            'https://4qozbotg9nhsxukb.public.blob.vercel-storage.com/produtos/cremes/IMG_2905.jpg',
+            'https://4qozbotg9nhsxukb.public.blob.vercel-storage.com/produtos/cremes/chocolate.png',
+            'https://4qozbotg9nhsxukb.public.blob.vercel-storage.com/produtos/acais/IMG_9860.jpg'
+        ],
+        carouselCaptions: [
+            'Açaí Tradicional 500ml',
+            'Cremes da Casa',
+            'Linha de Picolés',
+            'Polpas Selecionadas'
         ]
     },
     {
         id: 'polpas',
         name: 'Polpas',
-        description: 'Polpas de frutas 100% naturais e sem conservantes. Leve o sabor da Amazônia para suas receitas com nossas polpas de cupuaçu, acerola, e mais.',
-        mainImage: 'https://images.unsplash.com/photo-1619539268323-053773b0c049?q=80&w=2070&auto=format&fit=crop',
+        description: 'Polpas naturais de diversas frutas da Amazônia para sucos, sobremesas e receitas. Escolha os sabores.',
+        mainImage: 'https://4qozbotg9nhsxukb.public.blob.vercel-storage.com/produtos/acais/IMG_9860.jpg',
         carouselImages: [
-            'https://images.unsplash.com/photo-1619539268323-053773b0c049?q=80&w=2070&auto=format&fit=crop',
-            'https://images.unsplash.com/photo-1625862249823-7a6a03f883a3?q=80&w=1974&auto=format&fit=crop',
+            'https://4qozbotg9nhsxukb.public.blob.vercel-storage.com/produtos/acais/IMG_9860.jpg',
+            'https://4qozbotg9nhsxukb.public.blob.vercel-storage.com/produtos/acais/IMG-20240909-WA0063.jpg',
+            'https://4qozbotg9nhsxukb.public.blob.vercel-storage.com/produtos/cremes/IMG_2905.jpg',
+            'https://4qozbotg9nhsxukb.public.blob.vercel-storage.com/produtos/cremes/chocolate.png'
+        ],
+        carouselCaptions: [
+            'Polpa de Cupuaçu 1kg',
+            'Açaí para Preparo',
+            'Cremes para Receitas',
+            'Picolés de Frutas'
         ]
     },
     {
         id: 'picoles',
         name: 'Picolés',
-        description: 'Refrescantes e cheios de sabor. Nossos picolés são feitos com frutas de verdade, perfeitos para qualquer hora do dia.',
-        mainImage: 'https://images.unsplash.com/photo-1535384343332-98c23a2b7af9?q=80&w=1974&auto=format&fit=crop',
+        description: 'Vários picolés artesanais com sabores clássicos e regionais. Escolha o seu preferido.',
+        mainImage: 'https://4qozbotg9nhsxukb.public.blob.vercel-storage.com/produtos/cremes/chocolate.png',
         carouselImages: [
-            'https://images.unsplash.com/photo-1535384343332-98c23a2b7af9?q=80&w=1974&auto=format&fit=crop',
-            'https://images.unsplash.com/photo-1501432594218-ac914ba7e25a?q=80&w=1974&auto=format&fit=crop',
+            'https://4qozbotg9nhsxukb.public.blob.vercel-storage.com/produtos/cremes/chocolate.png',
+            'https://4qozbotg9nhsxukb.public.blob.vercel-storage.com/produtos/acais/IMG-20240909-WA0063.jpg',
+            'https://4qozbotg9nhsxukb.public.blob.vercel-storage.com/produtos/cremes/IMG_2905.jpg',
+            'https://4qozbotg9nhsxukb.public.blob.vercel-storage.com/produtos/acais/IMG_9860.jpg'
+        ],
+        carouselCaptions: [
+            'Picolé de Chocolate Tradicional',
+            'Linha Açaí',
+            'Linha Cremes',
+            'Linha Polpas'
         ]
     },
     {
         id: 'cremes',
         name: 'Cremes',
-        description: 'Cremes de frutas com uma textura inigualável. Experimente nosso famoso creme de cupuaçu e outras delícias tropicais.',
-        mainImage: 'https://images.unsplash.com/photo-1628563398399-e6a3c28638a1?q=80&w=1974&auto=format&fit=crop',
+        description: 'Cremes variados com texturas e sabores da Amazônia. Várias opções para montar sua taça.',
+        mainImage: 'https://4qozbotg9nhsxukb.public.blob.vercel-storage.com/produtos/cremes/IMG_2905.jpg',
         carouselImages: [
-            'https://images.unsplash.com/photo-1628563398399-e6a3c28638a1?q=80&w=1974&auto=format&fit=crop',
-            'https://images.unsplash.com/photo-1628563398398-9572f3535c5f?q=80&w=1974&auto=format&fit=crop',
+            'https://4qozbotg9nhsxukb.public.blob.vercel-storage.com/produtos/cremes/IMG_2905.jpg',
+            'https://4qozbotg9nhsxukb.public.blob.vercel-storage.com/produtos/acais/IMG-20240909-WA0063.jpg',
+            'https://4qozbotg9nhsxukb.public.blob.vercel-storage.com/produtos/cremes/chocolate.png',
+            'https://4qozbotg9nhsxukb.public.blob.vercel-storage.com/produtos/acais/IMG_9860.jpg'
+        ],
+        carouselCaptions: [
+            'Creme de Cupuaçu',
+            'Açaí da Casa',
+            'Linha Picolés',
+            'Polpas para Preparo'
         ]
     }
 ];
@@ -58,6 +98,7 @@ const productsData: Product[] = [
 const Products = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+    const [carouselApi, setCarouselApi] = useState<CarouselApi | undefined>(undefined);
 
     const openModal = (product: Product) => {
         setSelectedProduct(product);
@@ -91,6 +132,16 @@ const Products = () => {
         };
     }, []);
 
+    useEffect(() => {
+        if (!carouselApi) return;
+        const intervalId = window.setInterval(() => {
+            try {
+                carouselApi.scrollNext();
+            } catch { }
+        }, 3500);
+        return () => window.clearInterval(intervalId);
+    }, [carouselApi]);
+
     return (
         <section ref={sectionRef} id="produtos" className="w-full py-20 bg-brand-yellow texture-dots-light">
             <div className="container mx-auto px-6 text-center">
@@ -102,29 +153,43 @@ const Products = () => {
                     <span id="picoles" />
                     <span id="cremes" />
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                    {productsData.map((product) => (
-                        <div
-                            key={product.id}
-                            className="group cursor-pointer"
-                            onClick={() => openModal(product)}
-                        >
-                            <div className="relative overflow-hidden rounded-lg shadow-lg bg-white">
-                                <div className="relative w-full h-80">
-                                    <Image
-                                        src={product.mainImage}
-                                        alt={product.name}
-                                        fill
-                                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                                        className="object-cover transform group-hover:scale-110 transition-transform duration-500"
-                                    />
-                                </div>
-                                <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                    <h3 className="text-white text-3xl font-bold font-playfair">{product.name}</h3>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
+                <div className="relative">
+                    <Carousel
+                        className="px-6 md:px-12 w-full sm:max-w-[660px] mx-auto"
+                        opts={{ align: "start", loop: true }}
+                        setApi={setCarouselApi}
+                    >
+                        <CarouselContent className="-ml-6">
+                            {productsData.map((product) => (
+                                <CarouselItem
+                                    key={product.id}
+                                    className="pl-6 basis-full"
+                                >
+                                    <div
+                                        className="group cursor-pointer"
+                                        onClick={() => openModal(product)}
+                                    >
+                                        <div className="relative overflow-hidden rounded-lg shadow-lg bg-white">
+                                            <div className="relative w-full h-80">
+                                                <Image
+                                                    src={product.mainImage}
+                                                    alt={product.name}
+                                                    fill
+                                                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                                                    className="object-cover transform group-hover:scale-110 transition-transform duration-500"
+                                                />
+                                            </div>
+                                            <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                                <h3 className="text-white text-3xl font-bold font-playfair">{product.name}</h3>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </CarouselItem>
+                            ))}
+                        </CarouselContent>
+                        <CarouselPrevious className="-left-3" />
+                        <CarouselNext className="-right-3" />
+                    </Carousel>
                 </div>
                 {/* Espaços reservados para imagens e instruções */}
                 <div className="mt-16">
