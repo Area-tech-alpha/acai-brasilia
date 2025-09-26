@@ -1,10 +1,27 @@
 "use client";
 
+import Image from 'next/image';
+
 const Hero = () => {
     return (
         <section
             className="relative w-full h-[60vh] md:h-[80vh] bg-brand-purple texture-noise-dark flex items-center justify-center text-white"
         >
+            {/* Background Image */}
+            <div className="absolute inset-0">
+                <Image
+                    src="https://4qozbotg9nhsxukb.public.blob.vercel-storage.com/hero/IMG-20241011-WA0074.jpg"
+                    alt="Açaí na tigela e produtos - Açaí Brasília"
+                    fill
+                    priority
+                    sizes="100vw"
+                    className="object-cover"
+                />
+                {/* Overlay for readability */}
+                <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/60" aria-hidden="true" />
+            </div>
+
+            {/* Content */}
             <div className="relative z-10 text-center px-4">
                 <h1 className="text-4xl md:text-6xl font-bold font-playfair leading-tight">
                     O Sabor Autêntico do Pará, em Brasília.
