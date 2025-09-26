@@ -197,8 +197,15 @@ const Products = () => {
                     <p className="text-brand-dark max-w-3xl mx-auto mb-8">Separe aqui imagens de produtos, banners e instruções de preparo/serviço. Clique em um produto para ver o carrossel completo.</p>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                         {Array.from({ length: 8 }).map((_, i) => (
-                            <div key={i} className="aspect-square rounded-lg border-2 border-dashed border-brand-purple/40 bg-brand-yellow/10 flex items-center justify-center text-brand-purple/70">
-                                Espaço para imagem {i + 1}
+                            <div key={i} className="relative aspect-square rounded-lg overflow-hidden border-2 border-brand-purple/40 bg-brand-yellow/10">
+                                <Image
+                                    src={"https://4qozbotg9nhsxukb.public.blob.vercel-storage.com/destaques/IMG_4196.jpg"}
+                                    alt={`Destaque ${i + 1}`}
+                                    fill
+                                    sizes="(max-width: 768px) 50vw, 25vw"
+                                    className="object-cover"
+                                    priority={i < 2}
+                                />
                             </div>
                         ))}
                     </div>
