@@ -16,9 +16,10 @@ const Footer = () => {
                     {/* Coluna 2: Contato */}
                     <div>
                         <h3 className="font-bold text-lg mb-4 font-playfair">Contato</h3>
-                        <p>SIA Trecho 10, Brasília-DF</p>
-                        <p>(61) 99999-8888</p>
-                        <p>contato@amazzoneasy.com.br</p>
+                        <p>SIA Trecho 10, Conjunto 03</p>
+                        <p>Brasília - DF</p>
+                        <p>WhatsApp: (61) 99602-7864</p>
+                        <p>comercial@amazzoneasy.com.br</p>
                     </div>
 
                     {/* Coluna 3: Redes Sociais */}

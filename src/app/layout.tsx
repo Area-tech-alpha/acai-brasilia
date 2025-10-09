@@ -24,8 +24,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR">
-      <body className={`${playfair.variable} ${lato.variable} font-lato bg-brand-light text-brand-dark`}>
+    <html lang="pt-BR" suppressHydrationWarning>
+      <body suppressHydrationWarning className={`${playfair.variable} ${lato.variable} font-lato bg-brand-light text-brand-dark`}>
         {children}
       </body>
     </html>

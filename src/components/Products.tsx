@@ -1,7 +1,8 @@
 "use client";
-import { useEffect, useRef, useState } from 'react';
-import Image from 'next/image';
-import ProductModal from './ProductModal';
+
+import type { ReactNode } from "react";
+import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import {
     Carousel,
     CarouselContent,
@@ -11,209 +12,596 @@ import {
     type CarouselApi,
 } from "@/components/ui/carousel";
 
-type Product = {
+type HighlightSlide = {
     id: string;
-    name: string;
+    title: string;
     description: string;
-    mainImage: string;
-    carouselImages: string[];
-    carouselCaptions?: string[];
+    image: string;
 };
 
-const productsData: Product[] = [
+type LineSlide = {
+    id: string;
+    heading: string;
+    description?: string;
+    items: string[];
+    image?: string;
+};
+
+type ProductLine = {
+    id: string;
+    anchor: string;
+    title: string;
+    subtitle: string;
+    note?: ReactNode;
+    theme: string;
+    slides: LineSlide[];
+};
+
+const highlightSlides: HighlightSlide[] = [
     {
-        id: 'acai',
-        name: 'Açaí',
-        description: 'Linha completa de açaís: do tradicional ao premium, com e sem açúcar, tamanhos variados. Escolha o seu preferido.',
-        mainImage: 'https://4qozbotg9nhsxukb.public.blob.vercel-storage.com/produtos/acais/IMG-20240909-WA0063.jpg',
-        carouselImages: [
-            'https://4qozbotg9nhsxukb.public.blob.vercel-storage.com/produtos/acais/IMG-20240909-WA0063.jpg',
-            'https://4qozbotg9nhsxukb.public.blob.vercel-storage.com/produtos/cremes/IMG_2905.jpg',
-            'https://4qozbotg9nhsxukb.public.blob.vercel-storage.com/produtos/cremes/chocolate.png',
-            'https://4qozbotg9nhsxukb.public.blob.vercel-storage.com/produtos/acais/IMG_9860.jpg'
-        ],
-        carouselCaptions: [
-            'Açaí Tradicional 500ml',
-            'Cremes da Casa',
-            'Linha de Picolés',
-            'Polpas Selecionadas'
-        ]
+        id: "highlight-acai",
+        title: "Açaí",
+        description: "Linha completa com texturas cremosas, variações tradicionais, premium e zero açúcar para qualquer cardápio.",
+        image: "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-1/Acai-pREMIUM.png",
     },
     {
-        id: 'polpas',
-        name: 'Polpas',
-        description: 'Polpas naturais de diversas frutas da Amazônia para sucos, sobremesas e receitas. Escolha os sabores.',
-        mainImage: 'https://4qozbotg9nhsxukb.public.blob.vercel-storage.com/produtos/acais/IMG_9860.jpg',
-        carouselImages: [
-            'https://4qozbotg9nhsxukb.public.blob.vercel-storage.com/produtos/acais/IMG_9860.jpg',
-            'https://4qozbotg9nhsxukb.public.blob.vercel-storage.com/produtos/acais/IMG-20240909-WA0063.jpg',
-            'https://4qozbotg9nhsxukb.public.blob.vercel-storage.com/produtos/cremes/IMG_2905.jpg',
-            'https://4qozbotg9nhsxukb.public.blob.vercel-storage.com/produtos/cremes/chocolate.png'
-        ],
-        carouselCaptions: [
-            'Polpa de Cupuaçu 1kg',
-            'Açaí para Preparo',
-            'Cremes para Receitas',
-            'Picolés de Frutas'
-        ]
+        id: "highlight-sorvetes",
+        title: "Sorvetes",
+        description: "Sabores cremosos e estáveis para vitrine, buffet e delivery, com visual irresistível.",
+        image: "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-1/Sorvetes.png",
     },
     {
-        id: 'picoles',
-        name: 'Picolés',
-        description: 'Vários picolés artesanais com sabores clássicos e regionais. Escolha o seu preferido.',
-        mainImage: 'https://4qozbotg9nhsxukb.public.blob.vercel-storage.com/produtos/cremes/chocolate.png',
-        carouselImages: [
-            'https://4qozbotg9nhsxukb.public.blob.vercel-storage.com/produtos/cremes/chocolate.png',
-            'https://4qozbotg9nhsxukb.public.blob.vercel-storage.com/produtos/acais/IMG-20240909-WA0063.jpg',
-            'https://4qozbotg9nhsxukb.public.blob.vercel-storage.com/produtos/cremes/IMG_2905.jpg',
-            'https://4qozbotg9nhsxukb.public.blob.vercel-storage.com/produtos/acais/IMG_9860.jpg'
-        ],
-        carouselCaptions: [
-            'Picolé de Chocolate Tradicional',
-            'Linha Açaí',
-            'Linha Cremes',
-            'Linha Polpas'
-        ]
+        id: "highlight-cremes",
+        title: "Cremes",
+        description: "Receitas exclusivas que combinam com toppings, taças especiais e sobremesas autorais.",
+        image: "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-1/Cremes.png",
     },
     {
-        id: 'cremes',
-        name: 'Cremes',
-        description: 'Cremes variados com texturas e sabores da Amazônia. Várias opções para montar sua taça.',
-        mainImage: 'https://4qozbotg9nhsxukb.public.blob.vercel-storage.com/produtos/cremes/IMG_2905.jpg',
-        carouselImages: [
-            'https://4qozbotg9nhsxukb.public.blob.vercel-storage.com/produtos/cremes/IMG_2905.jpg',
-            'https://4qozbotg9nhsxukb.public.blob.vercel-storage.com/produtos/acais/IMG-20240909-WA0063.jpg',
-            'https://4qozbotg9nhsxukb.public.blob.vercel-storage.com/produtos/cremes/chocolate.png',
-            'https://4qozbotg9nhsxukb.public.blob.vercel-storage.com/produtos/acais/IMG_9860.jpg'
+        id: "highlight-sorbets",
+        title: "Sorbets Zero Lactose",
+        description: "Fórmulas leves, vibrantes e sem lactose para encantar um público mais amplo.",
+        image: "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-1/sorbet.PNG",
+    },
+    {
+        id: "highlight-picoles",
+        title: "Picolés",
+        description: "Recheados, premium, especiais e frutas para vitrines coloridas e rentáveis.",
+        image: "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-1/picole.png",
+    },
+    {
+        id: "highlight-polpas",
+        title: "Polpas de frutas",
+        description: "Polpas de 100g, barras de 1kg e frutas congeladas prontas para preparo rápido.",
+        image: "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-1/polpa.png",
+    },
+];
+
+const productLines: ProductLine[] = [
+    {
+        id: "line-acai",
+        anchor: "acai",
+        title: "Linha Açaí",
+        subtitle: "Textura consistente, cor intensa e sabores pensados para taças, copos, barcas e baldes profissionais.",
+        note: "Capa: utilizar a foto da captação de 07/10 para representar a linha completa assim que estiver disponível no bucket.",
+        theme: "from-purple-900 via-purple-700 to-fuchsia-600",
+        slides: [
+            {
+                id: "line-acai-capa",
+                heading: "Capa da linha",
+                description: "Adicionar a foto da captação do dia 07/10 como destaque inicial do carrossel.",
+                items: ["Imagem de capa da linha Açaí"],
+            },
+            {
+                id: "line-acai-tradicional",
+                heading: "Linha Tradicional",
+                description: "Adoçado com açúcar, sem guaraná, ideal para receitas base e copos montados.",
+                items: ["Tradicional", "Tradicional com banana"],
+            },
+            {
+                id: "line-acai-premium",
+                heading: "Linha Premium",
+                description: "Com guaraná para ganhar energia extra e destaque no sabor.",
+                items: ["Premium", "Premium com banana", "Premium com morango"],
+            },
+            {
+                id: "line-acai-super",
+                heading: "Super Premium",
+                description: "Formulação mais cremosa e rica, perfeita para taças especiais.",
+                items: ["Super premium"],
+            },
+            {
+                id: "line-acai-zero",
+                heading: "Zero Açúcar",
+                description: "Opção adoçada naturalmente para públicos com restrições, mantendo sabor e textura.",
+                items: ["Zero açúcar com banana"],
+            },
         ],
-        carouselCaptions: [
-            'Creme de Cupuaçu',
-            'Açaí da Casa',
-            'Linha Picolés',
-            'Polpas para Preparo'
-        ]
-    }
+    },
+    {
+        id: "line-cremes",
+        anchor: "cremes",
+        title: "Linha Cremes",
+        subtitle: "Cremes autorais para acompanhar açaí, montar sobremesas e turbinar vitrines temáticas.",
+        theme: "from-amber-700 via-orange-500 to-yellow-400",
+        slides: [
+            {
+                id: "line-cremes-capa",
+                heading: "Capa da linha",
+                description: "Adicionar arte padrão ou foto da linha de cremes como slide de abertura.",
+                items: ["Imagem de capa da linha Cremes"],
+            },
+            {
+                id: "line-cremes-classicos",
+                heading: "Clássicos",
+                description: "Sabores queridinhos que combinam com complementos doces e frutas frescas.",
+                items: ["Cupuaçu", "Amazzoninho (creme de leite ninho)"],
+            },
+            {
+                id: "line-cremes-mesclados",
+                heading: "Mesclados",
+                description: "Combinações com contraste visual e sabor marcante.",
+                items: ["Amazzoninho Trufado", "Iogurte grego com amarena"],
+            },
+        ],
+    },
+    {
+        id: "line-sorvetes",
+        anchor: "sorvetes",
+        title: "Linha Sorvetes",
+        subtitle: "Mix versátil com sabores clássicos e diferenciados para potes, casquinhas e sobremesas.",
+        theme: "from-blue-900 via-sky-700 to-cyan-500",
+        slides: [
+            {
+                id: "line-sorvetes-capa",
+                heading: "Capa da linha",
+                description: "Adicionar a arte padrão da linha de sorvetes ou foto de vitrine.",
+                items: ["Imagem de capa da linha Sorvetes"],
+            },
+            {
+                id: "line-sorvetes-classicos",
+                heading: "Sabores Clássicos",
+                description: "Base ideal para milk-shakes, taças e casquinhas tradicionais.",
+                items: ["Chocolate", "Morango", "Flocos", "Creme"],
+            },
+            {
+                id: "line-sorvetes-especiais",
+                heading: "Sabores Especiais",
+                description: "Combinações criativas que chamam atenção na vitrine.",
+                items: ["Blue Ice", "Avelã", "Chiclete", "Unicórnio"],
+            },
+        ],
+    },
+    {
+        id: "line-sorbets",
+        anchor: "sorbets",
+        title: "Linha Sorbets Zero Lactose",
+        subtitle: "Sabores refrescantes e sem lactose para ampliar o mix e atender novos públicos.",
+        note: (
+            <>
+                Referências de arte e fotos:{" "}
+                <a
+                    href="https://drive.google.com/file/d/1D1Bm0yNBolMbDRk0jHbMR9sQKiEeiHX2/view?usp=drive_link"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="underline decoration-brand-purple underline-offset-4"
+                >
+                    foto base
+                </a>{" "}
+                e{" "}
+                <a
+                    href="https://drive.google.com/drive/folders/1p6wLZlB6xfRggva3v1pxao2OhLAiSeGB?usp=drive_link"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="underline decoration-brand-purple underline-offset-4"
+                >
+                    pasta complementar
+                </a>
+                .
+            </>
+        ),
+        theme: "from-emerald-900 via-green-700 to-lime-500",
+        slides: [
+            {
+                id: "line-sorbets-capa",
+                heading: "Capa da linha",
+                description: "Adicionar arte padrão destacando que toda a linha é zero lactose.",
+                items: ["Imagem de capa da linha Sorbets"],
+            },
+            {
+                id: "line-sorbets-sabores",
+                heading: "Sabores",
+                description: "Opções com fruta intensa e final refrescante.",
+                items: ["Cupuaçu", "Cajá", "Maracujá", "Manga", "Morango"],
+            },
+        ],
+    },
+    {
+        id: "line-picoles",
+        anchor: "picoles",
+        title: "Linha Picolés",
+        subtitle: "Categorias para todas as vitrines: recheados, premium, especiais, ao leite e frutas.",
+        note: (
+            <>
+                Referências de imagens:{" "}
+                <a
+                    href="https://drive.google.com/drive/folders/1eUaqs9TShbw9l3_5kCtxlt_nPg9zPpPI?usp=drive_link"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="underline decoration-brand-purple underline-offset-4"
+                >
+                    pasta Picolés
+                </a>
+                .
+            </>
+        ),
+        theme: "from-rose-900 via-rose-700 to-pink-500",
+        slides: [
+            {
+                id: "line-picoles-capa",
+                heading: "Capa da linha",
+                description: "Adicionar arte da linha completa ou montagem da vitrine.",
+                items: ["Imagem de capa da linha Picolés"],
+            },
+            {
+                id: "line-picoles-especiais",
+                heading: "Especiais",
+                description: "Sabores com recheios e coberturas diferenciadas.",
+                items: ["Bombom com avelã", "Capuccino", "Raffaello", "Torta de limão"],
+            },
+            {
+                id: "line-picoles-premium",
+                heading: "Premium",
+                description: "Bases nobres e recheios cremosos.",
+                items: ["Pistache", "Snickers"],
+            },
+            {
+                id: "line-picoles-recheados",
+                heading: "Recheados",
+                description: "Contrastes de fruta e leite condensado para surpreender.",
+                items: ["Maracujá com leite condensado", "Morango com leite condensado", "Ninho trufado"],
+            },
+            {
+                id: "line-picoles-ao-leite",
+                heading: "Ao leite",
+                description: "Sabores regionais que vendem o ano inteiro.",
+                items: ["Cupuaçu", "Milho"],
+            },
+            {
+                id: "line-picoles-frutas",
+                heading: "Frutas",
+                description: "Frutas amazônicas e clássicas com refrescância natural.",
+                items: ["Açaí com guaraná", "Maracujá", "Morango"],
+            },
+        ],
+    },
+    {
+        id: "line-polpas",
+        anchor: "polpas",
+        title: "Polpas de Frutas",
+        subtitle: "Portfólio para sucos, sobremesas e preparo de caldas com rendimento garantido.",
+        note: (
+            <>
+                Arquivos de referência:{" "}
+                <a
+                    href="https://drive.google.com/drive/folders/1NNUv-68UfPOWFwGF7McjRUj72VQEaW00?usp=drive_link"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="underline decoration-brand-purple underline-offset-4"
+                >
+                    polpas 100g
+                </a>{" "}
+                |{" "}
+                <a
+                    href="https://drive.google.com/drive/folders/1eUaqs9TShbw9l3_5kCtxlt_nPg9zPpPI?usp=drive_link"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="underline decoration-brand-purple underline-offset-4"
+                >
+                    barras 1kg
+                </a>{" "}
+                |{" "}
+                <a
+                    href="https://drive.google.com/file/d/1qbNo6N6br3kiiKK1lOSVn9eWhVAk_Q5L/view?usp=drive_link"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="underline decoration-brand-purple underline-offset-4"
+                >
+                    frutas congeladas
+                </a>{" "}
+                |{" "}
+                <a
+                    href="https://drive.google.com/file/d/1vGW6zaD2WqV4cloiqvcset1UgqWD8Eds/view?usp=drive_link"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="underline decoration-brand-purple underline-offset-4"
+                >
+                    cremes 1 litro
+                </a>
+                .
+            </>
+        ),
+        theme: "from-orange-900 via-amber-600 to-red-500",
+        slides: [
+            {
+                id: "line-polpas-100g",
+                heading: "Polpas 100g",
+                description: "Sachês individuais práticos para preparo imediato.",
+                items: ["Polpa 100g"],
+            },
+            {
+                id: "line-polpas-1kg",
+                heading: "Polpa Barra 1kg",
+                description: "Barras congeladas para produção em escala.",
+                items: ["Polpa Barra 1kg"],
+            },
+            {
+                id: "line-polpas-frutas",
+                heading: "Frutas Congeladas",
+                description: "Cortes selecionados para receitas premium.",
+                items: ["Morango"],
+            },
+            {
+                id: "line-polpas-cremes",
+                heading: "Cremes 1 Litro",
+                description: "Opções cremosas que aceleram o preparo de sobremesas.",
+                items: ["Morango", "Graviola", "Cajá"],
+            },
+        ],
+    },
+    {
+        id: "line-acai-cremes-1500",
+        anchor: "acai-cremes-1500",
+        title: "Açaí e Cremes - 1,5L",
+        subtitle: "Baldes prontos para freezer e vitrine com mix de açaí e cremes de alto giro.",
+        note: (
+            <>
+                Imagens na pasta:{" "}
+                <a
+                    href="https://drive.google.com/drive/folders/1NDUlDKsY0bK1QmXhRAmcjdWfXMFuf701?usp=drive_link"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="underline decoration-brand-purple underline-offset-4"
+                >
+                    Açaí &amp; Cremes 1,5L
+                </a>
+                .
+            </>
+        ),
+        theme: "from-purple-800 via-purple-600 to-pink-500",
+        slides: [
+            {
+                id: "line-acai-cremes-1500-guarana",
+                heading: "Açaí com guaraná",
+                description: "Energia extra para copos, barcas e açaí no balde.",
+                items: ["Premium", "Premium com banana", "Premium com morango"],
+            },
+            {
+                id: "line-acai-cremes-1500-zero",
+                heading: "Zero Açúcar",
+                description: "Opções sem açúcar para clientes com restrições.",
+                items: ["Zero açúcar (com guaraná)", "Zero açúcar (sem guaraná)"],
+            },
+            {
+                id: "line-acai-cremes-1500-cremes",
+                heading: "Cremes",
+                description: "Sabores prontos para sobremesas na colher.",
+                items: ["Cupuaçu", "Iogurte grego com amarena", "Ninho trufado"],
+            },
+        ],
+    },
+    {
+        id: "line-acai-cremes-250",
+        anchor: "acai-cremes-250",
+        title: "Açaí e Cremes - 250ml",
+        subtitle: "Porções individuais perfeitas para degustação, combos e delivery.",
+        theme: "from-purple-700 via-fuchsia-600 to-rose-500",
+        slides: [
+            {
+                id: "line-acai-cremes-250-acai",
+                heading: "Açaí 250ml",
+                description: "Opções com e sem guaraná para presentes e combos rápidos.",
+                items: ["Premium (com guaraná)", "Premium com morango", "Puro com banana zero açúcar"],
+            },
+            {
+                id: "line-acai-cremes-250-cremes",
+                heading: "Cremes 250ml",
+                description: "Cremes clássicos em versão prática.",
+                items: ["Cupuaçu"],
+            },
+        ],
+    },
 ];
 
 const Products = () => {
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-    const [carouselApi, setCarouselApi] = useState<CarouselApi | undefined>(undefined);
-
-    const openModal = (product: Product) => {
-        setSelectedProduct(product);
-        setIsModalOpen(true);
-    };
-
-    const closeModal = () => {
-        setIsModalOpen(false);
-        setSelectedProduct(null);
-    };
-
     const sectionRef = useRef<HTMLDivElement | null>(null);
+    const lineRefs = useRef<Record<string, HTMLDivElement | null>>({});
+    const [autoCarouselApi, setAutoCarouselApi] = useState<CarouselApi | null>(null);
 
     useEffect(() => {
-        const openListener = (e: Event) => {
-            const detail = (e as CustomEvent<{ productId: string }>).detail;
-            if (!detail) return;
-            const product = productsData.find(p => p.id === detail.productId);
-            if (product) {
-                openModal(product);
+        const handleScrollToProducts = () => {
+            if (sectionRef.current) {
+                sectionRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
             }
         };
-        const scrollListener = () => {
-            if (sectionRef.current) sectionRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        };
-        window.addEventListener('open-product-modal', openListener as EventListener);
-        window.addEventListener('scroll-to-products', scrollListener);
-        return () => {
-            window.removeEventListener('open-product-modal', openListener as EventListener);
-            window.removeEventListener('scroll-to-products', scrollListener);
-        };
+        window.addEventListener("scroll-to-products", handleScrollToProducts);
+        return () => window.removeEventListener("scroll-to-products", handleScrollToProducts);
     }, []);
 
     useEffect(() => {
-        if (!carouselApi) return;
+        const handleScrollToLine = (event: Event) => {
+            const detail = (event as CustomEvent<{ productId: string }>).detail;
+            if (!detail) return;
+            const target = lineRefs.current[detail.productId];
+            if (target) {
+                target.scrollIntoView({ behavior: "smooth", block: "start" });
+            }
+        };
+        window.addEventListener("scroll-to-product-line", handleScrollToLine as EventListener);
+        return () => window.removeEventListener("scroll-to-product-line", handleScrollToLine as EventListener);
+    }, []);
+
+    useEffect(() => {
+        if (!autoCarouselApi) return;
         const intervalId = window.setInterval(() => {
             try {
-                carouselApi.scrollNext();
-            } catch { }
-        }, 3500);
+                autoCarouselApi.scrollNext();
+            } catch {
+                /* noop */
+            }
+        }, 4200);
         return () => window.clearInterval(intervalId);
-    }, [carouselApi]);
+    }, [autoCarouselApi]);
 
     return (
         <section ref={sectionRef} id="produtos" className="w-full py-20 bg-brand-yellow texture-dots-light">
-            <div className="container mx-auto px-6 text-center">
-                <h2 className="text-4xl font-bold text-brand-purple font-playfair mb-12">Nossos Produtos</h2>
-                {/* Âncoras para navegação */}
-                <div className="sr-only">
-                    <span id="acai" />
-                    <span id="polpas" />
-                    <span id="picoles" />
-                    <span id="cremes" />
-                </div>
-                <div className="relative">
-                    <Carousel
-                        className="px-6 md:px-12 w-full sm:max-w-[660px] mx-auto"
-                        opts={{ align: "start", loop: true }}
-                        setApi={setCarouselApi}
-                    >
+            <div className="container mx-auto px-6">
+                <h2 className="text-4xl font-bold text-brand-purple font-playfair text-center">
+                    Nossos Produtos
+                </h2>
+                <p className="mt-4 text-center text-brand-dark max-w-3xl mx-auto">
+                    Organização pensada para que você apresente o mix Amazzon Easy com clareza. Cada carrossel
+                    destaca a linha, a arte de capa e os sabores correspondentes para acelerar a escolha do cliente.
+                </p>
+
+                <div className="relative mt-12">
+                    <Carousel className="px-2" opts={{ align: "start", loop: true }} setApi={setAutoCarouselApi}>
                         <CarouselContent className="-ml-6">
-                            {productsData.map((product) => (
+                            {highlightSlides.map((slide) => (
                                 <CarouselItem
-                                    key={product.id}
-                                    className="pl-6 basis-full"
+                                    key={slide.id}
+                                    className="pl-6 basis-full sm:basis-2/3 md:basis-1/2 lg:basis-1/3 xl:basis-1/4"
                                 >
-                                    <div
-                                        className="group cursor-pointer"
-                                        onClick={() => openModal(product)}
-                                    >
-                                        <div className="relative overflow-hidden rounded-lg shadow-lg bg-white">
-                                            <div className="relative w-full h-80">
-                                                <Image
-                                                    src={product.mainImage}
-                                                    alt={product.name}
-                                                    fill
-                                                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                                                    className="object-cover transform group-hover:scale-110 transition-transform duration-500"
-                                                />
-                                            </div>
-                                            <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                                <h3 className="text-white text-3xl font-bold font-playfair">{product.name}</h3>
-                                            </div>
+                                    <div className="group relative h-64 overflow-hidden rounded-3xl shadow-2xl">
+                                        <Image
+                                            src={slide.image}
+                                            alt={`Linha ${slide.title}`}
+                                            fill
+                                            sizes="(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 25vw"
+                                            className="object-cover transition-transform duration-500 group-hover:scale-105"
+                                        />
+                                        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/50 to-black/80" />
+                                        <div className="absolute inset-0 flex flex-col justify-end p-6 text-white">
+                                            <h3 className="text-3xl font-playfair font-semibold drop-shadow-lg">
+                                                {slide.title}
+                                            </h3>
                                         </div>
                                     </div>
                                 </CarouselItem>
                             ))}
                         </CarouselContent>
-                        <CarouselPrevious className="-left-3" />
-                        <CarouselNext className="-right-3" />
                     </Carousel>
                 </div>
-                {/* Espaços reservados para imagens e instruções */}
-                <div className="mt-16">
-                    <h3 className="text-2xl font-bold font-playfair text-brand-purple mb-6">Galeria & Instruções</h3>
-                    <p className="text-brand-dark max-w-3xl mx-auto mb-8">Separe aqui imagens de produtos, banners e instruções de preparo/serviço. Clique em um produto para ver o carrossel completo.</p>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                        {Array.from({ length: 8 }).map((_, i) => (
-                            <div key={i} className="relative aspect-square rounded-lg overflow-hidden border-2 border-brand-purple/40 bg-brand-yellow/10">
-                                <Image
-                                    src={"https://4qozbotg9nhsxukb.public.blob.vercel-storage.com/destaques/IMG_4196.jpg"}
-                                    alt={`Destaque ${i + 1}`}
-                                    fill
-                                    sizes="(max-width: 768px) 50vw, 25vw"
-                                    className="object-cover"
-                                    priority={i < 2}
-                                />
+
+                <div
+                    id="revendedor"
+                    className="mt-16 max-w-4xl mx-auto rounded-3xl border border-brand-purple/10 bg-white/90 px-8 py-10 text-center shadow-lg"
+                >
+                    <h3 className="text-3xl font-playfair text-brand-purple">
+                        Seja um Revendedor Amazzon Easy
+                    </h3>
+                    <p className="mt-4 text-brand-dark">
+                        Se você tem uma loja de açaí, delivery, lanchonete ou outro ponto de venda, agende uma
+                        degustação gratuita e descubra o diferencial do nosso açaí e cremes. Cadastre seu negócio de forma
+                        simples, receba lançamentos e suporte direto da nossa equipe.
+                    </p>
+                    <p className="mt-4 text-brand-dark">
+                        Experimente e leve a verdadeira experiência Amazzon Easy aos seus clientes!
+                    </p>
+                    <button
+                        onClick={() =>
+                            window.dispatchEvent(
+                                new CustomEvent("open-contact-form", { detail: { subject: "revenda" } })
+                            )
+                        }
+                        className="mt-8 inline-block rounded-full bg-brand-purple px-8 py-3 text-base font-semibold text-white shadow-lg transition-transform hover:scale-105 hover:bg-brand-purple/90"
+                    >
+                        Quero ser revendedor
+                    </button>
+                </div>
+
+                <div className="mt-20 space-y-20">
+                    {productLines.map((line) => (
+                        <div
+                            key={line.id}
+                            id={line.anchor}
+                            ref={(el) => {
+                                lineRefs.current[line.anchor] = el;
+                            }}
+                            className="scroll-mt-28"
+                        >
+                            <div className="flex flex-col gap-3 text-brand-dark">
+                                <span className="text-xs font-semibold uppercase tracking-[0.3em] text-brand-dark/60">
+                                    Carrossel {line.title}
+                                </span>
+                                <h4 className="text-3xl font-playfair text-brand-purple">{line.title}</h4>
+                                <p className="text-base md:text-lg text-brand-dark/90">{line.subtitle}</p>
+                                {line.note && (
+                                    <div className="mt-2 rounded-2xl border border-brand-purple/20 bg-brand-yellow/20 px-4 py-3 text-sm md:text-base text-brand-dark/80">
+                                        {line.note}
+                                    </div>
+                                )}
                             </div>
-                        ))}
-                    </div>
+                            <div className="mt-10">
+                                <Carousel className="px-2" opts={{ align: "start", loop: true }}>
+                                    <CarouselContent className="-ml-6">
+                                        {line.slides.map((slide) => (
+                                            <CarouselItem
+                                                key={slide.id}
+                                                className="pl-6 basis-full sm:basis-3/4 md:basis-2/3 lg:basis-1/2 xl:basis-1/3"
+                                            >
+                                                <article className="flex h-full flex-col justify-between gap-6 rounded-3xl border border-brand-purple/15 bg-white/95 p-6 shadow-lg">
+                                                    <div className="space-y-2">
+                                                        <span className="text-xs font-semibold uppercase tracking-[0.2em] text-brand-purple/70">
+                                                            {line.title}
+                                                        </span>
+                                                        <h5 className="text-2xl font-playfair text-brand-purple">
+                                                            {slide.heading}
+                                                        </h5>
+                                                        {slide.description && (
+                                                            <p className="text-sm md:text-base text-brand-dark/80">
+                                                                {slide.description}
+                                                            </p>
+                                                        )}
+                                                    </div>
+                                                    {slide.image ? (
+                                                        <div className="relative h-48 overflow-hidden rounded-2xl">
+                                                            <Image
+                                                                src={slide.image}
+                                                                alt={`${line.title} - ${slide.heading}`}
+                                                                fill
+                                                                sizes="(max-width: 1024px) 80vw, 33vw"
+                                                                className="object-cover"
+                                                            />
+                                                        </div>
+                                                    ) : (
+                                                        <div
+                                                            className={`flex h-48 items-center justify-center rounded-2xl border border-dashed border-brand-purple/30 bg-gradient-to-br ${line.theme} px-6 text-center text-sm font-semibold text-white/80`}
+                                                        >
+                                                            Adicione a arte ou foto desta categoria para completar o carrossel.
+                                                        </div>
+                                                    )}
+                                                    <div className="flex flex-wrap gap-2">
+                                                        {slide.items.map((item) => (
+                                                            <span
+                                                                key={item}
+                                                                className="rounded-full bg-brand-yellow px-4 py-1 text-sm font-semibold text-brand-dark shadow"
+                                                            >
+                                                                {item}
+                                                            </span>
+                                                        ))}
+                                                    </div>
+                                                </article>
+                                            </CarouselItem>
+                                        ))}
+                                    </CarouselContent>
+                                    <CarouselPrevious className="-left-3 md:-left-4" />
+                                    <CarouselNext className="-right-3 md:-right-4" />
+                                </Carousel>
+                            </div>
+                        </div>
+                    ))}
                 </div>
             </div>
-            {isModalOpen && selectedProduct && (
-                <ProductModal product={selectedProduct} onClose={closeModal} />
-            )}
         </section>
     );
 };

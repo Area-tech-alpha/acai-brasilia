@@ -14,7 +14,7 @@ const Header = () => {
 
     const onNavClick = (item: typeof navLinks[number]) => {
         if (item.type === 'product' && item.id) {
-            const event = new CustomEvent('open-product-modal', { detail: { productId: item.id } });
+            const event = new CustomEvent('scroll-to-product-line', { detail: { productId: item.id } });
             window.dispatchEvent(event);
         } else if (item.type === 'contact') {
             const event = new CustomEvent('open-contact-form', { detail: { subject: 'geral' } });
