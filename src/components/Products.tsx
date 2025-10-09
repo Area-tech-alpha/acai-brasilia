@@ -1,6 +1,5 @@
 "use client";
 
-import type { ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import {
@@ -32,8 +31,8 @@ type ProductLine = {
     anchor: string;
     title: string;
     subtitle: string;
-    note?: ReactNode;
     theme: string;
+    backgroundImage?: string;
     slides: LineSlide[];
 };
 
@@ -82,26 +81,23 @@ const productLines: ProductLine[] = [
         anchor: "acai",
         title: "Linha Açaí",
         subtitle: "Textura consistente, cor intensa e sabores pensados para taças, copos, barcas e baldes profissionais.",
-        note: "Capa: utilizar a foto da captação de 07/10 para representar a linha completa assim que estiver disponível no bucket.",
         theme: "from-purple-900 via-purple-700 to-fuchsia-600",
+        backgroundImage:
+            "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-acai/capa-acai.ARW",
         slides: [
-            {
-                id: "line-acai-capa",
-                heading: "Capa da linha",
-                description: "Adicionar a foto da captação do dia 07/10 como destaque inicial do carrossel.",
-                items: ["Imagem de capa da linha Açaí"],
-            },
             {
                 id: "line-acai-tradicional",
                 heading: "Linha Tradicional",
                 description: "Adoçado com açúcar, sem guaraná, ideal para receitas base e copos montados.",
                 items: ["Tradicional", "Tradicional com banana"],
+                image: "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-acai/acai-tradicional.ARW",
             },
             {
                 id: "line-acai-premium",
                 heading: "Linha Premium",
                 description: "Com guaraná para ganhar energia extra e destaque no sabor.",
                 items: ["Premium", "Premium com banana", "Premium com morango"],
+                image: "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-acai/acai-premium.ARW",
             },
             {
                 id: "line-acai-super",
@@ -114,6 +110,7 @@ const productLines: ProductLine[] = [
                 heading: "Zero Açúcar",
                 description: "Opção adoçada naturalmente para públicos com restrições, mantendo sabor e textura.",
                 items: ["Zero açúcar com banana"],
+                image: "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-acai/acai-zero-acucar.ARW",
             },
         ],
     },
@@ -124,12 +121,6 @@ const productLines: ProductLine[] = [
         subtitle: "Cremes autorais para acompanhar açaí, montar sobremesas e turbinar vitrines temáticas.",
         theme: "from-amber-700 via-orange-500 to-yellow-400",
         slides: [
-            {
-                id: "line-cremes-capa",
-                heading: "Capa da linha",
-                description: "Adicionar arte padrão ou foto da linha de cremes como slide de abertura.",
-                items: ["Imagem de capa da linha Cremes"],
-            },
             {
                 id: "line-cremes-classicos",
                 heading: "Clássicos",
@@ -152,12 +143,6 @@ const productLines: ProductLine[] = [
         theme: "from-blue-900 via-sky-700 to-cyan-500",
         slides: [
             {
-                id: "line-sorvetes-capa",
-                heading: "Capa da linha",
-                description: "Adicionar a arte padrão da linha de sorvetes ou foto de vitrine.",
-                items: ["Imagem de capa da linha Sorvetes"],
-            },
-            {
                 id: "line-sorvetes-classicos",
                 heading: "Sabores Clássicos",
                 description: "Base ideal para milk-shakes, taças e casquinhas tradicionais.",
@@ -176,37 +161,8 @@ const productLines: ProductLine[] = [
         anchor: "sorbets",
         title: "Linha Sorbets Zero Lactose",
         subtitle: "Sabores refrescantes e sem lactose para ampliar o mix e atender novos públicos.",
-        note: (
-            <>
-                Referências de arte e fotos:{" "}
-                <a
-                    href="https://drive.google.com/file/d/1D1Bm0yNBolMbDRk0jHbMR9sQKiEeiHX2/view?usp=drive_link"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="underline decoration-brand-purple underline-offset-4"
-                >
-                    foto base
-                </a>{" "}
-                e{" "}
-                <a
-                    href="https://drive.google.com/drive/folders/1p6wLZlB6xfRggva3v1pxao2OhLAiSeGB?usp=drive_link"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="underline decoration-brand-purple underline-offset-4"
-                >
-                    pasta complementar
-                </a>
-                .
-            </>
-        ),
         theme: "from-emerald-900 via-green-700 to-lime-500",
         slides: [
-            {
-                id: "line-sorbets-capa",
-                heading: "Capa da linha",
-                description: "Adicionar arte padrão destacando que toda a linha é zero lactose.",
-                items: ["Imagem de capa da linha Sorbets"],
-            },
             {
                 id: "line-sorbets-sabores",
                 heading: "Sabores",
@@ -220,28 +176,8 @@ const productLines: ProductLine[] = [
         anchor: "picoles",
         title: "Linha Picolés",
         subtitle: "Categorias para todas as vitrines: recheados, premium, especiais, ao leite e frutas.",
-        note: (
-            <>
-                Referências de imagens:{" "}
-                <a
-                    href="https://drive.google.com/drive/folders/1eUaqs9TShbw9l3_5kCtxlt_nPg9zPpPI?usp=drive_link"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="underline decoration-brand-purple underline-offset-4"
-                >
-                    pasta Picolés
-                </a>
-                .
-            </>
-        ),
         theme: "from-rose-900 via-rose-700 to-pink-500",
         slides: [
-            {
-                id: "line-picoles-capa",
-                heading: "Capa da linha",
-                description: "Adicionar arte da linha completa ou montagem da vitrine.",
-                items: ["Imagem de capa da linha Picolés"],
-            },
             {
                 id: "line-picoles-especiais",
                 heading: "Especiais",
@@ -279,47 +215,6 @@ const productLines: ProductLine[] = [
         anchor: "polpas",
         title: "Polpas de Frutas",
         subtitle: "Portfólio para sucos, sobremesas e preparo de caldas com rendimento garantido.",
-        note: (
-            <>
-                Arquivos de referência:{" "}
-                <a
-                    href="https://drive.google.com/drive/folders/1NNUv-68UfPOWFwGF7McjRUj72VQEaW00?usp=drive_link"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="underline decoration-brand-purple underline-offset-4"
-                >
-                    polpas 100g
-                </a>{" "}
-                |{" "}
-                <a
-                    href="https://drive.google.com/drive/folders/1eUaqs9TShbw9l3_5kCtxlt_nPg9zPpPI?usp=drive_link"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="underline decoration-brand-purple underline-offset-4"
-                >
-                    barras 1kg
-                </a>{" "}
-                |{" "}
-                <a
-                    href="https://drive.google.com/file/d/1qbNo6N6br3kiiKK1lOSVn9eWhVAk_Q5L/view?usp=drive_link"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="underline decoration-brand-purple underline-offset-4"
-                >
-                    frutas congeladas
-                </a>{" "}
-                |{" "}
-                <a
-                    href="https://drive.google.com/file/d/1vGW6zaD2WqV4cloiqvcset1UgqWD8Eds/view?usp=drive_link"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="underline decoration-brand-purple underline-offset-4"
-                >
-                    cremes 1 litro
-                </a>
-                .
-            </>
-        ),
         theme: "from-orange-900 via-amber-600 to-red-500",
         slides: [
             {
@@ -353,20 +248,6 @@ const productLines: ProductLine[] = [
         anchor: "acai-cremes-1500",
         title: "Açaí e Cremes - 1,5L",
         subtitle: "Baldes prontos para freezer e vitrine com mix de açaí e cremes de alto giro.",
-        note: (
-            <>
-                Imagens na pasta:{" "}
-                <a
-                    href="https://drive.google.com/drive/folders/1NDUlDKsY0bK1QmXhRAmcjdWfXMFuf701?usp=drive_link"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="underline decoration-brand-purple underline-offset-4"
-                >
-                    Açaí &amp; Cremes 1,5L
-                </a>
-                .
-            </>
-        ),
         theme: "from-purple-800 via-purple-600 to-pink-500",
         slides: [
             {
@@ -529,74 +410,89 @@ const Products = () => {
                             }}
                             className="scroll-mt-28"
                         >
-                            <div className="flex flex-col gap-3 text-brand-dark">
-                                <span className="text-xs font-semibold uppercase tracking-[0.3em] text-brand-dark/60">
-                                    Carrossel {line.title}
-                                </span>
-                                <h4 className="text-3xl font-playfair text-brand-purple">{line.title}</h4>
-                                <p className="text-base md:text-lg text-brand-dark/90">{line.subtitle}</p>
-                                {line.note && (
-                                    <div className="mt-2 rounded-2xl border border-brand-purple/20 bg-brand-yellow/20 px-4 py-3 text-sm md:text-base text-brand-dark/80">
-                                        {line.note}
-                                    </div>
+                            <div className="relative overflow-hidden rounded-4xl border border-brand-purple/15 bg-white/95 shadow-2xl">
+                                {line.backgroundImage && (
+                                    <Image
+                                        src={line.backgroundImage}
+                                        alt=""
+                                        fill
+                                        sizes="100vw"
+                                        className="absolute inset-0 -z-10 object-cover opacity-30"
+                                        priority={line.id === "line-acai"}
+                                    />
                                 )}
-                            </div>
-                            <div className="mt-10">
-                                <Carousel className="px-2" opts={{ align: "start", loop: true }}>
-                                    <CarouselContent className="-ml-6">
-                                        {line.slides.map((slide) => (
-                                            <CarouselItem
-                                                key={slide.id}
-                                                className="pl-6 basis-full sm:basis-3/4 md:basis-2/3 lg:basis-1/2 xl:basis-1/3"
-                                            >
-                                                <article className="flex h-full flex-col justify-between gap-6 rounded-3xl border border-brand-purple/15 bg-white/95 p-6 shadow-lg">
-                                                    <div className="space-y-2">
-                                                        <span className="text-xs font-semibold uppercase tracking-[0.2em] text-brand-purple/70">
-                                                            {line.title}
-                                                        </span>
-                                                        <h5 className="text-2xl font-playfair text-brand-purple">
-                                                            {slide.heading}
-                                                        </h5>
-                                                        {slide.description && (
-                                                            <p className="text-sm md:text-base text-brand-dark/80">
-                                                                {slide.description}
-                                                            </p>
-                                                        )}
-                                                    </div>
-                                                    {slide.image ? (
-                                                        <div className="relative h-48 overflow-hidden rounded-2xl">
-                                                            <Image
-                                                                src={slide.image}
-                                                                alt={`${line.title} - ${slide.heading}`}
-                                                                fill
-                                                                sizes="(max-width: 1024px) 80vw, 33vw"
-                                                                className="object-cover"
-                                                            />
-                                                        </div>
-                                                    ) : (
-                                                        <div
-                                                            className={`flex h-48 items-center justify-center rounded-2xl border border-dashed border-brand-purple/30 bg-gradient-to-br ${line.theme} px-6 text-center text-sm font-semibold text-white/80`}
-                                                        >
-                                                            Adicione a arte ou foto desta categoria para completar o carrossel.
-                                                        </div>
-                                                    )}
-                                                    <div className="flex flex-wrap gap-2">
-                                                        {slide.items.map((item) => (
-                                                            <span
-                                                                key={item}
-                                                                className="rounded-full bg-brand-yellow px-4 py-1 text-sm font-semibold text-brand-dark shadow"
-                                                            >
-                                                                {item}
+                                <div
+                                    className={`absolute inset-0 z-0 bg-gradient-to-br ${line.theme} opacity-20 mix-blend-multiply`}
+                                    aria-hidden
+                                />
+                                <div
+                                    className="absolute -top-20 -right-20 z-0 h-60 w-60 rounded-full bg-white/40 blur-3xl"
+                                    aria-hidden
+                                />
+                                <div className="relative z-10 flex flex-col gap-10 p-8 sm:p-12">
+                                    <div className="flex flex-col gap-3 text-brand-dark">
+                                        <span className="text-xs font-semibold uppercase tracking-[0.3em] text-brand-purple/70">
+                                            Linha em destaque
+                                        </span>
+                                        <h4 className="text-3xl font-playfair text-brand-purple sm:text-4xl">{line.title}</h4>
+                                        <p className="text-base md:text-lg text-brand-dark/90">{line.subtitle}</p>
+                                    </div>
+                                    <Carousel className="px-2" opts={{ align: "start", loop: true }}>
+                                        <CarouselContent className="-ml-6">
+                                            {line.slides.map((slide) => (
+                                                <CarouselItem
+                                                    key={slide.id}
+                                                    className="pl-6 basis-full sm:basis-3/4 md:basis-2/3 lg:basis-1/2 xl:basis-1/3"
+                                                >
+                                                    <article className="flex h-full flex-col justify-between gap-6 rounded-3xl border border-brand-purple/15 bg-white/95 p-6 shadow-lg">
+                                                        <div className="space-y-2">
+                                                            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-brand-purple/70">
+                                                                {line.title}
                                                             </span>
-                                                        ))}
-                                                    </div>
-                                                </article>
-                                            </CarouselItem>
-                                        ))}
-                                    </CarouselContent>
-                                    <CarouselPrevious className="-left-3 md:-left-4" />
-                                    <CarouselNext className="-right-3 md:-right-4" />
-                                </Carousel>
+                                                            <h5 className="text-2xl font-playfair text-brand-purple">
+                                                                {slide.heading}
+                                                            </h5>
+                                                            {slide.description && (
+                                                                <p className="text-sm md:text-base text-brand-dark/80">
+                                                                    {slide.description}
+                                                                </p>
+                                                            )}
+                                                        </div>
+                                                        {slide.image ? (
+                                                            <div className="relative h-48 overflow-hidden rounded-2xl">
+                                                                <Image
+                                                                    src={slide.image}
+                                                                    alt={`${line.title} - ${slide.heading}`}
+                                                                    fill
+                                                                    sizes="(max-width: 1024px) 80vw, 33vw"
+                                                                    className="object-cover"
+                                                                />
+                                                            </div>
+                                                        ) : (
+                                                            <div
+                                                                className={`flex h-48 items-center justify-center rounded-2xl border border-dashed border-brand-purple/30 bg-gradient-to-br ${line.theme} px-6 text-center text-sm font-semibold text-white/80`}
+                                                            >
+                                                                Arte desta categoria em breve.
+                                                            </div>
+                                                        )}
+                                                        <div className="flex flex-wrap gap-2">
+                                                            {slide.items.map((item) => (
+                                                                <span
+                                                                    key={item}
+                                                                    className="rounded-full bg-brand-yellow px-4 py-1 text-sm font-semibold text-brand-dark shadow"
+                                                                >
+                                                                    {item}
+                                                                </span>
+                                                            ))}
+                                                        </div>
+                                                    </article>
+                                                </CarouselItem>
+                                            ))}
+                                        </CarouselContent>
+                                        <CarouselPrevious className="-left-3 md:-left-4" />
+                                        <CarouselNext className="-right-3 md:-right-4" />
+                                    </Carousel>
+                                </div>
                             </div>
                         </div>
                     ))}
