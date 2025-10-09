@@ -1,9 +1,18 @@
 "use client";
-import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList } from "@/components/ui/navigation-menu";
+import Image from "next/image";
+import {
+    NavigationMenu,
+    NavigationMenuItem,
+    NavigationMenuLink,
+    NavigationMenuList,
+} from "@/components/ui/navigation-menu";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetClose } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 
 const Header = () => {
+    const logoSrc =
+        "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-acai/logo-amarela.png";
+
     const navLinks = [
         { label: "Açaí", type: "product", id: "acai" },
         { label: "Polpas", type: "product", id: "polpas" },
@@ -25,8 +34,15 @@ const Header = () => {
     return (
         <header className="w-full shadow-md sticky top-0 z-50 bg-brand-purple">
             <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-                <div className="text-2xl font-bold text-brand-light font-playfair">
-                    Amazzon Easy
+                <div className="flex items-center gap-3">
+                    <Image
+                        src={logoSrc}
+                        alt="Amazzon Easy"
+                        width={120}
+                        height={60}
+                        priority
+                        className="h-10 w-auto object-contain"
+                    />
                 </div>
                 <div className="hidden md:flex items-center space-x-6">
                     <NavigationMenu>
