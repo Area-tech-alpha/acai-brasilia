@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 
 const Header = () => {
     const logoSrc =
-        "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-acai/logo-amarela.png";
+        "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/logo-amarela.png";
 
     const navLinks = [
         { label: "Açaí", type: "product", id: "acai" },

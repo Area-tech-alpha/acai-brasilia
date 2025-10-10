@@ -36,6 +36,16 @@ type ProductLine = {
     slides: LineSlide[];
 };
 
+const isSupportedImageUrl = (url?: string) => {
+    if (!url) return false;
+    try {
+        const path = url.split('?')[0];
+        return /\.(png|jpe?g|webp|gif|avif|svg|bmp)$/i.test(path);
+    } catch {
+        return false;
+    }
+};
+
 const highlightSlides: HighlightSlide[] = [
     {
         id: "highlight-acai",
@@ -321,16 +331,17 @@ const Products = () => {
         return () => window.removeEventListener("scroll-to-product-line", handleScrollToLine as EventListener);
     }, []);
 
+    // Auto-play apenas para o primeiro carrossel (destaques)
     useEffect(() => {
         if (!autoCarouselApi) return;
-        const intervalId = window.setInterval(() => {
+        const id = window.setInterval(() => {
             try {
                 autoCarouselApi.scrollNext();
             } catch {
                 /* noop */
             }
         }, 4200);
-        return () => window.clearInterval(intervalId);
+        return () => window.clearInterval(id);
     }, [autoCarouselApi]);
 
     return (
@@ -350,18 +361,20 @@ const Products = () => {
                             {highlightSlides.map((slide) => (
                                 <CarouselItem
                                     key={slide.id}
-                                    className="pl-6 basis-full sm:basis-2/3 md:basis-1/2 lg:basis-1/3 xl:basis-1/4"
+                                    className="pl-6 basis-full"
                                 >
-                                    <div className="group relative h-64 overflow-hidden rounded-3xl shadow-2xl">
-                                        <Image
-                                            src={slide.image}
-                                            alt={`Linha ${slide.title}`}
-                                            fill
-                                            sizes="(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 25vw"
-                                            className="object-cover transition-transform duration-500 group-hover:scale-105"
-                                        />
-                                        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/50 to-black/80" />
-                                        <div className="absolute inset-0 flex flex-col justify-end p-6 text-white">
+                                    <div className="group relative h-[420px] md:h-[60vh] max-h-[720px] overflow-hidden rounded-3xl shadow-2xl bg-gradient-to-br from-brand-purple/20 via-brand-purple/10 to-brand-purple/5">
+                                        <div className="absolute inset-0 pointer-events-none" aria-hidden />
+                                        <div className="relative h-full w-full flex items-center justify-center p-6">
+                                            <Image
+                                                src={slide.image}
+                                                alt={`Linha ${slide.title}`}
+                                                fill
+                                                sizes="100vw"
+                                                className="object-contain drop-shadow-xl"
+                                            />
+                                        </div>
+                                        <div className="absolute left-0 right-0 bottom-0 p-6 text-white">
                                             <h3 className="text-3xl font-playfair font-semibold drop-shadow-lg">
                                                 {slide.title}
                                             </h3>
@@ -410,26 +423,21 @@ const Products = () => {
                             }}
                             className="scroll-mt-28"
                         >
-                            <div className="relative overflow-hidden rounded-4xl border border-brand-purple/15 bg-white/95 shadow-2xl">
-                                {line.backgroundImage && (
-                                    <Image
-                                        src={line.backgroundImage}
-                                        alt=""
-                                        fill
-                                        sizes="100vw"
-                                        className="absolute inset-0 -z-10 object-cover opacity-30"
-                                        priority={line.id === "line-acai"}
-                                    />
+                            <div className="overflow-hidden rounded-4xl border border-brand-purple/15 bg-white/95 shadow-2xl">
+                                {isSupportedImageUrl(line.backgroundImage) && (
+                                    <div className="relative w-full aspect-[16/9] overflow-hidden">
+                                        <Image
+                                            src={line.backgroundImage as string}
+                                            alt="Imagem de capa da seção"
+                                            fill
+                                            sizes="100vw"
+                                            className="object-cover"
+                                            priority={line.id === "line-acai"}
+                                        />
+                                        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/10 to-black/30" aria-hidden />
+                                    </div>
                                 )}
-                                <div
-                                    className={`absolute inset-0 z-0 bg-gradient-to-br ${line.theme} opacity-20 mix-blend-multiply`}
-                                    aria-hidden
-                                />
-                                <div
-                                    className="absolute -top-20 -right-20 z-0 h-60 w-60 rounded-full bg-white/40 blur-3xl"
-                                    aria-hidden
-                                />
-                                <div className="relative z-10 flex flex-col gap-10 p-8 sm:p-12">
+                                <div className="flex flex-col gap-10 p-8 sm:p-12">
                                     <div className="flex flex-col gap-3 text-brand-dark">
                                         <span className="text-xs font-semibold uppercase tracking-[0.3em] text-brand-purple/70">
                                             Linha em destaque
@@ -442,7 +450,7 @@ const Products = () => {
                                             {line.slides.map((slide) => (
                                                 <CarouselItem
                                                     key={slide.id}
-                                                    className="pl-6 basis-full sm:basis-3/4 md:basis-2/3 lg:basis-1/2 xl:basis-1/3"
+                                                    className="pl-6 basis-full"
                                                 >
                                                     <article className="flex h-full flex-col justify-between gap-6 rounded-3xl border border-brand-purple/15 bg-white/95 p-6 shadow-lg">
                                                         <div className="space-y-2">
@@ -458,13 +466,13 @@ const Products = () => {
                                                                 </p>
                                                             )}
                                                         </div>
-                                                        {slide.image ? (
-                                                            <div className="relative h-48 overflow-hidden rounded-2xl">
+                                                        {isSupportedImageUrl(slide.image) ? (
+                                                            <div className="relative h-64 overflow-hidden rounded-2xl">
                                                                 <Image
-                                                                    src={slide.image}
+                                                                    src={slide.image as string}
                                                                     alt={`${line.title} - ${slide.heading}`}
                                                                     fill
-                                                                    sizes="(max-width: 1024px) 80vw, 33vw"
+                                                                    sizes="100vw"
                                                                     className="object-cover"
                                                                 />
                                                             </div>

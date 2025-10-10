@@ -16,6 +16,16 @@ interface ProductModalProps {
     onClose: () => void;
 }
 
+const isSupportedImageUrl = (url?: string) => {
+    if (!url) return false;
+    try {
+        const path = url.split('?')[0];
+        return /\.(png|jpe?g|webp|gif|avif|svg|bmp)$/i.test(path);
+    } catch {
+        return false;
+    }
+};
+
 const ProductModal = ({ product, onClose }: ProductModalProps) => {
     const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -60,14 +70,20 @@ const ProductModal = ({ product, onClose }: ProductModalProps) => {
                     {/* Carousel */}
                     <div className="relative w-full h-[360px] md:h-[60vh] lg:h-[65vh] group">
                         <div className="relative w-full h-full">
-                            <Image
-                                src={product.carouselImages[currentIndex]}
-                                alt={`${product.name} imagem ${currentIndex + 1}`}
-                                fill
-                                sizes="(max-width: 768px) 100vw, 50vw"
-                                className="object-cover"
-                                priority
-                            />
+                            {isSupportedImageUrl(product.carouselImages[currentIndex]) ? (
+                                <Image
+                                    src={product.carouselImages[currentIndex]}
+                                    alt={`${product.name} imagem ${currentIndex + 1}`}
+                                    fill
+                                    sizes="(max-width: 768px) 100vw, 50vw"
+                                    className="object-cover"
+                                    priority
+                                />
+                            ) : (
+                                <div className="absolute inset-0 flex items-center justify-center bg-black/10 text-brand-dark">
+                                    Imagem indisponível
+                                </div>
+                            )}
                             {product.carouselCaptions && product.carouselCaptions[currentIndex] && (
                                 <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-sm md:text-base px-4 py-2 z-20">
                                     {product.carouselCaptions[currentIndex]}
@@ -103,7 +119,13 @@ const ProductModal = ({ product, onClose }: ProductModalProps) => {
                             {product.carouselImages.map((src: string, idx: number) => (
                                 <button key={idx} onClick={() => setCurrentIndex(idx)} className={`relative aspect-square rounded overflow-hidden ring-2 ${idx === currentIndex ? 'ring-brand-purple' : 'ring-transparent'}`}>
                                     <div className="relative w-full h-full">
-                                        <Image src={src} alt={`Thumb ${idx + 1}`} fill sizes="100px" className="object-cover" />
+                                        {isSupportedImageUrl(src) ? (
+                                            <Image src={src} alt={`Thumb ${idx + 1}`} fill sizes="100px" className="object-cover" />
+                                        ) : (
+                                            <div className="absolute inset-0 flex items-center justify-center text-xs text-brand-dark/70 bg-black/5">
+                                                N/A
+                                            </div>
+                                        )}
                                     </div>
                                 </button>
                             ))}
