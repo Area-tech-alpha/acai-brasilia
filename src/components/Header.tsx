@@ -71,7 +71,7 @@ const Header = () => {
                                 </svg>
                             </Button>
                         </SheetTrigger>
-                        <SheetContent side="right" className="bg-brand-purple text-brand-light">
+                        <SheetContent side="right" className="bg-brand-purple texture-dots-dark text-brand-light">
                             <SheetHeader>
                                 <SheetTitle className="font-playfair text-brand-light">Menu</SheetTitle>
                             </SheetHeader>
@@ -84,7 +84,7 @@ const Header = () => {
                                     </SheetClose>
                                 ))}
                                 <SheetClose asChild>
-                                    <Button className="bg-brand-yellow text-brand-dark hover:bg-brand-yellow/90" onClick={() => window.dispatchEvent(new CustomEvent('open-contact-form', { detail: { subject: 'revenda' } }))}>
+                                    <Button className="bg-brand-yellow text-brand-dark hover:bg-brand-yellow/90 mx-3" onClick={() => window.dispatchEvent(new CustomEvent('open-contact-form', { detail: { subject: 'revenda' } }))}>
                                         Seja um Revendedor
                                     </Button>
                                 </SheetClose>
