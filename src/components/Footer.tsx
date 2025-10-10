@@ -38,7 +38,17 @@ const Footer = () => {
                     </div>
                 </div>
                 <div className="mt-12 border-t border-gray-700 pt-8 text-center text-sm">
-                    <p>&copy; {new Date().getFullYear()} Amazzon Easy. Todos os direitos reservados.</p>
+                    <p>
+                        &copy; {new Date().getFullYear()} Amazzon Easy. Todos os direitos reservados.
+                        <Image
+                            src="https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/folhas-logo%20(1).png"
+                            alt="Folhas da marca"
+                            width={24}
+                            height={24}
+                            className="inline-block align-[-0.2em] ml-2 filter brightness-0 invert"
+                            priority={false}
+                        />
+                    </p>
                 </div>
             </div>
         </footer>
@@ -46,3 +56,4 @@ const Footer = () => {
 };
 
 export default Footer;
+import Image from "next/image";
