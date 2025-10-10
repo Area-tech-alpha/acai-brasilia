@@ -42,8 +42,8 @@
   --color-sidebar-ring: var(--sidebar-ring);
 
   /* Brand fonts */
-  --font-playfair: "Playfair Display", serif;
-  --font-lato: "Lato", sans-serif;
+  --font-playfair: "Fraunces", serif;
+  --font-lato: "Manrope", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
 
   /* Brand colors */
   --color-brand-purple: #46295a;
@@ -155,3 +155,8 @@
     repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.04) 0, rgba(255, 255, 255, 0.04) 1px, transparent 1px, transparent 3px),
     repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.03) 0, rgba(255, 255, 255, 0.03) 1px, transparent 1px, transparent 3px);
 }
+
+
+/* Utility classes mapping font variables to usable class names */
+.font-playfair { font-family: var(--font-playfair), serif; }
+.font-lato { font-family: var(--font-lato), sans-serif; }
