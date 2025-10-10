@@ -359,13 +359,9 @@ const Products = () => {
                     <Carousel className="px-2" opts={{ align: "start", loop: true }} setApi={setAutoCarouselApi}>
                         <CarouselContent className="-ml-6">
                             {highlightSlides.map((slide) => (
-                                <CarouselItem
-                                    key={slide.id}
-                                    className="pl-6 basis-full"
-                                >
-                                    <div className="group relative h-[420px] md:h-[60vh] max-h-[720px] overflow-hidden rounded-3xl shadow-2xl bg-gradient-to-br from-brand-purple/20 via-brand-purple/10 to-brand-purple/5">
-                                        <div className="absolute inset-0 pointer-events-none" aria-hidden />
-                                        <div className="relative h-full w-full flex items-center justify-center p-6">
+                                <CarouselItem key={slide.id} className="pl-6 basis-full">
+                                    <div className="group">
+                                        <div className="relative h-[480px] md:h-[62vh] max-h-[760px] flex items-center justify-center p-6">
                                             <Image
                                                 src={slide.image}
                                                 alt={`Linha ${slide.title}`}
@@ -374,10 +370,13 @@ const Products = () => {
                                                 className="object-contain drop-shadow-xl"
                                             />
                                         </div>
-                                        <div className="absolute left-0 right-0 bottom-0 p-6 text-white">
-                                            <h3 className="text-3xl font-playfair font-semibold drop-shadow-lg">
-                                                {slide.title}
-                                            </h3>
+                                        <div className="px-6 pb-6 mt-4 md:mt-6 flex justify-center">
+                                            <span className="inline-flex items-center gap-2 rounded-full bg-brand-purple text-white px-6 py-2.5 shadow-md ring-2 ring-brand-purple/20">
+                                                <span className="h-2.5 w-2.5 rounded-full bg-brand-yellow" aria-hidden />
+                                                <span className="text-2xl md:text-3xl font-playfair font-semibold tracking-tight">
+                                                    {slide.title}
+                                                </span>
+                                            </span>
                                         </div>
                                     </div>
                                 </CarouselItem>
