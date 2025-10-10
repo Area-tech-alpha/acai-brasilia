@@ -307,6 +307,7 @@ const Products = () => {
     const sectionRef = useRef<HTMLDivElement | null>(null);
     const lineRefs = useRef<Record<string, HTMLDivElement | null>>({});
     const [autoCarouselApi, setAutoCarouselApi] = useState<CarouselApi | null>(null);
+    const [highlightIndex, setHighlightIndex] = useState(0);
 
     useEffect(() => {
         const handleScrollToProducts = () => {
@@ -331,17 +332,25 @@ const Products = () => {
         return () => window.removeEventListener("scroll-to-product-line", handleScrollToLine as EventListener);
     }, []);
 
-    // Auto-play apenas para o primeiro carrossel (destaques)
+    // Auto-play + acompanhar índice ativo do primeiro carrossel (destaques)
     useEffect(() => {
         if (!autoCarouselApi) return;
+        const onSelect = () => {
+            try { setHighlightIndex(autoCarouselApi.selectedScrollSnap()); } catch {}
+        };
+        onSelect();
+        autoCarouselApi.on('select', onSelect);
+        autoCarouselApi.on('reInit', onSelect);
         const id = window.setInterval(() => {
-            try {
-                autoCarouselApi.scrollNext();
-            } catch {
-                /* noop */
-            }
+            try { autoCarouselApi.scrollNext(); } catch {}
         }, 4200);
-        return () => window.clearInterval(id);
+        return () => {
+            window.clearInterval(id);
+            try {
+                autoCarouselApi.off('select', onSelect);
+                autoCarouselApi.off('reInit', onSelect);
+            } catch {}
+        };
     }, [autoCarouselApi]);
 
     return (
@@ -358,16 +367,16 @@ const Products = () => {
                 <div className="relative mt-12">
                     <Carousel className="px-2" opts={{ align: "start", loop: true }} setApi={setAutoCarouselApi}>
                         <CarouselContent className="-ml-6">
-                            {highlightSlides.map((slide) => (
+                            {highlightSlides.map((slide, idx) => (
                                 <CarouselItem key={slide.id} className="pl-6 basis-full">
-                                    <div className="group">
+                                    <div className={`group transition-all duration-700 ease-[cubic-bezier(0.2,0.8,0.2,1)] ${highlightIndex === idx ? 'opacity-100 scale-100' : 'opacity-60 scale-95 blur-[0.2px]'} `}>
                                         <div className="relative h-[480px] md:h-[62vh] max-h-[760px] flex items-center justify-center p-6">
                                             <Image
                                                 src={slide.image}
                                                 alt={`Linha ${slide.title}`}
                                                 fill
                                                 sizes="100vw"
-                                                className="object-contain drop-shadow-xl"
+                                                className={`object-contain drop-shadow-xl transition-transform duration-700 ${highlightIndex === idx ? 'scale-100' : 'scale-95'}`}
                                             />
                                         </div>
                                         <div className="px-6 pb-6 mt-4 md:mt-6 flex justify-center">
