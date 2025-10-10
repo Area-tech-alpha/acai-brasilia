@@ -49,11 +49,11 @@ const isSupportedImageUrl = (url?: string) => {
         ]);
         if (allowedHosts.has(u.hostname)) return true;
         const path = u.pathname;
-        return /\.(png|jpe?g|webp|gif|avif|svg|bmp)$/i.test(path);
+        return /\.(png|jpe?g|webp|gif|avif|svg|bmp|arw)$/i.test(path);
     } catch {
         // Fallback: permissivo apenas por extensão simples
         const path = (url.split('?')[0] || '');
-        return /\.(png|jpe?g|webp|gif|avif|svg|bmp)$/i.test(path);
+        return /\.(png|jpe?g|webp|gif|avif|svg|bmp|arw)$/i.test(path);
     }
 };
 
@@ -357,20 +357,20 @@ const Products = () => {
     useEffect(() => {
         if (!autoCarouselApi) return;
         const onSelect = () => {
-            try { setHighlightIndex(autoCarouselApi.selectedScrollSnap()); } catch {}
+            try { setHighlightIndex(autoCarouselApi.selectedScrollSnap()); } catch { }
         };
         onSelect();
         autoCarouselApi.on('select', onSelect);
         autoCarouselApi.on('reInit', onSelect);
         const id = window.setInterval(() => {
-            try { autoCarouselApi.scrollNext(); } catch {}
+            try { autoCarouselApi.scrollNext(); } catch { }
         }, 4200);
         return () => {
             window.clearInterval(id);
             try {
                 autoCarouselApi.off('select', onSelect);
                 autoCarouselApi.off('reInit', onSelect);
-            } catch {}
+            } catch { }
         };
     }, [autoCarouselApi]);
 
