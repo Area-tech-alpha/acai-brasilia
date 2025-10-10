@@ -38,10 +38,10 @@ const Header = () => {
                     <Image
                         src={logoSrc}
                         alt="Amazzon Easy"
-                        width={120}
-                        height={60}
+                        width={250}
+                        height={125}
                         priority
-                        className="h-10 w-auto object-contain"
+                        className="h-12 md:h-14 lg:h-16 w-auto object-contain"
                     />
                 </div>
                 <div className="hidden md:flex items-center space-x-6">
