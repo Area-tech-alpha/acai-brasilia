@@ -46,6 +46,16 @@ const isSupportedImageUrl = (url?: string) => {
     }
 };
 
+// Mapeia o destaque do primeiro carrossel para a âncora da seção correspondente
+const highlightAnchorMap: Record<string, string> = {
+    "highlight-acai": "acai",
+    "highlight-cremes": "cremes",
+    "highlight-sorvetes": "sorvetes",
+    "highlight-sorbets": "sorbets",
+    "highlight-picoles": "picoles",
+    "highlight-polpas": "polpas",
+};
+
 const highlightSlides: HighlightSlide[] = [
     {
         id: "highlight-acai",
@@ -353,6 +363,13 @@ const Products = () => {
         };
     }, [autoCarouselApi]);
 
+    const handleHighlightClick = (slideId: string) => {
+        const anchor = highlightAnchorMap[slideId];
+        if (anchor) {
+            window.dispatchEvent(new CustomEvent('scroll-to-product-line', { detail: { productId: anchor } }));
+        }
+    };
+
     return (
         <section ref={sectionRef} id="produtos" className="w-full py-20 bg-brand-yellow texture-dots-light">
             <div className="container mx-auto px-6">
@@ -368,26 +385,31 @@ const Products = () => {
                     <Carousel className="px-2" opts={{ align: "start", loop: true }} setApi={setAutoCarouselApi}>
                         <CarouselContent className="-ml-6">
                             {highlightSlides.map((slide, idx) => (
-                                <CarouselItem key={slide.id} className="pl-6 basis-full">
-                                    <div className={`group transition-all duration-700 ease-[cubic-bezier(0.2,0.8,0.2,1)] ${highlightIndex === idx ? 'opacity-100 scale-100' : 'opacity-60 scale-95 blur-[0.2px]'} `}>
-                                        <div className="relative h-[480px] md:h-[62vh] max-h-[760px] flex items-center justify-center p-6">
+                                <CarouselItem key={slide.id} className="pl-6 basis-full cursor-pointer">
+                                    <button
+                                        type="button"
+                                        onClick={() => handleHighlightClick(slide.id)}
+                                        className={`w-full text-left group cursor-pointer rounded-3xl hover:shadow-xl hover:ring-2 hover:ring-brand-yellow/40 transition-all duration-700 ease-[cubic-bezier(0.2,0.8,0.2,1)] ${highlightIndex === idx ? 'opacity-100 scale-100' : 'opacity-60 scale-95 blur-[0.2px]'} `}
+                                        aria-label={`Ir para a seção ${slide.title}`}
+                                    >
+                                        <div className="relative h-[480px] md:h-[62vh] max-h-[760px] flex items-center justify-center p-6 cursor-pointer">
                                             <Image
                                                 src={slide.image}
                                                 alt={`Linha ${slide.title}`}
                                                 fill
                                                 sizes="100vw"
-                                                className={`object-contain drop-shadow-xl transition-transform duration-700 ${highlightIndex === idx ? 'scale-100' : 'scale-95'}`}
+                                                className={`cursor-pointer object-contain drop-shadow-xl transition-transform duration-700 group-hover:scale-105 ${highlightIndex === idx ? 'scale-100' : 'scale-95'}`}
                                             />
                                         </div>
-                                        <div className="px-6 pb-6 mt-4 md:mt-6 flex justify-center">
-                                            <span className="inline-flex items-center gap-2 rounded-full bg-brand-purple text-white px-6 py-2.5 shadow-md ring-2 ring-brand-purple/20">
+                                        <div className="px-6 pb-6 mt-4 md:mt-6 flex justify-center cursor-pointer">
+                                            <span className="inline-flex items-center gap-2 rounded-full bg-brand-purple text-white px-6 py-2.5 shadow-md ring-2 ring-brand-purple/20 transition-colors group-hover:bg-brand-yellow group-hover:text-brand-dark">
                                                 <span className="h-2.5 w-2.5 rounded-full bg-brand-yellow" aria-hidden />
                                                 <span className="text-2xl md:text-3xl font-playfair font-semibold tracking-tight">
                                                     {slide.title}
                                                 </span>
                                             </span>
                                         </div>
-                                    </div>
+                                    </button>
                                 </CarouselItem>
                             ))}
                         </CarouselContent>
@@ -504,4 +526,6 @@ const Products = () => {
 };
 
 export default Products;
+
+
 

@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import type { FormEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -26,9 +27,9 @@ const Contact = () => {
         return () => window.removeEventListener('open-contact-form', handleOpen as EventListener);
     }, []);
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
-        const phone = "5561996027864";
+        const phone = "5561983082101";
         const text = `Olá!%0A%0ANome: ${name}%0AWhatsApp: ${whats}%0AE-mail: ${email}%0AAssunto: ${subject}%0ANegócio: ${negocio}%0AMensagem: ${message}`;
         const url = `https://wa.me/${phone}?text=${text}`;
         window.open(url, '_blank');
