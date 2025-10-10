@@ -10,7 +10,7 @@ const Hero = () => {
             {/* Background Image */}
             <div className="absolute inset-0">
                 <Image
-                    src="https://4qozbotg9nhsxukb.public.blob.vercel-storage.com/hero/IMG-20241011-WA0074.jpg"
+                    src="https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/heroimagem.jpg"
                     alt="Açaí na tigela e produtos - Açaí Brasília"
                     fill
                     priority
