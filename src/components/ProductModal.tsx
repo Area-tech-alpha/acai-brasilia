@@ -57,8 +57,8 @@ const ProductModal = ({ product, onClose }: ProductModalProps) => {
 
     return (
         <Dialog open onOpenChange={(open) => { if (!open) onClose(); }}>
-            <DialogContent className="max-w-7xl w-[min(98vw,1400px)] max-h-[calc(100vh-2rem)] overflow-hidden p-0 bg-brand-yellow texture-dots-light text-brand-dark border-4 border-brand-purple rounded-lg backdrop-blur-none">
-                <DialogHeader className="px-8 pt-6 pb-4 relative z-30 bg-brand-yellow texture-dots-light">
+            <DialogContent className="max-w-7xl w-[min(98vw,1400px)] max-h-[calc(100vh-2rem)] overflow-hidden p-0 bg-brand-yellow text-brand-dark border-4 border-brand-purple rounded-lg backdrop-blur-none">
+                <DialogHeader className="px-8 pt-6 pb-4 relative z-30 bg-brand-yellow">
                     <DialogTitle className="text-brand-purple font-playfair text-3xl md:text-4xl tracking-tight border-b-4 border-brand-purple w-fit pb-1">
                         {product.name}
                     </DialogTitle>
@@ -66,7 +66,7 @@ const ProductModal = ({ product, onClose }: ProductModalProps) => {
                         {product.description}
                     </DialogDescription>
                 </DialogHeader>
-                <div className="grid md:grid-cols-2 bg-brand-yellow texture-dots-light items-stretch relative z-20">
+                <div className="grid md:grid-cols-2 bg-brand-yellow items-stretch relative z-20">
                     {/* Carousel */}
                     <div className="relative w-full h-[360px] md:h-[60vh] lg:h-[65vh] group">
                         <div className="relative w-full h-full">
@@ -112,7 +112,7 @@ const ProductModal = ({ product, onClose }: ProductModalProps) => {
                     </div>
 
                     {/* Content */}
-                    <div className="p-8 md:p-10 flex flex-col justify-between bg-brand-yellow texture-dots-light overflow-auto relative z-20">
+                    <div className="p-8 md:p-10 flex flex-col justify-between bg-brand-yellow overflow-auto relative z-20">
                         <p className="text-brand-dark text-base md:text-lg leading-relaxed">{product.description}</p>
                         {/* Thumbnails */}
                         <div className="mt-6 grid grid-cols-5 gap-3">
@@ -139,3 +139,4 @@ const ProductModal = ({ product, onClose }: ProductModalProps) => {
 };
 
 export default ProductModal;
+
