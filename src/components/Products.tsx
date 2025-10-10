@@ -39,10 +39,21 @@ type ProductLine = {
 const isSupportedImageUrl = (url?: string) => {
     if (!url) return false;
     try {
-        const path = url.split('?')[0];
+        const u = new URL(url);
+        const allowedHosts = new Set([
+            'images.unsplash.com',
+            '4qozbotg9nhsxukb.public.blob.vercel-storage.com',
+            'nfwfolrcpaxqwgkzzfok.supabase.co',
+            'drive.google.com',
+            'lh3.googleusercontent.com',
+        ]);
+        if (allowedHosts.has(u.hostname)) return true;
+        const path = u.pathname;
         return /\.(png|jpe?g|webp|gif|avif|svg|bmp)$/i.test(path);
     } catch {
-        return false;
+        // Fallback: permissivo apenas por extensão simples
+        const path = (url.split('?')[0] || '');
+        return /\.(png|jpe?g|webp|gif|avif|svg|bmp)$/i.test(path);
     }
 };
 
@@ -110,7 +121,7 @@ const productLines: ProductLine[] = [
                 heading: "Linha Tradicional",
                 description: "Adoçado com açúcar, sem guaraná, ideal para receitas base e copos montados.",
                 items: ["Tradicional", "Tradicional com banana"],
-                image: "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-acai/acai-tradicional.ARW",
+                image: "https://drive.google.com/uc?export=download&id=17bE88jFiI-MPGSMjq-OEAv-aMcNQ28rw",
             },
             {
                 id: "line-acai-premium",
