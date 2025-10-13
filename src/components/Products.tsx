@@ -57,6 +57,16 @@ const isSupportedImageUrl = (url?: string) => {
     }
 };
 
+// Corrige orientação de imagens específicas que chegaram deitadas
+const needsRotation = (url?: string) => {
+    if (!url) return false;
+    const u = url.toLowerCase();
+    return (
+        u.includes("/carrossel-acai/acai-tradicional.png") ||
+        u.includes("/carrossel-acai/acai-premium.png")
+    );
+};
+
 // Mapeia o destaque do primeiro carrossel para a âncora da seção correspondente
 const highlightAnchorMap: Record<string, string> = {
     "highlight-acai": "acai",
@@ -502,7 +512,7 @@ const Products = () => {
                                                                     alt={`${(line.title || '').replace(/^Linha\s+/i, '').trim()} - ${slide.heading}`}
                                                                     fill
                                                                     sizes="100vw"
-                                                                    className="object-contain drop-shadow-xl"
+                                                                    className={`object-contain drop-shadow-xl origin-center ${needsRotation(slide.image) ? 'rotate-90 md:rotate-90' : ''}`}
                                                                 />
                                                             </div>
                                                         ) : (
