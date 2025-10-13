@@ -113,35 +113,34 @@ const productLines: ProductLine[] = [
         title: "Linha Açaí",
         subtitle: "Textura consistente, cor intensa e sabores pensados para taças, copos, barcas e baldes profissionais.",
         theme: "from-purple-900 via-purple-700 to-fuchsia-600",
-        backgroundImage:
-            "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-acai/capa-acai.ARW",
         slides: [
             {
                 id: "line-acai-tradicional",
                 heading: "Linha Tradicional",
                 description: "Adoçado com açúcar, sem guaraná, ideal para receitas base e copos montados.",
                 items: ["Tradicional", "Tradicional com banana"],
-                image: "https://drive.google.com/uc?export=download&id=17bE88jFiI-MPGSMjq-OEAv-aMcNQ28rw",
+                image: "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-acai/acai-tradicional.png",
             },
             {
                 id: "line-acai-premium",
                 heading: "Linha Premium",
                 description: "Com guaraná para ganhar energia extra e destaque no sabor.",
                 items: ["Premium", "Premium com banana", "Premium com morango"],
-                image: "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-acai/acai-premium.ARW",
+                image: "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-acai/acai-premium.png",
             },
             {
                 id: "line-acai-super",
                 heading: "Super Premium",
                 description: "Formulação mais cremosa e rica, perfeita para taças especiais.",
                 items: ["Super premium"],
+                image: "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-acai/acai-premium.png",
             },
             {
                 id: "line-acai-zero",
                 heading: "Zero Açúcar",
                 description: "Opção adoçada naturalmente para públicos com restrições, mantendo sabor e textura.",
                 items: ["Zero açúcar com banana"],
-                image: "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-acai/acai-zero-acucar.ARW",
+                image: "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-acai/acai-premium.png",
             },
         ],
     },
@@ -511,13 +510,34 @@ const Products = () => {
                                                                 Arte desta categoria em breve.
                                                             </div>
                                                         )}
-                                                        <div className="flex justify-center">
+                                                        
+                                                        <div className="flex flex-col items-center gap-3">
                                                             <span className="inline-flex items-center gap-2 rounded-full bg-brand-purple text-white px-6 py-2.5 ring-2 ring-brand-purple/20">
                                                                 <span className="h-2.5 w-2.5 rounded-full bg-brand-yellow" aria-hidden />
                                                                 <span className="text-xl md:text-2xl font-playfair font-bold tracking-tight">
                                                                     {slide.heading}
                                                                 </span>
                                                             </span>
+
+                                                            {slide.description && (
+                                                                <p className="text-center text-brand-dark/80 text-sm md:text-base max-w-2xl">
+                                                                    {slide.description}
+                                                                </p>
+                                                            )}
+
+                                                            {slide.items?.length > 0 && (
+                                                                <div className="mt-1 flex flex-wrap justify-center gap-2 md:gap-3">
+                                                                    {slide.items.map((it) => (
+                                                                        <span
+                                                                            key={it}
+                                                                            className="inline-flex items-center gap-2 rounded-full bg-white text-brand-dark px-3 py-1.5 text-xs md:text-sm shadow-sm ring-1 ring-brand-purple/20"
+                                                                        >
+                                                                            <span className="h-2 w-2 rounded-full bg-brand-purple/70" aria-hidden />
+                                                                            {it}
+                                                                        </span>
+                                                                    ))}
+                                                                </div>
+                                                            )}
                                                         </div>
                                                     </div>
                                                 </CarouselItem>
