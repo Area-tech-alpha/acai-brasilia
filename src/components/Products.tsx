@@ -512,7 +512,7 @@ const Products = () => {
                                                                     alt={`${(line.title || '').replace(/^Linha\s+/i, '').trim()} - ${slide.heading}`}
                                                                     fill
                                                                     sizes="100vw"
-                                                                    className={`object-contain drop-shadow-xl origin-center ${needsRotation(slide.image) ? 'rotate-90 md:rotate-90 scale-90' : ''}`}
+                                                                    className={`object-contain drop-shadow-xl ${needsRotation(slide.image) ? 'origin-bottom -translate-y-4 md:-translate-y-6 rotate-90 scale-90' : 'origin-center'}`}
                                                                 />
                                                             </div>
                                                         ) : (
