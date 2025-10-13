@@ -63,7 +63,9 @@ const needsRotation = (url?: string) => {
     const u = url.toLowerCase();
     return (
         u.includes("/carrossel-acai/acai-tradicional.png") ||
-        u.includes("/carrossel-acai/acai-premium.png")
+        u.includes("/carrossel-acai/acai-premium.png") ||
+        u.includes("/carrossel-creme/creme-classico.png") ||
+        u.includes("/carrossel-creme/creme-mesclado.png")
     );
 };
 
@@ -166,12 +168,14 @@ const productLines: ProductLine[] = [
                 heading: "Clássicos",
                 description: "Sabores queridinhos que combinam com complementos doces e frutas frescas.",
                 items: ["Cupuaçu", "Amazzoninho (creme de leite ninho)"],
+                image: "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-creme/creme-classico.png",
             },
             {
                 id: "line-cremes-mesclados",
                 heading: "Mesclados",
                 description: "Combinações com contraste visual e sabor marcante.",
                 items: ["Amazzoninho Trufado", "Iogurte grego com amarena"],
+                image: "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-creme/creme-classico.png",
             },
         ],
     },
