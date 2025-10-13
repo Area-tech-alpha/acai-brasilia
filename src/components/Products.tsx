@@ -506,13 +506,13 @@ const Products = () => {
                                                 >
                                                     <div className="flex h-full flex-col gap-4">
                                                         {isSupportedImageUrl(slide.image) ? (
-                                                            <div className="relative h-[360px] md:h-[48vh] max-h-[640px] flex items-center justify-center p-4">
+                                                            <div className="relative h-[360px] md:h-[48vh] max-h-[640px] flex items-center justify-center p-4 overflow-hidden">
                                                                 <Image
                                                                     src={slide.image as string}
                                                                     alt={`${(line.title || '').replace(/^Linha\s+/i, '').trim()} - ${slide.heading}`}
                                                                     fill
                                                                     sizes="100vw"
-                                                                    className={`object-contain drop-shadow-xl origin-center ${needsRotation(slide.image) ? 'rotate-90 md:rotate-90' : ''}`}
+                                                                    className={`object-contain drop-shadow-xl origin-center ${needsRotation(slide.image) ? 'rotate-90 md:rotate-90 scale-90' : ''}`}
                                                                 />
                                                             </div>
                                                         ) : (
