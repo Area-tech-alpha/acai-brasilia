@@ -10,6 +10,7 @@ import {
     CarouselPrevious,
     type CarouselApi,
 } from "@/components/ui/carousel";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 type HighlightSlide = {
     id: string;
@@ -133,14 +134,14 @@ const productLines: ProductLine[] = [
                 heading: "Super Premium",
                 description: "Formulação mais cremosa e rica, perfeita para taças especiais.",
                 items: ["Super premium"],
-                image: "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-acai/acai-premium.png",
+                image: "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-acai/acai-super-premium.jpg",
             },
             {
                 id: "line-acai-zero",
                 heading: "Zero Açúcar",
                 description: "Opção adoçada naturalmente para públicos com restrições, mantendo sabor e textura.",
                 items: ["Zero açúcar com banana"],
-                image: "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-acai/acai-premium.png",
+                image: "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-acai/acai-super-premium.jpg",
             },
         ],
     },
@@ -163,7 +164,7 @@ const productLines: ProductLine[] = [
                 heading: "Mesclados",
                 description: "Combinações com contraste visual e sabor marcante.",
                 items: ["Amazzoninho Trufado", "Iogurte grego com amarena"],
-                image: "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-creme/creme-classico.png",
+                image: "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-creme/creme-mesclado.png",
             },
         ],
     },
@@ -485,40 +486,58 @@ const Products = () => {
                                     </div>
                                 )}
                                 <div className="flex flex-col gap-10 p-8 sm:p-12">
-                                    <div className="flex flex-col gap-3 text-brand-dark">
-                                        <h4 className="text-3xl sm:text-4xl font-playfair font-bold text-brand-purple text-center">{(line.title || '').replace(/^Linha\s+/i, '').trim()}</h4>
+                                    <div className="flex flex-col gap-3 text-brand-dark text-center">
+                                        <h4 className="text-3xl sm:text-4xl font-playfair font-bold text-brand-purple">{(line.title || '').replace(/^Linha\s+/i, '').trim()}</h4>
                                         <p className="text-base md:text-lg text-brand-dark/90">{line.subtitle}</p>
                                     </div>
                                     <Carousel className="px-2" opts={{ align: "start", loop: true }}>
                                         <CarouselContent className="-ml-6">
-                                            {line.slides.map((slide) => (
-                                                <CarouselItem
-                                                    key={slide.id}
-                                                    className="pl-6 basis-full"
-                                                >
-                                                    <div className="flex h-full flex-col gap-4">
-                                                        {isSupportedImageUrl(slide.image) ? (
-                                                            <div className="relative h-[360px] md:h-[48vh] max-h-[640px] flex items-center justify-center p-4">
-                                                                <Image
-                                                                    src={slide.image as string}
-                                                                    alt={`${(line.title || '').replace(/^Linha\s+/i, '').trim()} - ${slide.heading}`}
-                                                                    fill
-                                                                    sizes="100vw"
-                                                                    className="object-contain drop-shadow-xl"
-                                                                />
+                                            {line.slides.map((slide) => {
+                                                const hasImage = isSupportedImageUrl(slide.image);
+                                                return (
+                                                    <CarouselItem
+                                                        key={slide.id}
+                                                        className="pl-6 basis-full"
+                                                    >
+                                                        <div className="flex h-full flex-col gap-6">
+                                                            <div className="mx-auto flex w-full max-w-[520px] sm:max-w-[560px] lg:max-w-[640px] flex-1">
+                                                                <AspectRatio
+                                                                    ratio={5 / 6}
+                                                                    className="group relative w-full overflow-hidden rounded-[36px] bg-brand-purple/90 texture-dots-dark shadow-2xl ring-1 ring-brand-purple/35"
+                                                                >
+                                                                    {hasImage ? (
+                                                                        <>
+                                                                            <Image
+                                                                                src={slide.image as string}
+                                                                                alt={`${(line.title || '').replace(/^Linha\s+/i, '').trim()} - ${slide.heading}`}
+                                                                                fill
+                                                                                sizes="100vw"
+                                                                                className="object-contain drop-shadow-[0_28px_60px_rgba(40,13,64,0.35)] transition-transform duration-500 group-hover:scale-[1.04]"
+                                                                            />
+                                                                            <div
+                                                                                className="pointer-events-none absolute inset-x-8 inset-y-8 rounded-[30px] border border-white/25 shadow-inner shadow-black/10"
+                                                                                aria-hidden
+                                                                            />
+                                                                        </>
+                                                                    ) : (
+                                                                        <div className="flex h-full flex-col items-center justify-center gap-3 px-6 text-center text-white/80">
+                                                                            <span className="text-xs md:text-sm font-semibold uppercase tracking-[0.28em] text-brand-yellow/90">
+                                                                                Arte em preparação
+                                                                            </span>
+                                                                            <p className="text-xs md:text-sm text-white/80">
+                                                                                Estamos finalizando a arte desta linha. Volte em breve para conferir.
+                                                                            </p>
+                                                                        </div>
+                                                                    )}
+                                                                </AspectRatio>
                                                             </div>
-                                                        ) : (
-                                                            <div className="flex h-[360px] md:h-[48vh] max-h-[640px] items-center justify-center p-4">
-                                                                Arte desta categoria em breve.
-                                                            </div>
-                                                        )}
-                                                        
-                                                        <div className="flex flex-col items-center gap-3">
-                                                            <span className="inline-flex items-center gap-2 rounded-full bg-brand-purple text-white px-6 py-2.5 ring-2 ring-brand-purple/20">
-                                                                <span className="h-2.5 w-2.5 rounded-full bg-brand-yellow" aria-hidden />
-                                                                <span className="text-xl md:text-2xl font-playfair font-bold tracking-tight">
-                                                                    {slide.heading}
-                                                                </span>
+
+                                                            <div className="flex flex-col items-center gap-3">
+                                                                <span className="inline-flex items-center gap-2 rounded-full bg-brand-purple text-white px-6 py-2.5 ring-2 ring-brand-purple/20">
+                                                                    <span className="h-2.5 w-2.5 rounded-full bg-brand-yellow" aria-hidden />
+                                                                    <span className="text-xl md:text-2xl font-playfair font-bold tracking-tight">
+                                                                        {slide.heading}
+                                                                    </span>
                                                             </span>
 
                                                             {slide.description && (
@@ -540,10 +559,11 @@ const Products = () => {
                                                                     ))}
                                                                 </div>
                                                             )}
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </CarouselItem>
-                                            ))}
+                                                    </CarouselItem>
+                                                );
+                                            })}
                                         </CarouselContent>
                                         <CarouselPrevious className="-left-3 md:-left-4" />
                                         <CarouselNext className="-right-3 md:-right-4" />
