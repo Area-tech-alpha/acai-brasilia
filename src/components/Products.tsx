@@ -120,7 +120,7 @@ const productLines: ProductLine[] = [
                 id: "line-acai-tradicional",
                 heading: "Linha Tradicional",
                 description: "Adoçado com açúcar, sem guaraná, ideal para receitas base e copos montados.",
-                items: ["Tradicional", "Tradicional com banana"],
+                items: ["Tradicional", "Tradicional com banana", "Tradicional com guaraná"],
                 image: "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-acai/acai-tradicional.png",
             },
             {
@@ -157,7 +157,7 @@ const productLines: ProductLine[] = [
                 id: "line-cremes-classicos",
                 heading: "Clássicos",
                 description: "Sabores queridinhos que combinam com complementos doces e frutas frescas.",
-                items: ["Cupuaçu", "Amazzoninho (creme de leite ninho)"],
+                items: ["Cupuaçu", "Amazzoninho trufado"],
                 image: "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-creme/creme-classico.png",
             },
             {
@@ -636,8 +636,8 @@ const Products = () => {
                                                         );
                                                     })}
                                                 </CarouselContent>
-                                            {showNavigation && <CarouselPrevious className="-left-3 md:-left-4" />}
-                                            {showNavigation && <CarouselNext className="-right-3 md:-right-4" />}
+                                                {showNavigation && <CarouselPrevious className="-left-3 md:-left-4" />}
+                                                {showNavigation && <CarouselNext className="-right-3 md:-right-4" />}
                                             </Carousel>
                                         </div>
                                     </div>
