@@ -57,18 +57,6 @@ const isSupportedImageUrl = (url?: string) => {
     }
 };
 
-// Corrige orientação de imagens específicas que chegaram deitadas
-const needsRotation = (url?: string) => {
-    if (!url) return false;
-    const u = url.toLowerCase();
-    return (
-        u.includes("/carrossel-acai/acai-tradicional.png") ||
-        u.includes("/carrossel-acai/acai-premium.png") ||
-        u.includes("/carrossel-creme/creme-classico.png") ||
-        u.includes("/carrossel-creme/creme-mesclado.png")
-    );
-};
-
 // Mapeia o destaque do primeiro carrossel para a âncora da seção correspondente
 const highlightAnchorMap: Record<string, string> = {
     "highlight-acai": "acai",
@@ -510,13 +498,13 @@ const Products = () => {
                                                 >
                                                     <div className="flex h-full flex-col gap-4">
                                                         {isSupportedImageUrl(slide.image) ? (
-                                                            <div className="relative h-[360px] md:h-[48vh] max-h-[640px] flex items-center justify-center p-4 overflow-hidden">
+                                                            <div className="relative h-[360px] md:h-[48vh] max-h-[640px] flex items-center justify-center p-4">
                                                                 <Image
                                                                     src={slide.image as string}
                                                                     alt={`${(line.title || '').replace(/^Linha\s+/i, '').trim()} - ${slide.heading}`}
                                                                     fill
                                                                     sizes="100vw"
-                                                                    className={`object-contain drop-shadow-xl ${needsRotation(slide.image) ? 'origin-bottom -translate-y-4 md:-translate-y-6 rotate-90 scale-90' : 'origin-center'}`}
+                                                                    className="object-contain drop-shadow-xl"
                                                                 />
                                                             </div>
                                                         ) : (
