@@ -19,6 +19,9 @@ type HighlightSlide = {
     image: string;
 };
 
+const featherPatternUrl =
+    "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/folhas-logo%20(1).png";
+
 type LineSlide = {
     id: string;
     heading: string;
@@ -414,34 +417,71 @@ const Products = () => {
                 <div className="relative mt-12">
                     <Carousel className="px-2" opts={{ align: "start", loop: true }} setApi={setAutoCarouselApi}>
                         <CarouselContent className="-ml-6">
-                            {highlightSlides.map((slide, idx) => (
-                                <CarouselItem key={slide.id} className="pl-6 basis-full cursor-pointer">
-                                    <button
-                                        type="button"
-                                        onClick={() => handleHighlightClick(slide.id)}
-                                        className={`w-full text-left group cursor-pointer rounded-3xl hover:shadow-xl hover:ring-2 hover:ring-brand-yellow/40 transition-all duration-700 ease-[cubic-bezier(0.2,0.8,0.2,1)] ${highlightIndex === idx ? 'opacity-100 scale-100' : 'opacity-60 scale-95 blur-[0.2px]'} `}
-                                        aria-label={`Ir para a seção ${slide.title}`}
-                                    >
-                                        <div className="relative h-[480px] md:h-[62vh] max-h-[760px] flex items-center justify-center p-6 cursor-pointer">
-                                            <Image
-                                                src={slide.image}
-                                                alt={`Linha ${slide.title}`}
-                                                fill
-                                                sizes="100vw"
-                                                className={`cursor-pointer object-contain drop-shadow-xl transition-transform duration-700 group-hover:scale-105 ${highlightIndex === idx ? 'scale-100' : 'scale-95'}`}
-                                            />
-                                        </div>
-                                        <div className="px-6 pb-6 mt-4 md:mt-6 flex justify-center cursor-pointer">
-                                            <span className="inline-flex items-center gap-2 rounded-full bg-brand-purple text-white px-6 py-2.5 shadow-md ring-2 ring-brand-purple/20 transition-colors group-hover:bg-brand-yellow group-hover:text-brand-dark">
-                                                <span className="h-2.5 w-2.5 rounded-full bg-brand-yellow" aria-hidden />
-                                                <span className="text-2xl md:text-3xl font-playfair font-semibold tracking-tight">
-                                                    {slide.title}
-                                                </span>
-                                            </span>
-                                        </div>
-                                    </button>
-                                </CarouselItem>
-                            ))}
+                            {highlightSlides.map((slide, idx) => {
+                                const isActive = highlightIndex === idx;
+                                return (
+                                    <CarouselItem key={slide.id} className="pl-6 basis-full cursor-pointer">
+                                        <button
+                                            type="button"
+                                            onClick={() => handleHighlightClick(slide.id)}
+                                            className="group flex w-full justify-center transition-all duration-700 ease-[cubic-bezier(0.2,0.8,0.2,1)]"
+                                            aria-label={`Ir para a seção ${slide.title}`}
+                                        >
+                                            <div className="relative w-full max-w-[400px] sm:max-w-[520px] lg:max-w-[760px]">
+                                                <div
+                                                    className={`relative flex h-full min-h-[420px] flex-col overflow-hidden rounded-[42px] border border-white/15 bg-gradient-to-br from-brand-purple/98 via-brand-purple/94 to-brand-purple/90 shadow-[0_32px_90px_rgba(50,20,90,0.45)] transition-transform duration-700 group-hover:-translate-y-2 ${isActive ? 'ring-4 ring-brand-yellow/30 shadow-[0_40px_110px_rgba(75,30,125,0.55)]' : ''}`}
+                                                >
+                                                    <div
+                                                        className="pointer-events-none absolute inset-0 mix-blend-soft-light"
+                                                        style={{
+                                                            backgroundImage: `url(${featherPatternUrl})`,
+                                                            backgroundSize: "160px",
+                                                            backgroundRepeat: "repeat",
+                                                            backgroundPosition: "center",
+                                                        }}
+                                                        aria-hidden
+                                                    />
+                                                    <div className="pointer-events-none absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-brand-yellow via-brand-pink to-brand-yellow" aria-hidden />
+
+                                                    <div className="relative flex flex-1 flex-col gap-8 px-8 py-10 lg:flex-row lg:items-center lg:gap-12">
+                                                        <div className="w-full lg:w-[46%]">
+                                                            <AspectRatio
+                                                                ratio={4 / 5}
+                                                                className="relative w-full overflow-hidden rounded-[28px] border border-brand-yellow/25 bg-white/8 backdrop-blur-[2px]"
+                                                            >
+                                                                <Image
+                                                                    src={slide.image}
+                                                                    alt={`Linha ${slide.title}`}
+                                                                    fill
+                                                                    sizes="320px"
+                                                                    className="object-contain drop-shadow-[0_24px_45px_rgba(0,0,0,0.35)]" style={{ transform: "scale(1.18)" }}
+                                                                />
+                                                                <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/8 via-transparent to-black/10" aria-hidden />
+                                                            </AspectRatio>
+                                                        </div>
+
+                                                        <div className="flex w-full lg:w-[54%] flex-col items-center text-center text-white gap-5 lg:items-start lg:text-left">
+                                                            <span className="inline-flex items-center gap-2 rounded-full bg-brand-yellow text-brand-purple px-5 py-2 text-sm font-semibold uppercase tracking-[0.25em] shadow-md ring-2 ring-brand-yellow/50">
+                                                                <span className="h-2 w-2 rounded-full bg-brand-purple" aria-hidden />
+                                                                {slide.title}
+                                                                <span className="h-2 w-2 rounded-full bg-brand-purple" aria-hidden />
+                                                            </span>
+                                                            <p className="text-sm md:text-base text-white/80 leading-relaxed max-w-[320px] lg:max-w-none">
+                                                                {slide.description}
+                                                            </p>
+                                                            <div className="mt-6 flex items-center gap-2 text-[11px] uppercase tracking-[0.48em] text-brand-yellow/70">
+                                                                <span className="h-[3px] w-6 rounded-full bg-brand-yellow/70" aria-hidden />
+                                                                Amazzon Easy
+                                                                <span className="h-[3px] w-6 rounded-full bg-brand-yellow/70" aria-hidden />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </button>
+                                    </CarouselItem>
+                                );
+                            })}
                         </CarouselContent>
                     </Carousel>
                 </div>
@@ -666,6 +706,12 @@ const Products = () => {
 };
 
 export default Products;
+
+
+
+
+
+
 
 
 
