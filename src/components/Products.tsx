@@ -96,7 +96,7 @@ const highlightSlides: HighlightSlide[] = [
         id: "highlight-sorbets",
         title: "Sorbets Zero Lactose",
         description: "Fórmulas leves, vibrantes e sem lactose para encantar um público mais amplo.",
-        image: "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-1/sorbet.PNG",
+        image: "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-sorbet/sorbet.png",
     },
     {
         id: "highlight-picoles",
@@ -707,11 +707,10 @@ const Products = () => {
 
                                                                         {items.length > 0 && (
                                                                             <div
-                                                                                className={`${
-                                                                                    hasManyItems
+                                                                                className={`${hasManyItems
                                                                                         ? "mt-3 grid w-full max-w-2xl grid-cols-2 gap-2 sm:grid-cols-3 md:gap-3 mx-auto px-1"
                                                                                         : "mt-1 flex flex-wrap justify-center gap-2 md:gap-3"
-                                                                                }`}
+                                                                                    }`}
                                                                             >
                                                                                 {items.map((it) =>
                                                                                     hasManyItems ? (
