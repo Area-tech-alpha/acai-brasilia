@@ -429,7 +429,7 @@ const Products = () => {
                                         >
                                             <div className="relative w-full max-w-[400px] sm:max-w-[520px] lg:max-w-[760px]">
                                                 <div
-                                                    className={`relative flex h-full min-h-[420px] flex-col overflow-hidden rounded-[42px] border border-white/15 bg-gradient-to-br from-brand-purple/98 via-brand-purple/94 to-brand-purple/90 shadow-[0_32px_90px_rgba(50,20,90,0.45)] transition-transform duration-700 group-hover:-translate-y-2 ${isActive ? 'ring-4 ring-brand-yellow/30 shadow-[0_40px_110px_rgba(75,30,125,0.55)]' : ''}`}
+                                                    className={`cursor-pointer relative flex h-full min-h-[420px] flex-col overflow-hidden rounded-[42px] border border-white/15 bg-gradient-to-br from-brand-purple/98 via-brand-purple/94 to-brand-purple/90 shadow-[0_32px_90px_rgba(50,20,90,0.45)] transition-transform duration-700 group-hover:-translate-y-2 ${isActive ? 'ring-4 ring-brand-yellow/30 shadow-[0_40px_110px_rgba(75,30,125,0.55)]' : ''}`}
                                                 >
                                                     <div
                                                         className="pointer-events-none absolute inset-0 mix-blend-soft-light"
