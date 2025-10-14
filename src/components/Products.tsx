@@ -36,6 +36,7 @@ type ProductLine = {
     title: string;
     subtitle: string;
     theme: string;
+    contentTone?: "light" | "dark";
     backgroundImage?: string;
     sharedImage?: string;
     slides: LineSlide[];
@@ -155,6 +156,7 @@ const productLines: ProductLine[] = [
         title: "Linha Cremes",
         subtitle: "Cremes autorais para acompanhar açaí, montar sobremesas e turbinar vitrines temáticas.",
         theme: "from-amber-700 via-orange-500 to-yellow-400",
+        contentTone: "dark",
         slides: [
             {
                 id: "line-cremes-classicos",
@@ -200,6 +202,7 @@ const productLines: ProductLine[] = [
         title: "Linha Sorbets Zero Lactose",
         subtitle: "Sabores refrescantes e sem lactose para ampliar o mix e atender novos públicos.",
         theme: "from-emerald-900 via-green-700 to-lime-500",
+        contentTone: "dark",
         sharedImage: "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-sorbet/sorbet.png",
         slides: [
             {
@@ -260,19 +263,45 @@ const productLines: ProductLine[] = [
         title: "Polpas de Frutas",
         subtitle: "Portfólio para sucos, sobremesas e preparo de caldas com rendimento garantido.",
         theme: "from-orange-900 via-amber-600 to-red-500",
+        contentTone: "dark",
         slides: [
             {
                 id: "line-polpas-100g",
                 heading: "Polpas 100g",
                 description: "Sachês individuais práticos para preparo imediato.",
-                items: ["Polpa 100g"],
+                items: [
+                    "Abacaxi",
+                    "Abacaxi com Hortelã",
+                    "Acerola",
+                    "Caja",
+                    "Caju",
+                    "Goiaba",
+                    "Graviola",
+                    "Manga",
+                    "Maracujá",
+                    "Morango",
+                    "Tangerina",
+                    "Uva",
+                ],
                 image: "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-polpas/polpa-100-g.png",
             },
             {
                 id: "line-polpas-1kg",
                 heading: "Polpa Barra 1kg",
                 description: "Barras congeladas para produção em escala.",
-                items: ["Polpa Barra 1kg"],
+                items: [
+                    "Caja",
+                    "Caju",
+                    "Laranja",
+                    "Goiaba",
+                    "Abacaxi",
+                    "Acerola",
+                    "Graviola",
+                    "Manga",
+                    "Limão",
+                    "Uva",
+                    "Maracujá",
+                ],
                 image: "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-polpas/polpa-1-kg.png",
             },
             {
@@ -524,6 +553,7 @@ const Products = () => {
                             return !isSupportedImageUrl(slideImage) || slideImage === sharedImage;
                         });
                         const showNavigation = line.slides.length > 1;
+                        const contentTone = line.contentTone ?? "light";
 
                         return (
                             <div
@@ -618,6 +648,8 @@ const Products = () => {
 
                                                         const mediaSrc = slide.image ?? sharedImage;
                                                         const hasImage = isSupportedImageUrl(mediaSrc);
+                                                        const items = slide.items ?? [];
+                                                        const hasManyItems = items.length > 6;
 
                                                         return (
                                                             <CarouselItem
@@ -666,22 +698,39 @@ const Products = () => {
                                                                         </span>
 
                                                                         {slide.description && (
-                                                                            <p className="text-center text-white/85 text-sm md:text-base max-w-2xl mx-auto">
+                                                                            <p
+                                                                                className={`text-center ${contentTone === "dark" ? "text-brand-dark/90" : "text-white/85"} text-sm md:text-base max-w-2xl mx-auto`}
+                                                                            >
                                                                                 {slide.description}
                                                                             </p>
                                                                         )}
 
-                                                                        {slide.items?.length > 0 && (
-                                                                            <div className="mt-1 flex flex-wrap justify-center gap-2 md:gap-3">
-                                                                                {slide.items.map((it) => (
-                                                                                    <span
-                                                                                        key={it}
-                                                                                        className="inline-flex items-center gap-2 rounded-full bg-white text-brand-dark px-3 py-1.5 text-xs md:text-sm shadow-sm ring-1 ring-brand-purple/20"
-                                                                                    >
-                                                                                        <span className="h-2 w-2 rounded-full bg-brand-yellow" aria-hidden />
-                                                                                        {it}
-                                                                                    </span>
-                                                                                ))}
+                                                                        {items.length > 0 && (
+                                                                            <div
+                                                                                className={`${
+                                                                                    hasManyItems
+                                                                                        ? "mt-3 grid w-full max-w-2xl grid-cols-2 gap-2 sm:grid-cols-3 md:gap-3 mx-auto px-1"
+                                                                                        : "mt-1 flex flex-wrap justify-center gap-2 md:gap-3"
+                                                                                }`}
+                                                                            >
+                                                                                {items.map((it) =>
+                                                                                    hasManyItems ? (
+                                                                                        <span
+                                                                                            key={it}
+                                                                                            className="flex items-center justify-center rounded-2xl bg-white/95 px-4 py-2 text-center text-sm font-semibold text-brand-dark shadow-sm ring-1 ring-brand-purple/10"
+                                                                                        >
+                                                                                            {it}
+                                                                                        </span>
+                                                                                    ) : (
+                                                                                        <span
+                                                                                            key={it}
+                                                                                            className="inline-flex items-center gap-2 rounded-full bg-white text-brand-dark px-3 py-1.5 text-xs md:text-sm shadow-sm ring-1 ring-brand-purple/20"
+                                                                                        >
+                                                                                            <span className="h-2 w-2 rounded-full bg-brand-yellow" aria-hidden />
+                                                                                            {it}
+                                                                                        </span>
+                                                                                    )
+                                                                                )}
                                                                             </div>
                                                                         )}
                                                                     </div>
