@@ -197,6 +197,7 @@ const productLines: ProductLine[] = [
         title: "Linha Sorbets Zero Lactose",
         subtitle: "Sabores refrescantes e sem lactose para ampliar o mix e atender novos públicos.",
         theme: "from-emerald-900 via-green-700 to-lime-500",
+        sharedImage: "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-sorbet/sorbet.png",
         slides: [
             {
                 id: "line-sorbets-sabores",
@@ -468,6 +469,7 @@ const Products = () => {
                             const slideImage = slide.image;
                             return !isSupportedImageUrl(slideImage) || slideImage === sharedImage;
                         });
+                        const showNavigation = line.slides.length > 1;
 
                         return (
                             <div
@@ -522,7 +524,7 @@ const Products = () => {
                                                 </div>
                                             )}
 
-                                            <Carousel className={`${usesSharedImage ? "flex-1 " : ""}px-2`} opts={{ align: "start", loop: true }}>
+                                            <Carousel className={`${usesSharedImage ? "flex-1 " : ""}px-2`} opts={{ align: "start", loop: showNavigation }}>
                                                 <CarouselContent className={usesSharedImage ? "-ml-6 lg:-ml-8" : "-ml-6"}>
                                                     {line.slides.map((slide) => {
                                                         if (usesSharedImage) {
@@ -634,8 +636,8 @@ const Products = () => {
                                                         );
                                                     })}
                                                 </CarouselContent>
-                                                <CarouselPrevious className="-left-3 md:-left-4" />
-                                                <CarouselNext className="-right-3 md:-right-4" />
+                                            {showNavigation && <CarouselPrevious className="-left-3 md:-left-4" />}
+                                            {showNavigation && <CarouselNext className="-right-3 md:-right-4" />}
                                             </Carousel>
                                         </div>
                                     </div>
