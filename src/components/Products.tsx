@@ -435,8 +435,7 @@ const Products = () => {
                 <h2 className="text-4xl font-bold text-brand-purple font-playfair text-center">
                     Nossos Produtos
                 </h2>
-                <p className="mt-4 text-center text-brand-dark max-w-3xl mx-auto">
-                    =                    Possuímos diversas linhas para atender diferentes públicos. Clique no produto do carrossel e veja
+                <p className="mt-4 text-center text-brand-dark max-w-3xl mx-auto">Possuímos diversas linhas para atender diferentes públicos. Clique no produto do carrossel e veja
                     mais detalhes de cada linha.
                 </p>
 
