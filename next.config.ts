@@ -2,13 +2,6 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    domains: [
-      'images.unsplash.com',
-      '4qozbotg9nhsxukb.public.blob.vercel-storage.com',
-      'nfwfolrcpaxqwgkzzfok.supabase.co',
-      'drive.google.com',
-      'lh3.googleusercontent.com',
-    ],
     remotePatterns: [
       { protocol: 'https', hostname: 'images.unsplash.com' },
       { protocol: 'https', hostname: '4qozbotg9nhsxukb.public.blob.vercel-storage.com' },
@@ -18,6 +11,18 @@ const nextConfig: NextConfig = {
     ],
     formats: ['image/avif', 'image/webp'],
   },
+  poweredByHeader: false,
+  reactStrictMode: true,
+  experimental: { optimizeCss: true },
+  headers: async () => [
+    {
+      source: '/(.*)',
+      headers: [
+        { key: 'Cache-Control', value: 'no-store, max-age=0' },
+      ],
+    },
+  ],
+
 };
 
 export default nextConfig;
