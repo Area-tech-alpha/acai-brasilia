@@ -1,3 +1,6 @@
+'use client';
+
+import { useCallback, useEffect, useRef } from "react";
 import Image from "next/image";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import {
@@ -6,6 +9,7 @@ import {
     CarouselItem,
     CarouselNext,
     CarouselPrevious,
+    type CarouselApi,
 } from "@/components/ui/carousel";
 
 import { isSupportedImageUrl } from "./utils";
@@ -15,6 +19,8 @@ type ProductLinesSectionProps = {
     lines: ProductLine[];
     registerLineRef: (anchor: string, element: HTMLDivElement | null) => void;
 };
+
+const AUTOPLAY_INTERVAL = 7000;
 
 const stripLinePrefix = (title?: string) => {
     if (!title) return "";
@@ -47,6 +53,86 @@ const renderSlideItems = (items: string[], multiColumn: boolean) => {
 };
 
 const ProductLinesSection = ({ lines, registerLineRef }: ProductLinesSectionProps) => {
+    const carouselApis = useRef<Record<string, CarouselApi | null>>({});
+    const autoplayTimers = useRef<Record<string, number>>({});
+    const cleanupCallbacks = useRef<Record<string, (() => void) | undefined>>({});
+
+    const clearAutoplay = useCallback((lineId: string) => {
+        const timerId = autoplayTimers.current[lineId];
+        if (typeof timerId === "number") {
+            window.clearInterval(timerId);
+            delete autoplayTimers.current[lineId];
+        }
+    }, []);
+
+    const getRegisterCarouselApi = useCallback(
+        (lineId: string, enableAutoplay: boolean) => (api: CarouselApi | null) => {
+            const previousCleanup = cleanupCallbacks.current[lineId];
+
+            if (!api || !enableAutoplay) {
+                if (previousCleanup) {
+                    previousCleanup();
+                    delete cleanupCallbacks.current[lineId];
+                } else {
+                    clearAutoplay(lineId);
+                }
+                carouselApis.current[lineId] = api;
+                return;
+            }
+
+            if (carouselApis.current[lineId] === api) {
+                return;
+            }
+
+            if (previousCleanup) {
+                previousCleanup();
+            } else {
+                clearAutoplay(lineId);
+            }
+
+            carouselApis.current[lineId] = api;
+
+            const startAutoplay = () => {
+                clearAutoplay(lineId);
+                const intervalId = window.setInterval(() => {
+                    try {
+                        api.scrollNext();
+                    } catch {
+                        // noop
+                    }
+                }, AUTOPLAY_INTERVAL);
+                autoplayTimers.current[lineId] = intervalId;
+            };
+
+            const onSelect = () => startAutoplay();
+            const onReInit = () => startAutoplay();
+
+            startAutoplay();
+            api.on("select", onSelect);
+            api.on("reInit", onReInit);
+
+            cleanupCallbacks.current[lineId] = () => {
+                api.off("select", onSelect);
+                api.off("reInit", onReInit);
+                clearAutoplay(lineId);
+                delete carouselApis.current[lineId];
+                delete cleanupCallbacks.current[lineId];
+            };
+        },
+        [clearAutoplay],
+    );
+
+    useEffect(() => {
+        return () => {
+            Object.values(cleanupCallbacks.current).forEach((cleanup) => {
+                if (cleanup) cleanup();
+            });
+        };
+    }, []);
+
+    const navigationButtonClasses =
+        "h-12 w-12 rounded-full bg-white text-brand-purple shadow-xl border border-brand-purple/40 transition-all hover:bg-brand-yellow hover:text-brand-purple hover:shadow-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-yellow/80";
+
     return (
         <div className="mt-20 space-y-20">
             {lines.map((line) => {
@@ -112,7 +198,11 @@ const ProductLinesSection = ({ lines, registerLineRef }: ProductLinesSectionProp
                                             </AspectRatio>
                                         </div>
 
-                                        <Carousel className="flex-1 px-2" opts={{ align: "start", loop: showNavigation }}>
+                                        <Carousel
+                                            className="flex-1 px-2"
+                                            opts={{ align: "start", loop: showNavigation }}
+                                            setApi={getRegisterCarouselApi(line.id, showNavigation)}
+                                        >
                                             <CarouselContent className="-ml-6 lg:-ml-8">
                                                 {line.slides.map((slide) => (
                                                     <CarouselItem key={slide.id} className="pl-6 basis-full">
@@ -138,12 +228,20 @@ const ProductLinesSection = ({ lines, registerLineRef }: ProductLinesSectionProp
                                                     </CarouselItem>
                                                 ))}
                                             </CarouselContent>
-                                            {showNavigation && <CarouselPrevious className="-left-3 md:-left-4" />}
-                                            {showNavigation && <CarouselNext className="-right-3 md:-right-4" />}
+                                            {showNavigation && (
+                                                <CarouselPrevious className={`${navigationButtonClasses} -left-5 md:-left-6`} />
+                                            )}
+                                            {showNavigation && (
+                                                <CarouselNext className={`${navigationButtonClasses} -right-5 md:-right-6`} />
+                                            )}
                                         </Carousel>
                                     </div>
                                 ) : (
-                                    <Carousel className="px-2" opts={{ align: "start", loop: showNavigation }}>
+                                    <Carousel
+                                        className="px-2"
+                                        opts={{ align: "start", loop: showNavigation }}
+                                        setApi={getRegisterCarouselApi(line.id, showNavigation)}
+                                    >
                                         <CarouselContent className="-ml-6">
                                             {line.slides.map((slide) => {
                                                 const mediaSrc = slide.image;
@@ -209,8 +307,12 @@ const ProductLinesSection = ({ lines, registerLineRef }: ProductLinesSectionProp
                                                 );
                                             })}
                                         </CarouselContent>
-                                        {showNavigation && <CarouselPrevious className="-left-3 md:-left-4" />}
-                                        {showNavigation && <CarouselNext className="-right-3 md:-right-4" />}
+                                        {showNavigation && (
+                                            <CarouselPrevious className={`${navigationButtonClasses} -left-5 md:-left-6`} />
+                                        )}
+                                        {showNavigation && (
+                                            <CarouselNext className={`${navigationButtonClasses} -right-5 md:-right-6`} />
+                                        )}
                                     </Carousel>
                                 )}
                             </div>
