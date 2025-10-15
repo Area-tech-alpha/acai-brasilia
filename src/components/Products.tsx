@@ -439,8 +439,8 @@ const Products = () => {
                     Nossos Produtos
                 </h2>
                 <p className="mt-4 text-center text-brand-dark max-w-3xl mx-auto">
-                    Organização pensada para que você apresente o mix Amazzon Easy com clareza. Cada carrossel
-                    destaca a linha, a arte de capa e os sabores correspondentes para acelerar a escolha do cliente.
+                    Possuímos diversas linhas para atender diferentes públicos. Clique no produto do carrossel e veja
+                    mais detalhes de cada linha.
                 </p>
 
                 <div className="relative mt-12">
@@ -458,50 +458,37 @@ const Products = () => {
                                         >
                                             <div className="relative w-full max-w-[400px] sm:max-w-[520px] lg:max-w-[760px]">
                                                 <div
-                                                    className={`cursor-pointer relative flex h-full min-h-[420px] flex-col overflow-hidden rounded-[42px] border border-white/15 bg-gradient-to-br from-brand-purple/98 via-brand-purple/94 to-brand-purple/90 shadow-[0_32px_90px_rgba(50,20,90,0.45)] transition-transform duration-700 group-hover:-translate-y-2 ${isActive ? 'ring-4 ring-brand-yellow/30 shadow-[0_40px_110px_rgba(75,30,125,0.55)]' : ''}`}
+                                                    className={`cursor-pointer relative flex h-full min-h-[420px] flex-col overflow-hidden rounded-[42px] bg-transparent transition-transform duration-700 group-hover:-translate-y-2 ${isActive ? 'shadow-[0_40px_110px_rgba(0,0,0,0.18)]' : 'shadow-none'}`}
                                                 >
-                                                    <div
-                                                        className="pointer-events-none absolute inset-0 mix-blend-soft-light"
-                                                        style={{
-                                                            backgroundImage: `url(${featherPatternUrl})`,
-                                                            backgroundSize: "160px",
-                                                            backgroundRepeat: "repeat",
-                                                            backgroundPosition: "center",
-                                                        }}
-                                                        aria-hidden
-                                                    />
-                                                    <div className="pointer-events-none absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-brand-yellow via-brand-pink to-brand-yellow" aria-hidden />
-
-                                                    <div className="relative flex flex-1 flex-col gap-8 px-8 py-10 lg:flex-row lg:items-center lg:gap-12">
-                                                        <div className="w-full lg:w-[46%]">
+                                                    <div className="relative flex flex-1 flex-col gap-8 px-8 py-10 lg:flex-row lg:items-center lg:gap-16">
+                                                        <div className="w-full lg:w-[54%]">
                                                             <AspectRatio
-                                                                ratio={4 / 5}
-                                                                className="relative w-full overflow-hidden rounded-[28px] border border-brand-yellow/25 bg-white/8 backdrop-blur-[2px]"
+                                                                ratio={4 / 4.5}
+                                                                className="relative w-full overflow-hidden rounded-[28px] bg-transparent"
                                                             >
                                                                 <Image
                                                                     src={slide.image}
                                                                     alt={`Linha ${slide.title}`}
                                                                     fill
                                                                     sizes="320px"
-                                                                    className="object-contain drop-shadow-[0_24px_45px_rgba(0,0,0,0.35)]" style={{ transform: "scale(1.18)" }}
+                                                                    className="object-contain drop-shadow-[0_24px_45px_rgba(0,0,0,0.25)]" style={{ transform: "scale(1.18)" }}
                                                                 />
-                                                                <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/8 via-transparent to-black/10" aria-hidden />
                                                             </AspectRatio>
                                                         </div>
 
-                                                        <div className="flex w-full lg:w-[54%] flex-col items-center text-center text-white gap-5 lg:items-start lg:text-left">
-                                                            <span className="inline-flex items-center gap-2 rounded-full bg-brand-yellow text-brand-purple px-5 py-2 text-sm font-semibold uppercase tracking-[0.25em] shadow-md ring-2 ring-brand-yellow/50">
+                                                        <div className="flex w-full lg:w-[46%] flex-col items-center text-center text-brand-purple gap-5 lg:items-start lg:text-left">
+                                                            <span className="inline-flex items-center gap-2 rounded-full bg-brand-purple/10 px-5 py-2 text-sm font-semibold uppercase tracking-[0.25em] text-brand-purple">
                                                                 <span className="h-2 w-2 rounded-full bg-brand-purple" aria-hidden />
                                                                 {slide.title}
                                                                 <span className="h-2 w-2 rounded-full bg-brand-purple" aria-hidden />
                                                             </span>
-                                                            <p className="text-sm md:text-base text-white/80 leading-relaxed max-w-[320px] lg:max-w-none">
+                                                            <p className="text-sm md:text-base leading-relaxed text-brand-dark max-w-[320px] lg:max-w-none">
                                                                 {slide.description}
                                                             </p>
-                                                            <div className="mt-6 flex items-center gap-2 text-[11px] uppercase tracking-[0.48em] text-brand-yellow/70">
-                                                                <span className="h-[3px] w-6 rounded-full bg-brand-yellow/70" aria-hidden />
+                                                            <div className="mt-6 flex items-center gap-2 text-[11px] uppercase tracking-[0.48em] text-brand-purple">
+                                                                <span className="h-[3px] w-6 rounded-full bg-brand-purple" aria-hidden />
                                                                 Amazzon Easy
-                                                                <span className="h-[3px] w-6 rounded-full bg-brand-yellow/70" aria-hidden />
+                                                                <span className="h-[3px] w-6 rounded-full bg-brand-purple" aria-hidden />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -754,10 +741,6 @@ const Products = () => {
 };
 
 export default Products;
-
-
-
-
 
 
 
