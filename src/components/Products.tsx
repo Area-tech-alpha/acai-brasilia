@@ -454,20 +454,20 @@ const Products = () => {
                                         >
                                             <div className="relative w-full max-w-[400px] sm:max-w-[520px] lg:max-w-[760px]">
                                                 <div
-                                                    className={`cursor-pointer relative flex h-full min-h-[420px] flex-col overflow-hidden rounded-[42px] bg-transparent transition-transform duration-700 group-hover:-translate-y-2 ${isActive ? 'shadow-[0_40px_110px_rgba(0,0,0,0.18)]' : 'shadow-none'}`}
+                                                    className={`cursor-pointer relative flex h-full min-h-[420px] flex-col overflow-hidden rounded-[42px] transition-transform duration-700 group-hover:-translate-y-2`}
                                                 >
                                                     <div className="relative flex flex-1 flex-col gap-8 px-8 py-10 lg:flex-row lg:items-center lg:gap-16">
                                                         <div className="w-full lg:w-[54%]">
                                                             <AspectRatio
                                                                 ratio={4 / 4.5}
-                                                                className="relative w-full overflow-hidden rounded-[28px] bg-transparent"
+                                                                className="relative w-full rounded-[28px] bg-transparent overflow-hidden"
                                                             >
                                                                 <Image
                                                                     src={slide.image}
                                                                     alt={`Linha ${slide.title}`}
                                                                     fill
-                                                                    sizes="320px"
-                                                                    className="object-contain drop-shadow-[0_24px_45px_rgba(0,0,0,0.25)]" style={{ transform: "scale(1.18)" }}
+                                                                    sizes="(min-width: 1024px) 54vw, 100vw"
+                                                                    className="object-contain p-4 drop-shadow-[0_24px_45px_rgba(0,0,0,0.25)]"
                                                                 />
                                                             </AspectRatio>
                                                         </div>
