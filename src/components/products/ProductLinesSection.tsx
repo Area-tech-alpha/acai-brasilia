@@ -35,17 +35,20 @@ const renderSlideItems = (items: string[], multiColumn: boolean) => {
 
     const layoutClass = multiColumn
         ? "max-w-3xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"
-        : "max-w-xl space-y-3";
+        : "max-w-xs space-y-3";
+
+    const itemClass =
+        "flex w-full items-center justify-center gap-2 rounded-full bg-white/10 px-4 py-2 ring-1 ring-white/12 backdrop-blur-sm";
 
     return (
-        <ul className={`mt-4 w-full self-center ${layoutClass}`}>
+        <ul className={`mt-4 w-full self-center text-center ${layoutClass}`}>
             {items.map((item) => (
                 <li
                     key={item}
-                    className="flex w-full items-center gap-3 rounded-full bg-white/10 px-5 py-3 ring-1 ring-white/15"
+                    className={itemClass}
                 >
                     <span className="h-2 w-2 rounded-full bg-brand-yellow" aria-hidden />
-                    <span className="flex-1 text-sm md:text-base">{item}</span>
+                    <span className="text-sm md:text-base">{item}</span>
                 </li>
             ))}
         </ul>
@@ -214,7 +217,7 @@ const ProductLinesSection = ({ lines, registerLineRef }: ProductLinesSectionProp
                                                             </span>
 
                                                             {slide.description && (
-                                                                <p className="text-sm md:text-base text-white/90 leading-relaxed">
+                                                                <p className="text-sm md:text-base text-white/90 leading-relaxed text-center">
                                                                     {slide.description}
                                                                 </p>
                                                             )}
