@@ -143,7 +143,6 @@ const ProductLinesSection = ({ lines, registerLineRef }: ProductLinesSectionProp
                         const slideImage = slide.image;
                         return !isSupportedImageUrl(slideImage) || slideImage === sharedImage;
                     });
-
                 const showNavigation = line.slides.length > 1;
 
                 return (
@@ -178,7 +177,7 @@ const ProductLinesSection = ({ lines, registerLineRef }: ProductLinesSectionProp
                                 </div>
 
                                 {usesSharedImage ? (
-                                    <div className="flex flex-col gap-10 lg:flex-row lg:items-center lg:gap-12">
+                                    <div className="relative flex flex-col gap-10 lg:flex-row lg:items-center lg:gap-12">
                                         <div className="mx-auto w-full max-w-[360px] sm:max-w-[380px] lg:max-w-[320px] xl:max-w-[360px]">
                                             <AspectRatio
                                                 ratio={4 / 5}
@@ -199,7 +198,7 @@ const ProductLinesSection = ({ lines, registerLineRef }: ProductLinesSectionProp
                                         </div>
 
                                         <Carousel
-                                            className="flex-1 px-2"
+                                            className="relative flex-1 px-2"
                                             opts={{ align: "start", loop: showNavigation }}
                                             setApi={getRegisterCarouselApi(line.id, showNavigation)}
                                         >
@@ -242,10 +241,11 @@ const ProductLinesSection = ({ lines, registerLineRef }: ProductLinesSectionProp
                                         opts={{ align: "start", loop: showNavigation }}
                                         setApi={getRegisterCarouselApi(line.id, showNavigation)}
                                     >
-                                        <CarouselContent className="-ml-6">
+                                        <CarouselContent className="-ml-6 lg:-ml-8">
                                             {line.slides.map((slide) => {
-                                                const mediaSrc = slide.image;
-                                                const hasImage = isSupportedImageUrl(mediaSrc);
+                                                const slideImage = isSupportedImageUrl(slide.image) ? slide.image : undefined;
+                                                const mediaSrc = slideImage ?? sharedImage;
+                                                const hasImage = Boolean(mediaSrc);
                                                 const items = slide.items ?? [];
                                                 const useMultiColumn = shouldUseMultiColumnList(slide.id);
 
