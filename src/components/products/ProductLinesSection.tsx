@@ -21,6 +21,31 @@ const stripLinePrefix = (title?: string) => {
     return title.replace(/^Linha\s+/i, "").trim();
 };
 
+const shouldUseMultiColumnList = (slideId: string) =>
+    slideId === "line-polpas-100g" || slideId === "line-polpas-1kg";
+
+const renderSlideItems = (items: string[], multiColumn: boolean) => {
+    if (items.length === 0) return null;
+
+    const layoutClass = multiColumn
+        ? "max-w-3xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"
+        : "max-w-xl space-y-3";
+
+    return (
+        <ul className={`mt-4 w-full self-center ${layoutClass}`}>
+            {items.map((item) => (
+                <li
+                    key={item}
+                    className="flex w-full items-center gap-3 rounded-full bg-white/10 px-5 py-3 ring-1 ring-white/15"
+                >
+                    <span className="h-2 w-2 rounded-full bg-brand-yellow" aria-hidden />
+                    <span className="flex-1 text-sm md:text-base">{item}</span>
+                </li>
+            ))}
+        </ul>
+    );
+};
+
 const ProductLinesSection = ({ lines, registerLineRef }: ProductLinesSectionProps) => {
     return (
         <div className="mt-20 space-y-20">
@@ -105,18 +130,9 @@ const ProductLinesSection = ({ lines, registerLineRef }: ProductLinesSectionProp
                                                                 </p>
                                                             )}
 
-                                                            {slide.items?.length > 0 && (
-                                                                <ul className="mt-4 space-y-3 w-full max-w-xl self-center">
-                                                                    {slide.items.map((item) => (
-                                                                        <li
-                                                                            key={item}
-                                                                            className="flex items-center gap-3 rounded-full bg-white/10 px-5 py-3 ring-1 ring-white/15"
-                                                                        >
-                                                                            <span className="h-2 w-2 rounded-full bg-brand-yellow" aria-hidden />
-                                                                            <span className="flex-1 text-sm md:text-base">{item}</span>
-                                                                        </li>
-                                                                    ))}
-                                                                </ul>
+                                                            {renderSlideItems(
+                                                                slide.items ?? [],
+                                                                shouldUseMultiColumnList(slide.id),
                                                             )}
                                                         </div>
                                                     </CarouselItem>
@@ -133,6 +149,7 @@ const ProductLinesSection = ({ lines, registerLineRef }: ProductLinesSectionProp
                                                 const mediaSrc = slide.image;
                                                 const hasImage = isSupportedImageUrl(mediaSrc);
                                                 const items = slide.items ?? [];
+                                                const useMultiColumn = shouldUseMultiColumnList(slide.id);
 
                                                 return (
                                                     <CarouselItem key={slide.id} className="pl-6 basis-full">
@@ -184,19 +201,7 @@ const ProductLinesSection = ({ lines, registerLineRef }: ProductLinesSectionProp
                                                                         </p>
                                                                     )}
 
-                                                                    {items.length > 0 && (
-                                                                        <ul className="mt-4 space-y-3 w-full max-w-xl self-center">
-                                                                            {items.map((item) => (
-                                                                                <li
-                                                                                    key={item}
-                                                                                    className="flex items-center gap-3 rounded-full bg-white/10 px-5 py-3 ring-1 ring-white/15"
-                                                                                >
-                                                                                    <span className="h-2 w-2 rounded-full bg-brand-yellow" aria-hidden />
-                                                                                    <span className="flex-1 text-sm md:text-base">{item}</span>
-                                                                                </li>
-                                                                            ))}
-                                                                        </ul>
-                                                                    )}
+                                                                    {renderSlideItems(items, useMultiColumn)}
                                                                 </div>
                                                             </div>
                                                         </div>
