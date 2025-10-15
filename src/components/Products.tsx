@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
@@ -18,9 +18,6 @@ type HighlightSlide = {
     description: string;
     image: string;
 };
-
-const featherPatternUrl =
-    "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/folhas-logo%20(1).png";
 
 type LineSlide = {
     id: string;
@@ -439,7 +436,7 @@ const Products = () => {
                     Nossos Produtos
                 </h2>
                 <p className="mt-4 text-center text-brand-dark max-w-3xl mx-auto">
-                    Possuímos diversas linhas para atender diferentes públicos. Clique no produto do carrossel e veja
+                    =                    Possuímos diversas linhas para atender diferentes públicos. Clique no produto do carrossel e veja
                     mais detalhes de cada linha.
                 </p>
 
@@ -695,8 +692,8 @@ const Products = () => {
                                                                         {items.length > 0 && (
                                                                             <div
                                                                                 className={`${hasManyItems
-                                                                                        ? "mt-3 grid w-full max-w-2xl grid-cols-2 gap-2 sm:grid-cols-3 md:gap-3 mx-auto px-1"
-                                                                                        : "mt-1 flex flex-wrap justify-center gap-2 md:gap-3"
+                                                                                    ? "mt-3 grid w-full max-w-2xl grid-cols-2 gap-2 sm:grid-cols-3 md:gap-3 mx-auto px-1"
+                                                                                    : "mt-1 flex flex-wrap justify-center gap-2 md:gap-3"
                                                                                     }`}
                                                                             >
                                                                                 {items.map((it) =>

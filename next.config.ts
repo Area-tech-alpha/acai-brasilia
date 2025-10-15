@@ -13,7 +13,6 @@ const nextConfig: NextConfig = {
   },
   poweredByHeader: false,
   reactStrictMode: true,
-  experimental: { optimizeCss: true },
   headers: async () => [
     {
       source: '/(.*)',
