@@ -129,7 +129,7 @@ export const PRODUCT_LINES: ProductLine[] = [
                 heading: "Clássicos",
                 description:
                     "Sabores queridinhos que combinam com complementos doces e frutas frescas.",
-                items: ["Cupuaçu", "Amazzoninho trufado"],
+                items: ["Cupuaçu", "Amazzoninho"],
                 image:
                     "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-creme/creme-classico.png",
             },
@@ -157,13 +157,13 @@ export const PRODUCT_LINES: ProductLine[] = [
                 id: "line-sorvetes-classicos",
                 heading: "Sabores Clássicos",
                 description: "Base ideal para milk-shakes, taças e casquinhas tradicionais.",
-                items: ["Chocolate", "Morango", "Flocos", "Creme"],
+                items: ["Chocolate", "Morango", "Creme"],
             },
             {
                 id: "line-sorvetes-especiais",
                 heading: "Sabores Especiais",
                 description: "Combinações criativas que chamam atenção na vitrine.",
-                items: ["Blue Ice", "Avelã", "Chiclete", "Unicórnio"],
+                items: ["Blue Ice", "Avelã", "Chiclete", "Unicórnio", "Flocos"],
             },
         ],
     },
