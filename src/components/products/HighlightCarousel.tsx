@@ -4,6 +4,8 @@ import {
     CarouselContent,
     CarouselItem,
     type CarouselApi,
+    CarouselNext,
+    CarouselPrevious,
 } from "@/components/ui/carousel";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 
@@ -22,6 +24,9 @@ const HighlightCarousel = ({
     setCarouselApi,
     activeIndex = 0,
 }: HighlightCarouselProps) => {
+    const navigationButtonClasses =
+        "flex h-12 w-12 items-center justify-center rounded-full border border-brand-purple/30 bg-white/90 text-brand-purple shadow-xl backdrop-blur transition-all hover:bg-brand-yellow hover:text-brand-purple focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-yellow/70";
+
     return (
         <div className="relative mt-12">
             <Carousel className="px-2" opts={{ align: "start", loop: true }} setApi={setCarouselApi}>
@@ -78,6 +83,8 @@ const HighlightCarousel = ({
                         );
                     })}
                 </CarouselContent>
+                <CarouselPrevious className={`${navigationButtonClasses} -left-1 md:-left-4 lg:-left-8`} />
+                <CarouselNext className={`${navigationButtonClasses} -right-1 md:-right-4 lg:-right-8`} />
             </Carousel>
         </div>
     );
