@@ -359,17 +359,17 @@ const ProductLinesSection = ({ lines, registerLineRef }: ProductLinesSectionProp
                                         <div className="mx-auto w-full max-w-[360px] sm:max-w-[380px] lg:max-w-[320px] xl:max-w-[360px]">
                                             <AspectRatio
                                                 ratio={4 / 5}
-                                                className="group relative w-full overflow-hidden rounded-[36px] bg-brand-purple/90 texture-dots-dark shadow-2xl ring-1 ring-brand-purple/35"
+                                                className="group relative w-full overflow-hidden rounded-[36px]"
                                             >
                                                 <Image
                                                     src={sharedImage as string}
                                                     alt={`${stripLinePrefix(line.title)} - destaque visual`}
                                                     fill
                                                     sizes="100vw"
-                                                    className="object-contain p-6 sm:p-8 lg:p-10 drop-shadow-[0_28px_60px_rgba(40,13,64,0.35)]"
+                                                    className="object-contain p-6 sm:p-8 lg:p-10"
                                                 />
                                                 <div
-                                                    className="pointer-events-none absolute inset-x-8 inset-y-8 rounded-[30px] border border-white/25 shadow-inner shadow-black/10"
+                                                    className="pointer-events-none absolute inset-x-8 inset-y-8 rounded-[30px]"
                                                     aria-hidden
                                                 />
                                             </AspectRatio>
@@ -444,7 +444,7 @@ const ProductLinesSection = ({ lines, registerLineRef }: ProductLinesSectionProp
                                                             <div className="mx-auto w-full max-w-[360px] sm:max-w-[380px] lg:max-w-[320px] xl:max-w-[360px]">
                                                                 <AspectRatio
                                                                     ratio={4 / 5}
-                                                                    className="group relative w-full overflow-hidden rounded-[36px] bg-brand-purple/90 texture-dots-dark shadow-2xl ring-1 ring-brand-purple/35"
+                                                                    className="group relative w-full overflow-hidden rounded-[36px]"
                                                                 >
                                                                     {hasImage ? (
                                                                         <>
@@ -453,10 +453,10 @@ const ProductLinesSection = ({ lines, registerLineRef }: ProductLinesSectionProp
                                                                                 alt={`${stripLinePrefix(line.title)} - ${slide.heading}`}
                                                                                 fill
                                                                                 sizes="100vw"
-                                                                                className="object-contain p-6 sm:p-8 lg:p-10 drop-shadow-[0_28px_60px_rgba(40,13,64,0.35)] transition-transform duration-500 group-hover:scale-[1.04]"
+                                                                                className="object-contain p-6 sm:p-8 lg:p-10 transition-transform duration-500 group-hover:scale-[1.04]"
                                                                             />
                                                                             <div
-                                                                                className="pointer-events-none absolute inset-x-8 inset-y-8 rounded-[30px] border border-white/25 shadow-inner shadow-black/10"
+                                                                                className="pointer-events-none absolute inset-x-8 inset-y-8 rounded-[30px]"
                                                                                 aria-hidden
                                                                             />
                                                                         </>
