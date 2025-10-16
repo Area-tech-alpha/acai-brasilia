@@ -8,7 +8,7 @@ const Hero = () => {
             {/* Background Image */}
             <div className="absolute inset-0">
                 <Image
-                    src="https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/heroimagem.jpg"
+                    src="https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/heroimagem.png"
                     alt="Açaí na tigela e produtos - Açaí Brasília"
                     fill
                     priority
