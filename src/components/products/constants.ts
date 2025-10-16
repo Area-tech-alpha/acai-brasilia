@@ -137,7 +137,7 @@ export const PRODUCT_LINES: ProductLine[] = [
                 id: "line-cremes-mesclados",
                 heading: "Mesclados",
                 description: "Combinações com contraste visual e sabor marcante.",
-                items: ["Amazzoninho Trufado", "Iogurte grego com amarena"],
+                items: ["Amazzoninho Trufado", "Iogurte grego com amarena", "Morango Tentação", "Ferrero Rocher", "Torta de limão", "Snickers"],
                 image:
                     "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-creme/creme-mesclado.png",
             },
