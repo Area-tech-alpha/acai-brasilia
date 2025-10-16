@@ -30,25 +30,200 @@ const stripLinePrefix = (title?: string) => {
 const shouldUseMultiColumnList = (slideId: string) =>
     slideId === "line-polpas-100g" || slideId === "line-polpas-1kg";
 
-const renderSlideItems = (items: string[], multiColumn: boolean) => {
+type SlideTheme = {
+    container: string;
+    accent: string;
+    accentDot: string;
+    description: string;
+    listItem: string;
+    listDot: string;
+    listText: string;
+};
+
+const DEFAULT_THEME: SlideTheme = {
+    container: "bg-brand-purple/95 text-white texture-dots-dark ring-1 ring-brand-purple/25",
+    accent: "bg-brand-yellow text-brand-purple ring-2 ring-brand-yellow/40",
+    accentDot: "bg-brand-purple",
+    description: "text-white/90",
+    listItem: "bg-white/10 ring-1 ring-white/15 text-white backdrop-blur-sm",
+    listDot: "bg-brand-yellow",
+    listText: "text-white",
+};
+
+const createTheme = (overrides: Partial<SlideTheme>): SlideTheme => ({
+    ...DEFAULT_THEME,
+    ...overrides,
+});
+
+const LINE_THEMES: Partial<Record<string, SlideTheme>> = {
+    "line-cremes": createTheme({
+        container: "bg-[#DEB86D] text-brand-purple texture-dots-light ring-1 ring-white/40",
+        accent: "bg-brand-purple text-white ring-2 ring-brand-purple/35",
+        accentDot: "bg-brand-yellow",
+        description: "text-brand-purple/90",
+        listItem: "bg-brand-purple/10 ring-1 ring-brand-purple/15 text-brand-purple backdrop-blur-sm",
+        listDot: "bg-brand-purple",
+        listText: "text-brand-purple",
+    }),
+    "line-sorvetes": createTheme({
+        container: "bg-[#263A8E] text-white texture-dots-dark ring-1 ring-white/35",
+        accent: "bg-white/90 text-[#263A8E] ring-2 ring-white/50",
+        accentDot: "bg-[#263A8E]",
+        listItem: "bg-white/15 ring-1 ring-white/20 text-white backdrop-blur-sm",
+        listDot: "bg-white",
+    }),
+    "line-sorbets": createTheme({
+        container: "bg-[#F9D976] text-brand-purple texture-dots-light ring-1 ring-white/40",
+        accent: "bg-brand-purple text-white ring-2 ring-brand-purple/35",
+        accentDot: "bg-brand-yellow",
+        description: "text-brand-purple/90",
+        listItem: "bg-brand-purple/10 ring-1 ring-brand-purple/15 text-brand-purple backdrop-blur-sm",
+        listDot: "bg-brand-purple",
+        listText: "text-brand-purple",
+    }),
+    "line-polpas": createTheme({
+        container: "bg-orange-500 text-white texture-dots-dark ring-1 ring-orange-300/50",
+        accent: "bg-white/90 text-orange-600 ring-2 ring-white/50",
+        accentDot: "bg-orange-500",
+        listItem: "bg-white/15 ring-1 ring-white/20 text-white backdrop-blur-sm",
+        listDot: "bg-white",
+    }),
+};
+
+const SLIDE_THEMES: Record<string, SlideTheme> = {
+    "line-acai:line-acai-tradicional": createTheme({
+        container: "bg-[#52A43A] text-white texture-dots-dark ring-1 ring-white/25",
+        accent: "bg-white/85 text-[#52A43A] ring-2 ring-white/45",
+        accentDot: "bg-[#52A43A]",
+        listItem: "bg-white/12 ring-1 ring-white/20 text-white backdrop-blur-sm",
+        listDot: "bg-white",
+    }),
+    "line-acai:line-acai-premium": createTheme({
+        container: "bg-[#F3911A] text-brand-purple texture-dots-light ring-1 ring-white/40",
+        accent: "bg-brand-purple text-white ring-2 ring-brand-purple/35",
+        accentDot: "bg-brand-purple",
+        description: "text-brand-purple/90",
+        listItem: "bg-brand-purple/10 ring-1 ring-brand-purple/15 text-brand-purple backdrop-blur-sm",
+        listDot: "bg-brand-purple",
+        listText: "text-brand-purple",
+    }),
+    "line-picoles:line-picoles-especiais": createTheme({
+        container: "bg-slate-50 text-brand-purple texture-dots-light ring-1 ring-slate-200/60",
+        accent: "bg-brand-purple text-white ring-2 ring-brand-purple/35",
+        accentDot: "bg-brand-yellow",
+        description: "text-brand-purple/90",
+        listItem: "bg-brand-purple/10 ring-1 ring-brand-purple/15 text-brand-purple backdrop-blur-sm",
+        listDot: "bg-brand-purple",
+        listText: "text-brand-purple",
+    }),
+    "line-picoles:line-picoles-premium": createTheme({
+        container: "bg-lime-200 text-brand-purple texture-dots-light ring-1 ring-lime-200/70",
+        accent: "bg-brand-purple text-white ring-2 ring-brand-purple/35",
+        accentDot: "bg-brand-yellow",
+        description: "text-brand-purple/90",
+        listItem: "bg-brand-purple/10 ring-1 ring-brand-purple/15 text-brand-purple backdrop-blur-sm",
+        listDot: "bg-brand-purple",
+        listText: "text-brand-purple",
+    }),
+    "line-picoles:line-picoles-recheados": createTheme({
+        container: "bg-rose-300 text-brand-purple texture-dots-light ring-1 ring-rose-200/60",
+        accent: "bg-brand-purple text-white ring-2 ring-brand-purple/35",
+        accentDot: "bg-brand-yellow",
+        description: "text-brand-purple/90",
+        listItem: "bg-brand-purple/10 ring-1 ring-brand-purple/15 text-brand-purple backdrop-blur-sm",
+        listDot: "bg-brand-purple",
+        listText: "text-brand-purple",
+    }),
+    "line-picoles:line-picoles-ao-leite": createTheme({
+        container: "bg-[#C88F40] text-white texture-dots-dark ring-1 ring-white/35",
+        accent: "bg-white/85 text-[#C88F40] ring-2 ring-white/45",
+        accentDot: "bg-[#C88F40]",
+        listItem: "bg-white/12 ring-1 ring-white/20 text-white backdrop-blur-sm",
+        listDot: "bg-white",
+    }),
+    "line-polpas:line-polpas-100g": createTheme({
+        container: "bg-orange-500 text-white texture-dots-dark ring-1 ring-orange-300/50",
+        accent: "bg-white/90 text-orange-600 ring-2 ring-white/50",
+        accentDot: "bg-orange-400",
+        listItem: "bg-white/15 ring-1 ring-white/20 text-white backdrop-blur-sm",
+        listDot: "bg-white",
+    }),
+    "line-polpas:line-polpas-1kg": createTheme({
+        container: "bg-orange-500 text-white texture-dots-dark ring-1 ring-orange-300/50",
+        accent: "bg-white/90 text-orange-600 ring-2 ring-white/50",
+        accentDot: "bg-orange-400",
+        listItem: "bg-white/15 ring-1 ring-white/20 text-white backdrop-blur-sm",
+        listDot: "bg-white",
+    }),
+    "line-polpas:line-polpas-frutas": createTheme({
+        container: "bg-rose-500 text-white texture-dots-dark ring-1 ring-rose-300/50",
+        accent: "bg-white/90 text-rose-600 ring-2 ring-white/50",
+        accentDot: "bg-rose-400",
+        listItem: "bg-white/15 ring-1 ring-white/20 text-white backdrop-blur-sm",
+        listDot: "bg-white",
+    }),
+    "line-polpas:line-polpas-cremes": createTheme({
+        container: "bg-lime-300 text-brand-purple texture-dots-light ring-1 ring-lime-200/60",
+        accent: "bg-brand-purple text-white ring-2 ring-brand-purple/35",
+        accentDot: "bg-brand-yellow",
+        description: "text-brand-purple/90",
+        listItem: "bg-brand-purple/10 ring-1 ring-brand-purple/15 text-brand-purple backdrop-blur-sm",
+        listDot: "bg-brand-purple",
+        listText: "text-brand-purple",
+    }),
+    "line-acai-cremes-1500:line-acai-cremes-1500-guarana": createTheme({
+        container: "bg-rose-500 text-white texture-dots-dark ring-1 ring-rose-300/50",
+        accent: "bg-white/85 text-rose-700 ring-2 ring-white/40",
+        accentDot: "bg-rose-400",
+        listItem: "bg-white/12 ring-1 ring-white/20 text-white backdrop-blur-sm",
+        listDot: "bg-white",
+    }),
+    "line-acai-cremes-1500:line-acai-cremes-1500-cremes": createTheme({
+        container: "bg-slate-50 text-brand-purple texture-dots-light ring-1 ring-slate-200/60",
+        accent: "bg-brand-purple text-white ring-2 ring-brand-purple/35",
+        accentDot: "bg-brand-yellow",
+        description: "text-brand-purple/90",
+        listItem: "bg-brand-purple/10 ring-1 ring-brand-purple/15 text-brand-purple backdrop-blur-sm",
+        listDot: "bg-brand-purple",
+        listText: "text-brand-purple",
+    }),
+    "line-acai-cremes-250:line-acai-cremes-250-cremes": createTheme({
+        container: "bg-[#3B1F09] text-white texture-dots-dark ring-1 ring-white/25",
+        accent: "bg-white/85 text-[#3B1F09] ring-2 ring-white/40",
+        accentDot: "bg-[#3B1F09]",
+        listItem: "bg-white/12 ring-1 ring-white/20 text-white backdrop-blur-sm",
+        listDot: "bg-white",
+    }),
+};
+
+const getSlideTheme = (lineId: string, slideId: string): SlideTheme => {
+    const specific = SLIDE_THEMES[`${lineId}:${slideId}`];
+    if (specific) return specific;
+    const lineTheme = LINE_THEMES[lineId];
+    if (lineTheme) return lineTheme;
+    return DEFAULT_THEME;
+};
+
+const renderSlideItems = (items: string[], multiColumn: boolean, styles: Pick<SlideTheme, "listItem" | "listDot" | "listText">) => {
     if (items.length === 0) return null;
 
     const layoutClass = multiColumn
         ? "max-w-3xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"
         : "max-w-xs space-y-3";
 
-    const itemClass =
-        "flex w-full items-center justify-center gap-2 rounded-full bg-white/10 px-4 py-2 ring-1 ring-white/12 backdrop-blur-sm";
+    const baseItemClass = multiColumn
+        ? "flex w-full items-center gap-2 rounded-full px-4 py-2"
+        : "flex w-full items-center justify-center gap-2 rounded-full px-4 py-2";
 
     return (
         <ul className={`mt-4 w-full self-center text-center ${layoutClass}`}>
             {items.map((item) => (
                 <li
                     key={item}
-                    className={itemClass}
+                    className={`${baseItemClass} ${styles.listItem}`}
                 >
-                    <span className="h-2 w-2 rounded-full bg-brand-yellow" aria-hidden />
-                    <span className="text-sm md:text-base">{item}</span>
+                    <span className={`h-2 w-2 rounded-full ${styles.listDot}`} aria-hidden />
+                    <span className={`text-sm md:text-base ${styles.listText}`}>{item}</span>
                 </li>
             ))}
         </ul>
@@ -206,29 +381,39 @@ const ProductLinesSection = ({ lines, registerLineRef }: ProductLinesSectionProp
                                             setApi={getRegisterCarouselApi(line.id, showNavigation)}
                                         >
                                             <CarouselContent className="-ml-6 lg:-ml-8">
-                                                {line.slides.map((slide) => (
-                                                    <CarouselItem key={slide.id} className="pl-6 basis-full">
-                                                        <div className="flex h-full flex-col gap-6 rounded-[32px] bg-brand-purple/95 texture-dots-dark p-6 text-white shadow-xl ring-1 ring-brand-purple/25 backdrop-blur-sm">
-                                                            <span className="inline-flex items-center gap-2 self-center rounded-full bg-brand-yellow text-brand-purple px-5 py-2 ring-2 ring-brand-yellow/40">
-                                                                <span className="h-2.5 w-2.5 rounded-full bg-brand-purple" aria-hidden />
-                                                                <span className="text-lg md:text-xl font-playfair font-bold tracking-tight">
-                                                                    {slide.heading}
+                                                {line.slides.map((slide) => {
+                                                    const theme = getSlideTheme(line.id, slide.id);
+                                                    return (
+                                                        <CarouselItem key={slide.id} className="pl-6 basis-full">
+                                                            <div
+                                                                className={`flex h-full flex-col gap-6 rounded-[32px] p-6 shadow-xl backdrop-blur-sm ${theme.container}`}
+                                                            >
+                                                                <span
+                                                                    className={`inline-flex items-center gap-2 self-center rounded-full px-5 py-2 ${theme.accent}`}
+                                                                >
+                                                                    <span className={`h-2.5 w-2.5 rounded-full ${theme.accentDot}`} aria-hidden />
+                                                                    <span className="text-lg md:text-xl font-playfair font-bold tracking-tight">
+                                                                        {slide.heading}
+                                                                    </span>
                                                                 </span>
-                                                            </span>
 
-                                                            {slide.description && (
-                                                                <p className="text-sm md:text-base text-white/90 leading-relaxed text-center">
-                                                                    {slide.description}
-                                                                </p>
-                                                            )}
+                                                                {slide.description && (
+                                                                    <p
+                                                                        className={`text-sm md:text-base leading-relaxed text-center ${theme.description}`}
+                                                                    >
+                                                                        {slide.description}
+                                                                    </p>
+                                                                )}
 
-                                                            {renderSlideItems(
-                                                                slide.items ?? [],
-                                                                shouldUseMultiColumnList(slide.id),
-                                                            )}
-                                                        </div>
-                                                    </CarouselItem>
-                                                ))}
+                                                                {renderSlideItems(
+                                                                    slide.items ?? [],
+                                                                    shouldUseMultiColumnList(slide.id),
+                                                                    theme,
+                                                                )}
+                                                            </div>
+                                                        </CarouselItem>
+                                                    );
+                                                })}
                                             </CarouselContent>
                                             {showNavigation && (
                                                 <CarouselPrevious className={`${navigationButtonClasses} -left-5 md:-left-6`} />
@@ -251,6 +436,7 @@ const ProductLinesSection = ({ lines, registerLineRef }: ProductLinesSectionProp
                                                 const hasImage = Boolean(mediaSrc);
                                                 const items = slide.items ?? [];
                                                 const useMultiColumn = shouldUseMultiColumnList(slide.id);
+                                                const theme = getSlideTheme(line.id, slide.id);
 
                                                 return (
                                                     <CarouselItem key={slide.id} className="pl-6 basis-full">
@@ -288,21 +474,27 @@ const ProductLinesSection = ({ lines, registerLineRef }: ProductLinesSectionProp
                                                             </div>
 
                                                             <div className="flex-1">
-                                                                <div className="flex h-full flex-col gap-6 rounded-[32px] bg-brand-purple/95 texture-dots-dark p-6 text-white shadow-xl ring-1 ring-brand-purple/25 backdrop-blur-sm">
-                                                                    <span className="inline-flex items-center gap-2 self-center rounded-full bg-brand-yellow text-brand-purple px-5 py-2 ring-2 ring-brand-yellow/40">
-                                                                        <span className="h-2.5 w-2.5 rounded-full bg-brand-purple" aria-hidden />
+                                                                <div
+                                                                    className={`flex h-full flex-col gap-6 rounded-[32px] p-6 shadow-xl backdrop-blur-sm ${theme.container}`}
+                                                                >
+                                                                    <span
+                                                                        className={`inline-flex items-center gap-2 self-center rounded-full px-5 py-2 ${theme.accent}`}
+                                                                    >
+                                                                        <span className={`h-2.5 w-2.5 rounded-full ${theme.accentDot}`} aria-hidden />
                                                                         <span className="text-lg md:text-xl font-playfair font-bold tracking-tight">
                                                                             {slide.heading}
                                                                         </span>
                                                                     </span>
 
                                                                     {slide.description && (
-                                                                        <p className="text-sm md:text-base text-white/90 leading-relaxed text-center">
+                                                                        <p
+                                                                            className={`text-sm md:text-base leading-relaxed text-center ${theme.description}`}
+                                                                        >
                                                                             {slide.description}
                                                                         </p>
                                                                     )}
 
-                                                                    {renderSlideItems(items, useMultiColumn)}
+                                                                    {renderSlideItems(items, useMultiColumn, theme)}
                                                                 </div>
                                                             </div>
                                                         </div>
