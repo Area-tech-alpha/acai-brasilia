@@ -11,7 +11,7 @@ const FloatingWhatsAppButton = () => (
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Conversar pelo WhatsApp"
-        className="group fixed bottom-6 right-6 z-50 inline-flex items-center gap-3 rounded-full bg-brand-green px-5 py-3 text-white shadow-xl transition-all hover:translate-y-[-2px] hover:bg-brand-green/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-yellow focus-visible:ring-offset-2"
+        className="group fixed bottom-6 right-6 z-50 inline-flex items-center gap-2 rounded-full bg-brand-green px-4 py-3 text-white shadow-xl transition-all hover:translate-y-[-2px] hover:bg-brand-green/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-yellow focus-visible:ring-offset-2 sm:gap-3 sm:px-5"
     >
         <Image
             src="https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/whatsapp-svgrepo-com.svg"
@@ -22,7 +22,7 @@ const FloatingWhatsAppButton = () => (
             style={{ filter: "brightness(0) invert(1)" }}
             aria-hidden="true"
         />
-        <span className="text-sm font-semibold leading-none">WhatsApp</span>
+        <span className="hidden text-sm font-semibold leading-none sm:inline">WhatsApp</span>
     </a>
 );
 
