@@ -11,7 +11,6 @@ const nextConfig: NextConfig = {
       // { protocol: 'https', hostname: 'nfwfolrcpaxqwgkzzfok.supabase.co', pathname: '/storage/v1/render/image/**' },
       { protocol: 'https', hostname: 'drive.google.com' },
       { protocol: 'https', hostname: 'lh3.googleusercontent.com' },
-      { protocol: 'https', hostname: 'svgrepo.com' },
     ],
     formats: ['image/avif', 'image/webp'],
     // Se usar SVGs externos, habilite:

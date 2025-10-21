@@ -14,8 +14,8 @@ const FloatingWhatsAppButton = () => (
         className="group fixed bottom-6 right-6 z-50 inline-flex items-center gap-3 rounded-full bg-brand-green px-5 py-3 text-white shadow-xl transition-all hover:translate-y-[-2px] hover:bg-brand-green/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-yellow focus-visible:ring-offset-2"
     >
         <Image
-            src="https://svgrepo.com/show/473829/whatsapp.svg"
-            alt=""
+            src="https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/whatsapp-svgrepo-com.svg"
+            alt="whatsapp logo"
             width={24}
             height={24}
             className="h-6 w-6"
