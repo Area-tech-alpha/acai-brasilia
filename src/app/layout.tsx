@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { Fraunces, Manrope } from "next/font/google";
 import "./globals.css";
+import FloatingWhatsAppButton from "@/components/FloatingWhatsAppButton";
 
 const playfair = Fraunces({
   subsets: ["latin"],
@@ -28,6 +29,7 @@ export default function RootLayout({
     <html lang="pt-BR" suppressHydrationWarning>
       <body suppressHydrationWarning className={`${playfair.variable} ${lato.variable} font-lato bg-brand-light text-brand-dark`}>
         {children}
+        <FloatingWhatsAppButton />
       </body>
     </html>
   );
