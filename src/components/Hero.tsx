@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import heroImage from "../../public/heroimagem.webp";
 
 const Hero = () => {
     return (
@@ -8,14 +9,13 @@ const Hero = () => {
             {/* Background Image */}
             <div className="absolute inset-0">
                 <Image
-                    src="https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/heroimagem.png"
+                    src={heroImage}
                     alt="Açaí na tigela e produtos - Açaí Brasília"
                     fill
                     priority
                     sizes="100vw"
                     className="object-cover object-center"
                 />
-
                 {/* Overlay 1: escurecimento principal */}
                 <div
                     className="absolute inset-0 bg-black/65 mix-blend-multiply"

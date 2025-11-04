@@ -1,4 +1,5 @@
 import Image from "next/image";
+import folhasImage from "../../public/folhas-logo (1).webp"
 
 const Footer = () => {
     return (
@@ -38,7 +39,7 @@ const Footer = () => {
                     <p>
                         &copy; {new Date().getFullYear()} Amazzon Easy. Todos os direitos reservados.
                         <Image
-                            src="https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/folhas-logo%20(1).png"
+                            src={folhasImage}
                             alt="Folhas da marca"
                             width={24}
                             height={24}

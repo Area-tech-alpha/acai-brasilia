@@ -16,6 +16,7 @@ const Products = () => {
     const lineRefs = useRef<Record<string, HTMLDivElement | null>>({});
     const [highlightCarouselApi, setHighlightCarouselApi] = useState<CarouselApi | null>(null);
     const [highlightIndex, setHighlightIndex] = useState(0);
+    const highlightAutoplayTimeout = useRef<number | null>(null);
 
     const registerLineRef = useCallback((anchor: string, element: HTMLDivElement | null) => {
         lineRefs.current[anchor] = element;
@@ -46,28 +47,40 @@ const Products = () => {
     useEffect(() => {
         if (!highlightCarouselApi) return;
 
+        const clearAutoplay = () => {
+            if (highlightAutoplayTimeout.current !== null) {
+                window.clearTimeout(highlightAutoplayTimeout.current);
+                highlightAutoplayTimeout.current = null;
+            }
+        };
+
+        const scheduleAutoplay = () => {
+            clearAutoplay();
+            highlightAutoplayTimeout.current = window.setTimeout(() => {
+                try {
+                    highlightCarouselApi.scrollNext();
+                } catch {
+                    // noop
+                }
+                scheduleAutoplay();
+            }, 4200);
+        };
+
         const onSelect = () => {
             try {
                 setHighlightIndex(highlightCarouselApi.selectedScrollSnap());
             } catch {
                 // noop
             }
+            scheduleAutoplay();
         };
 
         onSelect();
         highlightCarouselApi.on("select", onSelect);
         highlightCarouselApi.on("reInit", onSelect);
 
-        const intervalId = window.setInterval(() => {
-            try {
-                highlightCarouselApi.scrollNext();
-            } catch {
-                // noop
-            }
-        }, 4200);
-
         return () => {
-            window.clearInterval(intervalId);
+            clearAutoplay();
             try {
                 highlightCarouselApi.off("select", onSelect);
                 highlightCarouselApi.off("reInit", onSelect);

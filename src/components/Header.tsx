@@ -8,11 +8,9 @@ import {
 } from "@/components/ui/navigation-menu";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetClose } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
+import logoAmarela from "../../public/logo-amarela.webp"
 
 const Header = () => {
-    const logoSrc =
-        "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/logo-amarela.png";
-
     const navLinks = [
         { label: "Açaí", type: "product", id: "acai" },
         { label: "Polpas", type: "product", id: "polpas" },
@@ -36,7 +34,7 @@ const Header = () => {
             <div className="container mx-auto px-6 py-4 flex justify-between items-center">
                 <div className="flex items-center gap-3">
                     <Image
-                        src={logoSrc}
+                        src={logoAmarela}
                         alt="Amazzon Easy"
                         width={250}
                         height={125}

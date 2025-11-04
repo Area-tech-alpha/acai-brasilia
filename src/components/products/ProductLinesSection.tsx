@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import {
@@ -21,6 +21,7 @@ type ProductLinesSectionProps = {
 };
 
 const AUTOPLAY_INTERVAL = 7000;
+const OBSERVER_THRESHOLD = 0.2;
 
 const stripLinePrefix = (title?: string) => {
     if (!title) return "";
@@ -234,14 +235,50 @@ const ProductLinesSection = ({ lines, registerLineRef }: ProductLinesSectionProp
     const carouselApis = useRef<Record<string, CarouselApi | null>>({});
     const autoplayTimers = useRef<Record<string, number>>({});
     const cleanupCallbacks = useRef<Record<string, (() => void) | undefined>>({});
+    const observers = useRef<Record<string, IntersectionObserver>>({});
+    const [visibleLines, setVisibleLines] = useState<Record<string, boolean>>(() => {
+        if (lines.length === 0) return {};
+        return { [lines[0].id]: true };
+    });
+    const [renderedLines, setRenderedLines] = useState<Record<string, boolean>>(() => {
+        if (lines.length === 0) return {};
+        return { [lines[0].id]: true };
+    });
+    const visibilityRef = useRef<Record<string, boolean>>(visibleLines);
+
+    useEffect(() => {
+        visibilityRef.current = visibleLines;
+    }, [visibleLines]);
 
     const clearAutoplay = useCallback((lineId: string) => {
         const timerId = autoplayTimers.current[lineId];
         if (typeof timerId === "number") {
-            window.clearInterval(timerId);
+            window.clearTimeout(timerId);
             delete autoplayTimers.current[lineId];
         }
     }, []);
+
+    const scheduleAutoplay = useCallback(
+        (lineId: string) => {
+            const api = carouselApis.current[lineId];
+            if (!api) return;
+            if (!visibilityRef.current[lineId]) {
+                clearAutoplay(lineId);
+                return;
+            }
+
+            clearAutoplay(lineId);
+            autoplayTimers.current[lineId] = window.setTimeout(() => {
+                try {
+                    api.scrollNext();
+                } catch {
+                    // noop
+                }
+                scheduleAutoplay(lineId);
+            }, AUTOPLAY_INTERVAL);
+        },
+        [clearAutoplay],
+    );
 
     const getRegisterCarouselApi = useCallback(
         (lineId: string, enableAutoplay: boolean) => (api: CarouselApi | null) => {
@@ -254,7 +291,11 @@ const ProductLinesSection = ({ lines, registerLineRef }: ProductLinesSectionProp
                 } else {
                     clearAutoplay(lineId);
                 }
-                carouselApis.current[lineId] = api;
+                if (enableAutoplay) {
+                    carouselApis.current[lineId] = api;
+                } else {
+                    delete carouselApis.current[lineId];
+                }
                 return;
             }
 
@@ -270,22 +311,10 @@ const ProductLinesSection = ({ lines, registerLineRef }: ProductLinesSectionProp
 
             carouselApis.current[lineId] = api;
 
-            const startAutoplay = () => {
-                clearAutoplay(lineId);
-                const intervalId = window.setInterval(() => {
-                    try {
-                        api.scrollNext();
-                    } catch {
-                        // noop
-                    }
-                }, AUTOPLAY_INTERVAL);
-                autoplayTimers.current[lineId] = intervalId;
-            };
+            const onSelect = () => scheduleAutoplay(lineId);
+            const onReInit = () => scheduleAutoplay(lineId);
 
-            const onSelect = () => startAutoplay();
-            const onReInit = () => startAutoplay();
-
-            startAutoplay();
+            scheduleAutoplay(lineId);
             api.on("select", onSelect);
             api.on("reInit", onReInit);
 
@@ -297,14 +326,70 @@ const ProductLinesSection = ({ lines, registerLineRef }: ProductLinesSectionProp
                 delete cleanupCallbacks.current[lineId];
             };
         },
-        [clearAutoplay],
+        [clearAutoplay, scheduleAutoplay],
+    );
+
+    useEffect(() => {
+        const callbacksRef = cleanupCallbacks;
+        return () => {
+            Object.values(callbacksRef.current).forEach((cleanup) => {
+                if (cleanup) cleanup();
+            });
+        };
+    }, [cleanupCallbacks]);
+
+    useEffect(() => {
+        Object.entries(visibleLines).forEach(([lineId, isVisible]) => {
+            if (!isVisible) {
+                clearAutoplay(lineId);
+                return;
+            }
+
+            if (carouselApis.current[lineId]) {
+                scheduleAutoplay(lineId);
+            }
+        });
+    }, [clearAutoplay, scheduleAutoplay, visibleLines]);
+
+    const getLineRef = useCallback(
+        (line: ProductLine) => (element: HTMLDivElement | null) => {
+            registerLineRef(line.anchor, element);
+
+            const previousObserver = observers.current[line.id];
+            if (previousObserver) {
+                previousObserver.disconnect();
+                delete observers.current[line.id];
+            }
+
+            if (!element) return;
+
+            const observer = new IntersectionObserver(
+                ([entry]) => {
+                    setVisibleLines((prev) => {
+                        if (prev[line.id] === entry.isIntersecting) return prev;
+                        return { ...prev, [line.id]: entry.isIntersecting };
+                    });
+
+                    if (entry.isIntersecting) {
+                        setRenderedLines((prev) => {
+                            if (prev[line.id]) return prev;
+                            return { ...prev, [line.id]: true };
+                        });
+                    }
+                },
+                { threshold: OBSERVER_THRESHOLD },
+            );
+
+            observer.observe(element);
+            observers.current[line.id] = observer;
+        },
+        [registerLineRef],
     );
 
     useEffect(() => {
         return () => {
-            Object.values(cleanupCallbacks.current).forEach((cleanup) => {
-                if (cleanup) cleanup();
-            });
+            Object.values(observers.current).forEach((observer) => observer.disconnect());
+            observers.current = {};
         };
     }, []);
 
@@ -322,12 +407,13 @@ const ProductLinesSection = ({ lines, registerLineRef }: ProductLinesSectionProp
                         return !isSupportedImageUrl(slideImage) || slideImage === sharedImage;
                     });
                 const showNavigation = line.slides.length > 1;
+                const isRendered = Boolean(renderedLines[line.id]);
 
                 return (
                     <div
                         key={line.id}
                         id={line.anchor}
-                        ref={(element) => registerLineRef(line.anchor, element)}
+                        ref={getLineRef(line)}
                         className="scroll-mt-28"
                     >
                         <div className="mb-8 h-px w-full bg-gradient-to-r from-transparent via-brand-purple/20 to-transparent" />
@@ -340,7 +426,6 @@ const ProductLinesSection = ({ lines, registerLineRef }: ProductLinesSectionProp
                                         fill
                                         sizes="100vw"
                                         className="object-cover"
-                                        priority={line.id === "line-acai"}
                                     />
                                     <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/10 to-black/30" aria-hidden />
                                 </div>
@@ -375,105 +460,17 @@ const ProductLinesSection = ({ lines, registerLineRef }: ProductLinesSectionProp
                                             </AspectRatio>
                                         </div>
 
-                                        <Carousel
-                                            className="relative flex-1 px-2"
-                                            opts={{ align: "start", loop: showNavigation }}
-                                            setApi={getRegisterCarouselApi(line.id, showNavigation)}
-                                        >
-                                            <CarouselContent className="-ml-6 lg:-ml-8">
-                                                {line.slides.map((slide) => {
-                                                    const theme = getSlideTheme(line.id, slide.id);
-                                                    return (
-                                                        <CarouselItem key={slide.id} className="pl-6 basis-full">
-                                                            <div
-                                                                className={`flex h-full flex-col gap-6 rounded-[32px] p-6 shadow-xl backdrop-blur-sm ${theme.container}`}
-                                                            >
-                                                                <span
-                                                                    className={`inline-flex items-center gap-2 self-center rounded-full px-5 py-2 ${theme.accent}`}
-                                                                >
-                                                                    <span className={`h-2.5 w-2.5 rounded-full ${theme.accentDot}`} aria-hidden />
-                                                                    <span className="text-lg md:text-xl font-playfair font-bold tracking-tight">
-                                                                        {slide.heading}
-                                                                    </span>
-                                                                </span>
-
-                                                                {slide.description && (
-                                                                    <p
-                                                                        className={`text-sm md:text-base leading-relaxed text-center ${theme.description}`}
-                                                                    >
-                                                                        {slide.description}
-                                                                    </p>
-                                                                )}
-
-                                                                {renderSlideItems(
-                                                                    slide.items ?? [],
-                                                                    shouldUseMultiColumnList(slide.id),
-                                                                    theme,
-                                                                )}
-                                                            </div>
-                                                        </CarouselItem>
-                                                    );
-                                                })}
-                                            </CarouselContent>
-                                            {showNavigation && (
-                                                <CarouselPrevious className={`${navigationButtonClasses} -left-5 md:-left-6`} />
-                                            )}
-                                            {showNavigation && (
-                                                <CarouselNext className={`${navigationButtonClasses} -right-5 md:-right-6`} />
-                                            )}
-                                        </Carousel>
-                                    </div>
-                                ) : (
-                                    <Carousel
-                                        className="px-2"
-                                        opts={{ align: "start", loop: showNavigation }}
-                                        setApi={getRegisterCarouselApi(line.id, showNavigation)}
-                                    >
-                                        <CarouselContent className="-ml-6 lg:-ml-8">
-                                            {line.slides.map((slide) => {
-                                                const slideImage = isSupportedImageUrl(slide.image) ? slide.image : undefined;
-                                                const mediaSrc = slideImage ?? sharedImage;
-                                                const hasImage = Boolean(mediaSrc);
-                                                const items = slide.items ?? [];
-                                                const useMultiColumn = shouldUseMultiColumnList(slide.id);
-                                                const theme = getSlideTheme(line.id, slide.id);
-
-                                                return (
-                                                    <CarouselItem key={slide.id} className="pl-6 basis-full">
-                                                        <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:gap-12">
-                                                            <div className="mx-auto w-full max-w-[360px] sm:max-w-[380px] lg:max-w-[320px] xl:max-w-[360px]">
-                                                                <AspectRatio
-                                                                    ratio={4 / 5}
-                                                                    className="group relative w-full overflow-hidden rounded-[36px]"
-                                                                >
-                                                                    {hasImage ? (
-                                                                        <>
-                                                                            <Image
-                                                                                src={mediaSrc as string}
-                                                                                alt={`${stripLinePrefix(line.title)} - ${slide.heading}`}
-                                                                                fill
-                                                                                sizes="100vw"
-                                                                                className="object-contain p-6 sm:p-8 lg:p-10 transition-transform duration-500 group-hover:scale-[1.04]"
-                                                                            />
-                                                                            <div
-                                                                                className="pointer-events-none absolute inset-x-8 inset-y-8 rounded-[30px]"
-                                                                                aria-hidden
-                                                                            />
-                                                                        </>
-                                                                    ) : (
-                                                                        <div className="flex h-full flex-col items-center justify-center gap-3 px-6 text-center text-white/80">
-                                                                            <span className="text-xs md:text-sm font-semibold uppercase tracking-[0.28em] text-brand-yellow/90">
-                                                                                Arte em preparação
-                                                                            </span>
-                                                                            <p className="text-xs md:text-sm text-white/80">
-                                                                                Estamos finalizando a arte desta linha. Volte em breve para conferir.
-                                                                            </p>
-                                                                        </div>
-                                                                    )}
-                                                                </AspectRatio>
-                                                            </div>
-
-                                                            <div className="flex-1">
+                                        {isRendered ? (
+                                            <Carousel
+                                                className="relative flex-1 px-2"
+                                                opts={{ align: "start", loop: showNavigation }}
+                                                setApi={getRegisterCarouselApi(line.id, showNavigation)}
+                                            >
+                                                <CarouselContent className="-ml-6 lg:-ml-8">
+                                                    {line.slides.map((slide) => {
+                                                        const theme = getSlideTheme(line.id, slide.id);
+                                                        return (
+                                                            <CarouselItem key={slide.id} className="pl-6 basis-full">
                                                                 <div
                                                                     className={`flex h-full flex-col gap-6 rounded-[32px] p-6 shadow-xl backdrop-blur-sm ${theme.container}`}
                                                                 >
@@ -494,21 +491,121 @@ const ProductLinesSection = ({ lines, registerLineRef }: ProductLinesSectionProp
                                                                         </p>
                                                                     )}
 
-                                                                    {renderSlideItems(items, useMultiColumn, theme)}
+                                                                    {renderSlideItems(
+                                                                        slide.items ?? [],
+                                                                        shouldUseMultiColumnList(slide.id),
+                                                                        theme,
+                                                                    )}
+                                                                </div>
+                                                            </CarouselItem>
+                                                        );
+                                                    })}
+                                                </CarouselContent>
+                                                {showNavigation && (
+                                                    <CarouselPrevious className={`${navigationButtonClasses} -left-5 md:-left-6`} />
+                                                )}
+                                                {showNavigation && (
+                                                    <CarouselNext className={`${navigationButtonClasses} -right-5 md:-right-6`} />
+                                                )}
+                                            </Carousel>
+                                        ) : (
+                                            <div className="flex h-full min-h-[320px] w-full items-center justify-center rounded-[32px] bg-brand-purple/5 text-brand-dark/60">
+                                                Carregando...
+                                            </div>
+                                        )}
+                                    </div>
+                                ) : (
+                                    isRendered ? (
+                                        <Carousel
+                                            className="px-2"
+                                            opts={{ align: "start", loop: showNavigation }}
+                                            setApi={getRegisterCarouselApi(line.id, showNavigation)}
+                                        >
+                                            <CarouselContent className="-ml-6 lg:-ml-8">
+                                                {line.slides.map((slide) => {
+                                                    const slideImage = isSupportedImageUrl(slide.image) ? slide.image : undefined;
+                                                    const mediaSrc = slideImage ?? sharedImage;
+                                                    const hasImage = Boolean(mediaSrc);
+                                                    const items = slide.items ?? [];
+                                                    const useMultiColumn = shouldUseMultiColumnList(slide.id);
+                                                    const theme = getSlideTheme(line.id, slide.id);
+
+                                                    return (
+                                                        <CarouselItem key={slide.id} className="pl-6 basis-full">
+                                                            <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:gap-12">
+                                                                <div className="mx-auto w-full max-w-[360px] sm:max-w-[380px] lg:max-w-[320px] xl:max-w-[360px]">
+                                                                    <AspectRatio
+                                                                        ratio={4 / 5}
+                                                                        className="group relative w-full overflow-hidden rounded-[36px]"
+                                                                    >
+                                                                        {hasImage ? (
+                                                                            <>
+                                                                                <Image
+                                                                                    src={mediaSrc as string}
+                                                                                    alt={`${stripLinePrefix(line.title)} - ${slide.heading}`}
+                                                                                    fill
+                                                                                    sizes="100vw"
+                                                                                    className="object-contain p-6 sm:p-8 lg:p-10 transition-transform duration-500 group-hover:scale-[1.04]"
+                                                                                />
+                                                                                <div
+                                                                                    className="pointer-events-none absolute inset-x-8 inset-y-8 rounded-[30px]"
+                                                                                    aria-hidden
+                                                                                />
+                                                                            </>
+                                                                        ) : (
+                                                                            <div className="flex h-full flex-col items-center justify-center gap-3 px-6 text-center text-white/80">
+                                                                                <span className="text-xs md:text-sm font-semibold uppercase tracking-[0.28em] text-brand-yellow/90">
+                                                                                    Arte em preparação
+                                                                                </span>
+                                                                                <p className="text-xs md:text-sm text-white/80">
+                                                                                    Estamos finalizando a arte desta linha. Volte em breve para conferir.
+                                                                                </p>
+                                                                            </div>
+                                                                        )}
+                                                                    </AspectRatio>
+                                                                </div>
+
+                                                                <div className="flex-1">
+                                                                    <div
+                                                                        className={`flex h-full flex-col gap-6 rounded-[32px] p-6 shadow-xl backdrop-blur-sm ${theme.container}`}
+                                                                    >
+                                                                        <span
+                                                                            className={`inline-flex items-center gap-2 self-center rounded-full px-5 py-2 ${theme.accent}`}
+                                                                        >
+                                                                            <span className={`h-2.5 w-2.5 rounded-full ${theme.accentDot}`} aria-hidden />
+                                                                            <span className="text-lg md:text-xl font-playfair font-bold tracking-tight">
+                                                                                {slide.heading}
+                                                                            </span>
+                                                                        </span>
+
+                                                                        {slide.description && (
+                                                                            <p
+                                                                                className={`text-sm md:text-base leading-relaxed text-center ${theme.description}`}
+                                                                            >
+                                                                                {slide.description}
+                                                                            </p>
+                                                                        )}
+
+                                                                        {renderSlideItems(items, useMultiColumn, theme)}
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                    </CarouselItem>
-                                                );
-                                            })}
-                                        </CarouselContent>
-                                        {showNavigation && (
-                                            <CarouselPrevious className={`${navigationButtonClasses} -left-5 md:-left-6`} />
-                                        )}
-                                        {showNavigation && (
-                                            <CarouselNext className={`${navigationButtonClasses} -right-5 md:-right-6`} />
-                                        )}
-                                    </Carousel>
+                                                        </CarouselItem>
+                                                    );
+                                                })}
+                                            </CarouselContent>
+                                            {showNavigation && (
+                                                <CarouselPrevious className={`${navigationButtonClasses} -left-5 md:-left-6`} />
+                                            )}
+                                            {showNavigation && (
+                                                <CarouselNext className={`${navigationButtonClasses} -right-5 md:-right-6`} />
+                                            )}
+                                        </Carousel>
+                                    ) : (
+                                        <div className="flex h-full min-h-[320px] w-full items-center justify-center rounded-[32px] bg-brand-purple/5 text-brand-dark/60">
+                                            Carregando...
+                                        </div>
+                                    )
                                 )}
                             </div>
                         </div>

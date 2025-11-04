@@ -3,6 +3,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import Image from 'next/image';
+import { isSupportedImageUrl } from "./products/utils";
 
 type Product = {
     name: string;
@@ -15,26 +16,6 @@ interface ProductModalProps {
     product: Product;
     onClose: () => void;
 }
-
-const isSupportedImageUrl = (url?: string) => {
-    if (!url) return false;
-    try {
-        const u = new URL(url);
-        const allowedHosts = new Set([
-            'images.unsplash.com',
-            '4qozbotg9nhsxukb.public.blob.vercel-storage.com',
-            'nfwfolrcpaxqwgkzzfok.supabase.co',
-            'drive.google.com',
-            'lh3.googleusercontent.com',
-        ]);
-        if (allowedHosts.has(u.hostname)) return true;
-        const path = u.pathname;
-        return /\.(png|jpe?g|webp|gif|avif|svg|bmp)$/i.test(path);
-    } catch {
-        const path = (url.split('?')[0] || '');
-        return /\.(png|jpe?g|webp|gif|avif|svg|bmp)$/i.test(path);
-    }
-};
 
 const ProductModal = ({ product, onClose }: ProductModalProps) => {
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -87,7 +68,6 @@ const ProductModal = ({ product, onClose }: ProductModalProps) => {
                                     fill
                                     sizes="(max-width: 768px) 100vw, 50vw"
                                     className="object-cover"
-                                    priority
                                 />
                             ) : (
                                 <div className="absolute inset-0 flex items-center justify-center bg-black/10 text-brand-dark">

@@ -1,13 +1,5 @@
 import type { HighlightSlide, ProductLine } from "./types";
 
-export const ALLOWED_IMAGE_HOSTS = [
-    "images.unsplash.com",
-    "4qozbotg9nhsxukb.public.blob.vercel-storage.com",
-    "nfwfolrcpaxqwgkzzfok.supabase.co",
-    "drive.google.com",
-    "lh3.googleusercontent.com",
-] as const;
-
 export const HIGHLIGHT_ANCHOR_MAP: Record<string, string> = {
     "highlight-acai": "acai",
     "highlight-cremes": "cremes",
@@ -23,48 +15,42 @@ export const HIGHLIGHT_SLIDES: HighlightSlide[] = [
         title: "Açaí",
         description:
             "Linha completa com texturas cremosas, variações tradicionais, premium e zero açúcar para qualquer cardápio.",
-        image:
-            "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-1/Acai-pREMIUM.png",
+        image: "/carrossel-1/Acai-pREMIUM.webp",
     },
     {
         id: "highlight-sorvetes",
         title: "Sorvetes",
         description:
             "Sabores cremosos e estáveis para vitrine, buffet e delivery, com visual irresistível.",
-        image:
-            "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-1/Sorvetes.png",
+        image: "/carrossel-1/Sorvetes.webp",
     },
     {
         id: "highlight-cremes",
         title: "Cremes",
         description:
             "Receitas exclusivas que combinam com toppings, taças especiais e sobremesas autorais.",
-        image:
-            "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-1/Cremes.png",
+        image: "/carrossel-1/Cremes.webp",
     },
     {
         id: "highlight-sorbets",
         title: "Sorbets Zero Lactose",
         description:
             "Fórmulas leves, vibrantes e sem lactose para encantar um público mais amplo.",
-        image:
-            "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-sorbet/sorbet.png",
+        image: "/carrossel-sorbet/sorbet.webp",
     },
     {
         id: "highlight-picoles",
         title: "Picolés",
         description:
             "Recheados, premium, especiais e frutas para vitrines coloridas e rentáveis.",
-        image:
-            "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-1/picole.png",
+        image: "/carrossel-1/picole.webp",
     },
     {
         id: "highlight-polpas",
         title: "Polpas de frutas",
         description:
             "Polpas de 100g, barras de 1kg e frutas congeladas prontas para preparo rápido.",
-        image:
-            "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-1/polpa.png",
+        image: "/carrossel-1/polpa.webp",
     },
 ];
 
@@ -83,8 +69,7 @@ export const PRODUCT_LINES: ProductLine[] = [
                 description:
                     "Adoçado com açúcar, sem guaraná, ideal para receitas base e copos montados.",
                 items: ["Tradicional", "Tradicional com banana", "Tradicional com guaraná"],
-                image:
-                    "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-acai/acai-tradicional.png",
+                image: "/carrossel-acai/acai-tradicional.webp",
             },
             {
                 id: "line-acai-premium",
@@ -92,8 +77,7 @@ export const PRODUCT_LINES: ProductLine[] = [
                 description:
                     "Com guaraná para ganhar energia extra e destaque no sabor.",
                 items: ["Premium", "Premium com banana", "Premium com morango"],
-                image:
-                    "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-acai/acai-premium.png",
+                image: "/carrossel-acai/acai-premium.webp",
             },
             {
                 id: "line-acai-super",
@@ -101,8 +85,7 @@ export const PRODUCT_LINES: ProductLine[] = [
                 description:
                     "Formulação mais cremosa e rica, perfeita para taças especiais.",
                 items: ["Super premium"],
-                image:
-                    "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-acai/acai-super-premium.png",
+                image: "/carrossel-acai/acai-super-premium.webp",
             },
             {
                 id: "line-acai-zero",
@@ -110,8 +93,7 @@ export const PRODUCT_LINES: ProductLine[] = [
                 description:
                     "Opção adoçada naturalmente para públicos com restrições, mantendo sabor e textura.",
                 items: ["Zero açúcar com banana"],
-                image:
-                    "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-acai/acai-super-premium.png",
+                image: "/carrossel-acai/acai-super-premium.webp",
             },
         ],
     },
@@ -130,16 +112,14 @@ export const PRODUCT_LINES: ProductLine[] = [
                 description:
                     "Sabores queridinhos que combinam com complementos doces e frutas frescas.",
                 items: ["Cupuaçu", "Amazzoninho"],
-                image:
-                    "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-creme/creme-classico.png",
+                image: "/carrossel-creme/creme-classico.webp",
             },
             {
                 id: "line-cremes-mesclados",
                 heading: "Mesclados",
                 description: "Combinações com contraste visual e sabor marcante.",
                 items: ["Amazzoninho Trufado", "Iogurte grego com amarena", "Morango Tentação", "Ferrero Rocher", "Torta de limão", "Snickers"],
-                image:
-                    "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-creme/creme-mesclado.png",
+                image: "/carrossel-creme/creme-mesclado.webp",
             },
         ],
     },
@@ -150,8 +130,7 @@ export const PRODUCT_LINES: ProductLine[] = [
         subtitle:
             "Mix versátil com sabores clássicos e diferenciados para potes, casquinhas e sobremesas.",
         theme: "from-blue-900 via-sky-700 to-cyan-500",
-        sharedImage:
-            "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-sorvete/sorvete.png",
+        sharedImage: "/carrossel-sorvete/sorvete.webp",
         slides: [
             {
                 id: "line-sorvetes-classicos",
@@ -175,8 +154,7 @@ export const PRODUCT_LINES: ProductLine[] = [
             "Sabores refrescantes e sem lactose para ampliar o mix e atender novos públicos.",
         theme: "from-emerald-900 via-green-700 to-lime-500",
         contentTone: "dark",
-        sharedImage:
-            "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-sorbet/sorbet.png",
+        sharedImage: "/carrossel-sorbet/sorbet.webp",
         slides: [
             {
                 id: "line-sorbets-sabores",
@@ -199,40 +177,35 @@ export const PRODUCT_LINES: ProductLine[] = [
                 heading: "Especiais",
                 description: "Sabores com recheios e coberturas diferenciadas.",
                 items: ["Bombom com avelã", "Capuccino", "Raffaello", "Torta de limão"],
-                image:
-                    "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-picoles/picole-especial.png",
+                image: "/carrossel-picoles/picole-especial.webp",
             },
             {
                 id: "line-picoles-premium",
                 heading: "Premium",
                 description: "Bases nobres e recheios cremosos.",
                 items: ["Pistache", "Snickers"],
-                image:
-                    "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-picoles/picole-premium.png",
+                image: "/carrossel-picoles/picole-premium.webp",
             },
             {
                 id: "line-picoles-recheados",
                 heading: "Recheados",
                 description: "Contrastes de fruta e leite condensado para surpreender.",
                 items: ["Maracujá com leite condensado", "Morango com leite condensado", "Ninho trufado"],
-                image:
-                    "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-picoles/picole-recheado.png",
+                image: "/carrossel-picoles/picole-recheado.webp",
             },
             {
                 id: "line-picoles-ao-leite",
                 heading: "Ao leite",
                 description: "Sabores regionais que vendem o ano inteiro.",
                 items: ["Cupuaçu", "Milho"],
-                image:
-                    "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-picoles/picole-ao-leite.png",
+                image: "/carrossel-picoles/picole-ao-leite.webp",
             },
             {
                 id: "line-picoles-frutas",
                 heading: "Frutas",
                 description: "Frutas amazônicas e clássicas com refrescância natural.",
                 items: ["Açaí com guaraná", "Maracujá", "Morango"],
-                image:
-                    "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-picoles/picole-fruta.png",
+                image: "/carrossel-picoles/picole-fruta.webp",
             },
         ],
     },
@@ -263,8 +236,7 @@ export const PRODUCT_LINES: ProductLine[] = [
                     "Tangerina",
                     "Uva",
                 ],
-                image:
-                    "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-polpas/polpa-100-g.png",
+                image: "/carrossel-polpas/polpa-100-g.webp",
             },
             {
                 id: "line-polpas-1kg",
@@ -283,24 +255,21 @@ export const PRODUCT_LINES: ProductLine[] = [
                     "Uva",
                     "Maracujá",
                 ],
-                image:
-                    "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-polpas/polpa-1-kg.png",
+                image: "/carrossel-polpas/polpa-1-kg.webp",
             },
             {
                 id: "line-polpas-frutas",
                 heading: "Frutas Congeladas",
                 description: "Cortes selecionados para receitas premium.",
                 items: ["Morango"],
-                image:
-                    "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-polpas/frutas-congeladas.png",
+                image: "/carrossel-polpas/frutas-congeladas.webp",
             },
             {
                 id: "line-polpas-cremes",
                 heading: "Cremes 1 Litro",
                 description: "Opções cremosas que aceleram o preparo de sobremesas.",
                 items: ["Morango", "Graviola", "Cajá"],
-                image:
-                    "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-polpas/creme-1-litro.png",
+                image: "/carrossel-polpas/creme-1-litro.webp",
             },
         ],
     },
@@ -317,24 +286,21 @@ export const PRODUCT_LINES: ProductLine[] = [
                 heading: "Açaí com guaraná",
                 description: "Energia extra para copos, barcas e açaí no balde.",
                 items: ["Premium", "Premium com banana", "Premium com morango"],
-                image:
-                    "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-acai-cremes-1500/acai-creme-1500-com-guarana.png",
+                image: "/carrossel-acai-cremes-1500/acai-creme-1500-com-guarana.webp",
             },
             {
                 id: "line-acai-cremes-1500-zero",
                 heading: "Zero Açúcar",
                 description: "Opções sem açúcar para clientes com restrições.",
                 items: ["Zero açúcar (com guaraná)", "Zero açúcar (sem guaraná)"],
-                image:
-                    "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-acai-cremes-1500/acai-creme-1500-zero-acucar.png",
+                image: "/carrossel-acai-cremes-1500/acai-creme-1500-zero-acucar.webp",
             },
             {
                 id: "line-acai-cremes-1500-cremes",
                 heading: "Cremes",
                 description: "Sabores prontos para sobremesas na colher.",
                 items: ["Cupuaçu", "Iogurte grego com amarena", "Ninho trufado"],
-                image:
-                    "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-acai-cremes-1500/acai-creme-1500-cremes.png",
+                image: "/carrossel-acai-cremes-1500/acai-creme-1500-cremes.webp",
             },
         ],
     },
@@ -352,16 +318,14 @@ export const PRODUCT_LINES: ProductLine[] = [
                 description:
                     "Opções com e sem guaraná para presentes e combos rápidos.",
                 items: ["Premium (com guaraná)", "Premium com morango", "Puro com banana zero açúcar"],
-                image:
-                    "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-acai-cremes-250/acai-cremes-250-acai.png",
+                image: "/carrossel-acai-cremes-250/acai-cremes-250-acai.webp",
             },
             {
                 id: "line-acai-cremes-250-cremes",
                 heading: "Cremes 250ml",
                 description: "Cremes clássicos em versão prática.",
                 items: ["Cupuaçu"],
-                image:
-                    "https://nfwfolrcpaxqwgkzzfok.supabase.co/storage/v1/object/public/acai-brasilia%20(temporariamente%20aqui)/carrossel-acai-cremes-250/acai-creme-250-cremes.png",
+                image: "/carrossel-acai-cremes-250/acai-creme-250-cremes.webp",
             },
         ],
     },
