@@ -1,4 +1,4 @@
-name: acai-brasilia_DevSecOps
+name: Back_atende_ai_DevSecOps
 
 on:
   push:
@@ -76,7 +76,7 @@ jobs:
     steps:
       - name: Generate Summary
         run: |
-          echo "## acai-brasilia DevSecOps Summary" >> $GITHUB_STEP_SUMMARY
+          echo "## Back_atende_ai DevSecOps Summary" >> $GITHUB_STEP_SUMMARY
           echo "| stage | status |" >> $GITHUB_STEP_SUMMARY
           echo "| :--- | :--- |" >> $GITHUB_STEP_SUMMARY
           echo "| Security Scans | ${{ needs.security.result == 'success' && '✅ PASSED' || '⚠️ ISSUES FOUND' }} |" >> $GITHUB_STEP_SUMMARY
